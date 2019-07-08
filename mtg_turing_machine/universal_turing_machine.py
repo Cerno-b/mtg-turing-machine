@@ -1,5 +1,12 @@
+from turing_machine import TuringMachine
+from two_tag_system import TwoTagSystem
 
-def encode_2tag_to_utm(alphabet, transitions, input_str):
+
+def encode_2tag_to_utm(two_tag_system):
+    transitions = two_tag_system.transitions
+    alphabet = sorted(transitions.keys)
+    alphabet.append(two_tag_system.halt_symbol)
+    input_string = two_tag_system.state
 
     letter_encodings = {}
 
@@ -27,7 +34,7 @@ def encode_2tag_to_utm(alphabet, transitions, input_str):
     initial_tape += "bb^"
 
     input_encoding = ""
-    for i, letter in enumerate(input_str):
+    for i, letter in enumerate(input_string):
         string = "1"*letter_encodings[letter]
         print("data {i}: encoding: {enc}".format(i=i, enc=string))
         input_encoding += string + "c"
@@ -41,21 +48,22 @@ def encode_2tag_to_utm(alphabet, transitions, input_str):
         print(letter, "1"*letter_encodings[letter])
     print()
     print("initial tape:", initial_tape)
-    print("input:", input_str, "->", input_encoding)
+    print("input:", input_string, "->", input_encoding)
 
     return initial_tape
 
 
-def main():
-    alphabet = ["X", "#"]
-    transitions = {
-        "X": "X"}
+class UniversalTuringMachine:
+    def __init__(self):
+        self._tm = TuringMachine()
+        self._tm.setup_from_path("rogozhin_enc.txt")
 
-    input_str = "XXXXXXXXXX#"
+    def set_tape_string(self, string):
+        self._tm.tape_index = string.find("^")
+        self._tm.tape = list(string.replace("^", ""))
 
-    encode_2tag_to_utm(alphabet, transitions, input_str)
+    def set_tape_string_from_2tag(self, two_tag_system):
+        self.set_tape_string(encode_2tag_to_utm(two_tag_system))
 
-
-if __name__ == '__main__':
-    main()
-
+    def run(self, linebreak=False):
+        self._tm.run(linebreak)
