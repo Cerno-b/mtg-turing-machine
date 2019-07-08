@@ -1,0 +1,167 @@
+// https://turingmachinesimulator.com/
+//
+// Input: 
+// Ouput: 
+// Example: 
+//
+// ------- States -----------|
+// qaccept - accepting state |
+//---------------------------|
+
+name: Rogozhin's UTM(2,18)
+init: q0
+accept: qAccept
+
+//init: find end
+
+q0,1
+q0,1,>
+
+q0,t
+q0,t,>
+
+q0,b
+q0,b,>
+
+q0,c
+qt,c,<
+
+// init: find start position
+
+qt,1
+qt,1,<
+
+qt,b
+q1,b,-
+
+// start computation
+q1, 1
+q1, W, <
+
+q1, X
+q1, E, >
+
+q1, _
+q1, W, <
+
+q1, D
+q1, 1, >
+
+q1, E
+q1, D, <
+
+q1, b
+q1, K, >
+
+q1, J
+q1, G, >
+
+q1, K
+q1, b, <
+
+q1, F
+q1, b, >
+
+q1, G
+q1, F, <
+
+q1, N
+q2, P, <
+
+q1, P
+q2, F, <
+
+q1, c
+q2, X, <
+
+q1, U
+q1, V, >
+
+q1, V
+q1, H, <
+
+q1, H
+q2, t, >
+
+q1, t
+qend, _, >
+
+q1, W
+q1, _, >
+
+
+q2, 1
+q2, _, >
+
+q2, X
+q2, _, >
+
+q2, _
+q2, X, <
+
+q2, D
+q2, E, >
+
+q2, E
+q2, 1, <
+
+q2, b
+q1, N, >
+
+q2, J
+q2, K, >
+
+q2, K
+q2, J, <
+
+q2, F
+q2, G, >
+
+q2, G
+q2, J, <
+
+q2, N
+q1, b, >
+
+q2, P
+q2, G, >
+
+q2, c
+q2, V, >
+
+q2, U
+q2, V, >
+
+q2, V
+q2, U, <
+
+q2, H
+q2, W, >
+
+q2, t
+q1, W, <
+
+q2, W
+q2, c, <
+
+// end: run to the result and stop
+qend, b
+qend, _, >
+
+qend, W
+qend, _, >
+
+qend, J
+qend, _, >
+
+qend, X
+qend, _, >
+
+qend, c
+qend, c, >
+
+qend, 1
+qend, 1, >
+
+qend, _
+qAccept, _, -
