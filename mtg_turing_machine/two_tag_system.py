@@ -76,35 +76,68 @@ def encode_transition_as_2tag(transition):
     assert inst_write in ("0", "1")
     assert inst_move in ("<", ">")
 
-    enc_transitions = {
-        "A$": ["C$", "x$"] if inst_write == "0" else ["C$", "x$", "c$", "x$"],
-        "a$": ["c$", "x$", "c$", "x$"],
-        "B$": ["S$"],
-        "b$": ["s$"],
-        "C$": ["D$_1",  "D$_0"],
-        "c$": ["d$_1",  "d$_0"],
-        "S$": ["T$_1",  "T$_0"],
-        "s$": ["t$_1",  "t$_0"],
-        "D$_1": ["A!1", "x!1"],
-        "d$_1": ["a!1", "x!1"],
-        "T$_1": ["B!1", "x!1"],
-        "t$_1": ["b!1", "x!1"],
-        "D$_0": ["x!0", "A!0", "x!0"],
-        "d$_0": ["a!0", "x!0"],
-        "T$_0": ["B!0", "x!0"],
-        "t$_0": ["b!0", "x!0"]
-    }
+    if inst_move == ">":
+        enc_transitions = {
+            "A$": ["C$", "x$"] if inst_write == "0" else ["C$", "x$", "c$", "x$"],
+            "a$": ["c$", "x$", "c$", "x$"],
+            "B$": ["S$"],
+            "b$": ["s$"],
+            "C$": ["D$_1",  "D$_0"],
+            "c$": ["d$_1",  "d$_0"],
+            "S$": ["T$_1",  "T$_0"],
+            "s$": ["t$_1",  "t$_0"],
+            "D$_1": ["A!1", "x!1"],
+            "d$_1": ["a!1", "x!1"],
+            "T$_1": ["B!1", "x!1"],
+            "t$_1": ["b!1", "x!1"],
+            "D$_0": ["x!0", "A!0", "x!0"],
+            "d$_0": ["a!0", "x!0"],
+            "T$_0": ["B!0", "x!0"],
+            "t$_0": ["b!0", "x!0"]
+        }
+    elif inst_move == "<":
+        enc_transitions = {
+            # switch A and B (is now called Z)
+            "A$": ["Z$", "x$"],
+            "a$": ["z$", "x$"],
+            # Z (formerly A) now takes the role of B
+            "Z$": ["S$"],
+            "z$": ["s$"],
+            # B takes the role of (formerly) A
+            "B$": ["C$", "x$"] if inst_write == "0" else ["C$", "x$", "c$", "x$"],
+            "b$": ["c$", "x$", "c$", "x$"],
+            "C$": ["D$_1", "D$_0"],
+            "c$": ["d$_1", "d$_0"],
+            "S$": ["T$_1", "T$_0"],
+            "s$": ["t$_1", "t$_0"],
+
+            "D$_1": ["Y$_1", "x$"],
+            "d$_1": ["y$_1", "x$"],
+            "T$_1": ["A!1", "x!1"],
+            "t$_1": ["a!1", "x!1"],
+            "D$_0": ["x!0", "Y$_0", "x$"],
+            "d$_0": ["y$_0", "x$"],
+            "T$_0": ["A!0", "x!0"],
+            "t$_0": ["a!0", "x!0"],
+
+            "Y$_0": ["B!0", "x!0"],
+            "y$_0": ["b!0", "x!0"],
+            "Y$_1": ["B!1", "x!1"],
+            "y$_1": ["b!1", "x!1"]
+        }
+    else:
+        assert False
 
     new_enc_transitions = {}
     for source, targets in enc_transitions.items():
-        source = set_direction(source, inst_move)
+        # source = set_direction(source, inst_move)
         source = source.replace("$", "_" + str(state_id))
         new_targets = []
         for target in targets:
             if ("!0" in target and inst_change_0_id == "#") or ("!1" in target and inst_change_1_id == "#"):
                 target = "#"
             else:
-                target = set_direction(target, inst_move)
+                # target = set_direction(target, inst_move)
                 target = target.replace("$", "_" + str(state_id))
                 target = target.replace("!0", "_" + str(inst_change_0_id))
                 target = target.replace("!1", "_" + str(inst_change_1_id))
@@ -175,6 +208,8 @@ class TwoTagSystem:
         print("Initial state:", self.state)
         first = self.state[0]
         print(first, " -> ", self.transitions[first])
-        while self.state[0] != self.halt_symbol:
+        while True:
             self.step()
+            if self.state[0] == self.halt_symbol:
+                break
             self.print()
