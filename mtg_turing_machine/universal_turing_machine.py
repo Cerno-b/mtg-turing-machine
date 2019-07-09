@@ -4,7 +4,7 @@ from two_tag_system import TwoTagSystem
 
 def encode_2tag_to_utm(two_tag_system):
     transitions = two_tag_system.transitions
-    alphabet = sorted(transitions.keys)
+    alphabet = sorted(transitions.keys())
     alphabet.append(two_tag_system.halt_symbol)
     input_string = two_tag_system.state
 
@@ -55,8 +55,7 @@ def encode_2tag_to_utm(two_tag_system):
 
 class UniversalTuringMachine:
     def __init__(self):
-        self._tm = TuringMachine()
-        self._tm.setup_from_path("rogozhin_enc.txt")
+        self._tm = TuringMachine("rogozhin_enc.txt")
 
     def set_tape_string(self, string):
         self._tm.tape_index = string.find("^")

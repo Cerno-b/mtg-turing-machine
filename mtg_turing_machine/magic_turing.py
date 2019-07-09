@@ -2,7 +2,7 @@ import sys
 
 from turing_machine import TuringMachine, TuringDefinition
 from universal_turing_machine import UniversalTuringMachine
-from two_tag_system import TwoTagSystem
+from two_tag_system import TwoTagSystem, convert_to_instantaneous
 
 
 def load_tm_test():
@@ -20,11 +20,38 @@ def load_tm_test():
     return TuringMachine(definition)
 
 
+def load_tm2_test():
+    transitions = {
+        ("qs", "0"): ("qs",   "0", ">"),
+        ("qs", "1"): ("q0",   "0", ">"),
+        ("q0", "0"): ("q1",   "0", ">"),
+        ("q0", "1"): ("q0",   "1", ">"),
+        ("q1", "0"): ("q1",   "0", ">"),
+        ("q1", "1"): ("q2",   "1", ">"),
+        ("q2", "0"): ("qend", "0", "<"),
+        ("q2", "1"): ("q3",   "0", "<"),
+        ("q3", "0"): ("qerr", "0", "<"),
+        ("q3", "1"): ("q4",   "0", "<"),
+        ("q4", "0"): ("q4",   "0", "<"),
+        ("q4", "1"): ("q5",   "1", ">"),
+        ("q5", "0"): ("q0",   "1", ">"),
+        ("q5", "1"): ("qerr", "1", ">")
+    }
+    tape = "11011001101"
+    tape_index = 0
+    initial_state = "qs"
+    blank = "0"
+    stop_states = ["qend", "qerr"]
+    definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index, blank=blank)
+    return TuringMachine(definition)
+
+
 def main():
 
     # version = "utm"
     # version = "tm"
-    version = "2tag"
+    version = "2tm"
+    # version = "2tag"
 
     transitions = {
         "X": "X"}
@@ -39,9 +66,13 @@ def main():
         # turing_machine.set_tape_string("ttbb1111111bb11b111111b1111111bb^1c1c")
         # turing_machine.set_tape_string("ttbb1bb^1c1c1c1c1c1c1c1c1c1c111c")
         utm.set_tape_string_from_2tag(two_tag)
-        utm.run(True)
+        utm.run(linebreak=True)
     elif version == "2tag":
         two_tag.run()
+    elif version == "2tm":
+        tm = load_tm2_test()
+        transitions, tape = convert_to_instantaneous(tm)
+        tm.run(linebreak=True)
 
 
 if __name__ == '__main__':

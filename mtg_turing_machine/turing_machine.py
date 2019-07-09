@@ -4,12 +4,13 @@ import time
 
 
 class TuringDefinition:
-    def __init__(self, transitions, initial_state, stop_states, tape=None, tape_index=0):
+    def __init__(self, transitions, initial_state, stop_states, tape=None, tape_index=0, blank=" "):
         self.transitions = transitions
         self.initial_state = initial_state
         self.stop_states = stop_states
         self.tape = tape
         self.tape_index = tape_index
+        self.blank = blank
 
 
 class TuringMachine:
@@ -21,9 +22,10 @@ class TuringMachine:
             else:
                 self.tape = list(data.tape)
             self.tape_index = data.tape_index
+            self.initial_state = data.initial_state
             self.current_state = data.initial_state
             self.stop_states = data.stop_states
-            self.blank = " "
+            self.blank = data.blank
             self.steps = 0
             self.test()
         elif isinstance(data, str):
@@ -105,7 +107,7 @@ class TuringMachine:
         return False
 
     def print(self, linebreak=False):
-        if linebreak:
+        if not linebreak:
             print("\r", end="")
         for i, symbol in enumerate(self.tape):
             if i == self.tape_index:
