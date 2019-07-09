@@ -2,7 +2,7 @@ import sys
 
 from turing_machine import TuringMachine, TuringDefinition
 from universal_turing_machine import UniversalTuringMachine
-from two_tag_system import TwoTagSystem, convert_to_instantaneous
+from two_tag_system import TwoTagSystem, encode_tm_to_2tag
 
 
 def load_tm_test():
@@ -50,7 +50,8 @@ def main():
 
     # version = "utm"
     # version = "tm"
-    version = "2tm"
+    # version = "2tm"
+    version = "2tm2tag"
     # version = "2tag"
 
     transitions = {
@@ -71,8 +72,11 @@ def main():
         two_tag.run()
     elif version == "2tm":
         tm = load_tm2_test()
-        transitions, tape = convert_to_instantaneous(tm)
         tm.run(linebreak=True)
+    elif version == "2tm2tag":
+        tm = load_tm2_test()
+        two_tag = TwoTagSystem(tm)
+        two_tag.run()
 
 
 if __name__ == '__main__':
