@@ -81,52 +81,52 @@ def encode_transition_as_2tag(transition):
 
     if inst_move == ">":
         enc_transitions = {
-            "A$": ["C$", "x$"] if inst_write == "0" else ["C$", "x$", "c$", "x$"],
-            "a$": ["c$", "x$", "c$", "x$"],
+            "A$": ["C$", "x"] if inst_write == "0" else ["C$", "x", "c$", "x"],
+            "a$": ["c$", "x", "c$", "x"],
             "B$": ["S$"],
             "b$": ["s$"],
             "C$": ["D$_1",  "D$_0"],
             "c$": ["d$_1",  "d$_0"],
             "S$": ["T$_1",  "T$_0"],
             "s$": ["t$_1",  "t$_0"],
-            "D$_1": ["A!1", "x!1"],
-            "d$_1": ["a!1", "x!1"],
-            "T$_1": ["B!1", "x!1"],
-            "t$_1": ["b!1", "x!1"],
-            "D$_0": ["x!0", "A!0", "x!0"],
-            "d$_0": ["a!0", "x!0"],
-            "T$_0": ["B!0", "x!0"],
-            "t$_0": ["b!0", "x!0"]
+            "D$_1": ["A!1", "x"],
+            "d$_1": ["a!1", "x"],
+            "T$_1": ["B!1", "x"],
+            "t$_1": ["b!1", "x"],
+            "D$_0": ["x", "A!0", "x"],
+            "d$_0": ["a!0", "x"],
+            "T$_0": ["B!0", "x"],
+            "t$_0": ["b!0", "x"]
         }
     elif inst_move == "<":
         enc_transitions = {
             # switch A and B (is now called Z)
-            "A$": ["Z$", "x$"],
-            "a$": ["z$", "x$"],
+            "A$": ["Z$", "x"],
+            "a$": ["z$", "x"],
             # Z (formerly A) now takes the role of B
             "Z$": ["S$"],
             "z$": ["s$"],
             # B takes the role of (formerly) A
-            "B$": ["C$", "x$"] if inst_write == "0" else ["C$", "x$", "c$", "x$"],
-            "b$": ["c$", "x$", "c$", "x$"],
+            "B$": ["C$", "x"] if inst_write == "0" else ["C$", "x", "c$", "x"],
+            "b$": ["c$", "x", "c$", "x"],
             "C$": ["D$_1", "D$_0"],
             "c$": ["d$_1", "d$_0"],
             "S$": ["T$_1", "T$_0"],
             "s$": ["t$_1", "t$_0"],
 
-            "D$_1": ["Y$_1", "x$"],
-            "d$_1": ["y$_1", "x$"],
-            "T$_1": ["A!1", "x!1"],
-            "t$_1": ["a!1", "x!1"],
-            "D$_0": ["x!0", "Y$_0", "x$"],
-            "d$_0": ["y$_0", "x$"],
-            "T$_0": ["A!0", "x!0"],
-            "t$_0": ["a!0", "x!0"],
+            "D$_1": ["Y$_1", "x"],
+            "d$_1": ["y$_1", "x"],
+            "T$_1": ["A!1", "x"],
+            "t$_1": ["a!1", "x"],
+            "D$_0": ["x", "Y$_0", "x"],
+            "d$_0": ["y$_0", "x"],
+            "T$_0": ["A!0", "x"],
+            "t$_0": ["a!0", "x"],
 
-            "Y$_0": ["B!0", "x!0"],
-            "y$_0": ["b!0", "x!0"],
-            "Y$_1": ["B!1", "x!1"],
-            "y$_1": ["b!1", "x!1"]
+            "Y$_0": ["B!0", "x"],
+            "y$_0": ["b!0", "x"],
+            "Y$_1": ["B!1", "x"],
+            "y$_1": ["b!1", "x"]
         }
     else:
         assert False
@@ -217,3 +217,10 @@ class TwoTagSystem:
         while self.state[0] != self.halt_symbol:
             self.step()
             self.print()
+        print()
+        print("Final Result:")
+        m = self.state.count("a_#")
+        n = self.state.count("b_#")
+        m_str = str(bin(m))[2:] if m > 0 else ""
+        n_str = str(bin(n))[2:] if n > 0 else ""
+        print(m_str + "^" + n_str)
