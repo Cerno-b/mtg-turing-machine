@@ -53,16 +53,18 @@ def main():
     # version = "utm"
     # version = "tm"
     # version = "2tm"
-    version = "2tm2tag"
+    # version = "2tm2tag"
     # version = "2tag"
+    version = "2tm_2tag_utm"
 
     transitions = {
-        "X": "X"}
+        "X": ["X"]}
     halt_symbol = "#"
     string = "XXXXXXXXXX#"
+    string_list = list(string)
 
     two_tag = TwoTagSystem(transitions)
-    two_tag.set_input_string(string, halt_symbol)
+    two_tag.set_input_string(string_list, halt_symbol)
 
     if version == "utm":
         utm = UniversalTuringMachine()
@@ -79,6 +81,12 @@ def main():
         tm = load_tm2_test()
         two_tag = TwoTagSystem(tm)
         two_tag.run()
+    elif version == "2tm_2tag_utm":
+        tm = load_tm2_test()
+        two_tag = TwoTagSystem(tm)
+        utm = UniversalTuringMachine()
+        utm.set_tape_string_from_2tag(two_tag)
+        utm.run(linebreak=True)
 
 
 if __name__ == '__main__':

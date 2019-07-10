@@ -4,8 +4,15 @@ from two_tag_system import TwoTagSystem
 
 def encode_2tag_to_utm(two_tag_system):
     transitions = two_tag_system.transitions
-    alphabet = sorted(transitions.keys())
-    alphabet.append(two_tag_system.halt_symbol)
+    alphabet = set()
+    for key, targets in transitions.items():
+        alphabet.add(key)
+        for symbol in targets:
+            alphabet.add(symbol)
+    alphabet = sorted(alphabet)
+    if two_tag_system.halt_symbol not in alphabet:
+        alphabet.append(two_tag_system.halt_symbol)
+
     input_string = two_tag_system.state
 
     letter_encodings = {}
@@ -14,15 +21,17 @@ def encode_2tag_to_utm(two_tag_system):
     previous_encoding = 0
     for letter in alphabet:
         letter_encodings[letter] = previous_encoding + previous_transition_length + 1
-        if letter != alphabet[-1]:
+        previous_encoding = letter_encodings[letter]
+        if letter in transitions:
             transition = transitions[letter]
-            previous_encoding = letter_encodings[letter]
             previous_transition_length = len(transition)
+        else:
+            previous_transition_length = 0
 
     initial_tape = "tt"
 
     for i, letter in enumerate(reversed(alphabet)):
-        if letter != alphabet[-1]:
+        if letter in transitions:
             transition = transitions[letter]
             transition = reversed(transition)
             transition_list = ["1"*letter_encodings[t] for t in transition]

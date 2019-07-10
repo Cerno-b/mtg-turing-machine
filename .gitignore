@@ -102,3 +102,4 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+/mtg_turing_machine/.idea/workspace.xml

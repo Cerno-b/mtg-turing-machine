@@ -152,10 +152,7 @@ def encode_transition_as_2tag(transition):
 
 def encode_instantaneous_tm_as_2tag(transitions, tape):
     tape_q, tape_m, tape_n = tape
-    enc_tape_str = "Ax" + "ax"*tape_m + "Bx" + "bx"*tape_n
-    enc_tape = []
-    for symbol in enc_tape_str:
-        enc_tape.append(symbol + "_0")
+    enc_tape = ["A_0", "x"] + ["a_0", "x"]*tape_m + ["B_0", "x"] + ["b_0", "x"]*tape_n
 
     enc_transitions = {}
 
