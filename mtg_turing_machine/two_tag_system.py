@@ -14,6 +14,7 @@ def convert_tm_to_instantaneous_tm(turing_machine):
     transitions = [
         (inst_initial, "0", ">", initial + "_0", initial + "_1")
     ]
+    inst_stop_states = []
     for (src_state, read), (tgt_state, write, move) in turing_machine.transitions.items():
         inst_state = src_state + "_" + read
         inst_write = write
@@ -21,13 +22,14 @@ def convert_tm_to_instantaneous_tm(turing_machine):
         if tgt_state in turing_machine.stop_states:
             inst_change_0 = tgt_state
             inst_change_1 = tgt_state
+            inst_stop_states.append(inst_state)
         else:
             inst_change_0 = tgt_state + "_0"
             inst_change_1 = tgt_state + "_1"
         transitions.append((inst_state, inst_write, inst_move, inst_change_0, inst_change_1))
 
     state_dict = {}
-    for s in turing_machine.stop_states:
+    for s in inst_stop_states:
         state_dict[s] = -1
     counter = 0
     new_transitions = []
@@ -44,7 +46,8 @@ def convert_tm_to_instantaneous_tm(turing_machine):
         new_state_id = state_dict[inst_state]
         new_tgt_state_0_id = state_dict[tgt_state_0]
         new_tgt_state_1_id = state_dict[tgt_state_1]
-        new_transitions.append((new_state_id, inst_write, inst_move, new_tgt_state_0_id, new_tgt_state_1_id))
+        if new_state_id != -1:
+            new_transitions.append((new_state_id, inst_write, inst_move, new_tgt_state_0_id, new_tgt_state_1_id))
     transitions = new_transitions
 
     tape_q = state_dict[inst_initial]
@@ -134,7 +137,7 @@ def encode_transition_as_2tag(transition):
         source = source.replace("$", "_" + str(state_id))
         new_targets = []
         for target in targets:
-            if ("!0" in target and inst_change_0_id == "#") or ("!1" in target and inst_change_1_id == "#"):
+            if ("A!0" == target and inst_change_0_id == "#") or ("A!1" in target and inst_change_1_id == "#"):
                 target = "#"
             else:
                 # target = set_direction(target, inst_move)
@@ -201,15 +204,16 @@ class TwoTagSystem:
         first = self.state[0]
         if self.prev != first:
             print("step {step}: {state}".format(step=self.step_number, state=self.state))
-            print(first, " -> ", self.transitions[first])
+            if first == self.halt_symbol:
+                print("Halt Symbol reached.")
+            else:
+                print(first, " -> ", self.transitions[first])
             self.prev = first
 
     def run(self):
         print("Initial state:", self.state)
         first = self.state[0]
         print(first, " -> ", self.transitions[first])
-        while True:
+        while self.state[0] != self.halt_symbol:
             self.step()
-            if self.state[0] == self.halt_symbol:
-                break
             self.print()

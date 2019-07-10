@@ -26,8 +26,8 @@
       <file leaf-file-name="two_tag_system.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/two_tag_system.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2415">
-              <caret line="158" selection-start-line="158" selection-end-line="158" />
+            <state relative-caret-position="289">
+              <caret line="209" column="16" selection-start-line="209" selection-start-column="16" selection-end-line="209" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -73,6 +73,7 @@
       <find>enc_transitions</find>
       <find>set_direction</find>
       <find>encode_transition_as_2tag</find>
+      <find>-1</find>
     </findStrings>
     <replaceStrings>
       <replace>!</replace>
@@ -216,6 +217,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.12961012" />
       <window_info anchor="bottom" id="TODO" order="10" />
@@ -241,18 +243,12 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/two_tag_system.py</url>
-          <line>158</line>
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="35" />
+      <option name="time" value="46" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="transitions" />
+        <watch expression="state_id" />
       </configuration>
     </watches-manager>
   </component>
@@ -425,8 +421,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/two_tag_system.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2415">
-          <caret line="158" selection-start-line="158" selection-end-line="158" />
+        <state relative-caret-position="289">
+          <caret line="209" column="16" selection-start-line="209" selection-start-column="16" selection-end-line="209" selection-end-column="16" />
         </state>
       </provider>
     </entry>
