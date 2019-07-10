@@ -11,11 +11,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="magic_turing.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="magic_turing.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/magic_turing.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="78" selection-start-line="78" selection-end-line="78" />
+            <state relative-caret-position="374">
+              <caret line="39" column="27" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -23,7 +23,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="two_tag_system.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="two_tag_system.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/two_tag_system.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="347">
@@ -88,8 +88,8 @@
         <option value="$PROJECT_DIR$/tmp/encode_2tag.py" />
         <option value="$PROJECT_DIR$/universal_turing_machine.py" />
         <option value="$PROJECT_DIR$/turing_machine.py" />
-        <option value="$PROJECT_DIR$/magic_turing.py" />
         <option value="$PROJECT_DIR$/two_tag_system.py" />
+        <option value="$PROJECT_DIR$/magic_turing.py" />
       </list>
     </option>
   </component>
@@ -409,20 +409,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/magic_turing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="78" selection-start-line="78" selection-end-line="78" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/two_tag_system.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="347">
           <caret line="219" column="15" selection-start-line="219" selection-start-column="15" selection-end-line="219" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/magic_turing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="39" column="27" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
