@@ -197,6 +197,13 @@ class TwoTagSystem:
         self.state = self.state[2:] + self.transitions[first]
         self.step_number += 1
 
+    def print_definition(self):
+        for key, value in self.transitions.items():
+            print("{key} -> {value}".format(key=key, value=value))
+        print("Number of transitions:", len(self.transitions))
+        print("Initial state:", self.state)
+        print()
+
     def print(self):
         first = self.state[0]
         if self.prev != first:
@@ -208,8 +215,8 @@ class TwoTagSystem:
             self.prev = first
 
     def run(self):
-        print("Initial state:", self.state)
         first = self.state[0]
+        self.print_definition()
         print(first, " -> ", self.transitions[first])
         while self.state[0] != self.halt_symbol:
             self.step()

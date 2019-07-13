@@ -1,6 +1,17 @@
 import sys
 import re
-import time
+import math
+
+
+def _to_binary(number, bit_depth):
+    binary = str(bin(number))[2:]
+    while len(binary) < bit_depth:
+        binary = "0" + binary
+    return binary
+
+
+def cat_ids(id1, id2):
+    return str(id1) + "_" + str(id2)
 
 
 class TuringDefinition:
@@ -15,6 +26,9 @@ class TuringDefinition:
 
 class TuringMachine:
     def __init__(self, data):
+        self.is_binarized_tm = False
+        self.binarized_bit_depth = None
+        self.binarized_symbol_lookup = None
         if isinstance(data, TuringDefinition):
             self.transitions = data.transitions
             if data.tape is None:
@@ -66,6 +80,89 @@ class TuringMachine:
                     transitions[(old_state, old_symbol)] = (new_state, new_symbol, head_dir)
         definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index)
         return self.__init__(definition)
+
+    def convert_to_two_symbol(self):
+        alphabet = [symbol for _, symbol in self.transitions.keys()]
+        alphabet += [symbol for _, symbol, _ in self.transitions.values()]
+        alphabet = sorted(set(alphabet))
+        alphabet.remove(self.blank)
+        alphabet = [self.blank] + alphabet  # make sure that the blank has the index 0 (encoded 000...0)
+        inverse_alphabet = {symbol: i for i, symbol in enumerate(alphabet)}
+        alphabet_size = len(alphabet)
+        bit_depth = int(math.ceil(math.log(alphabet_size)/math.log(2)))
+
+        self.is_binarized_tm = True
+        self.binarized_bit_depth = bit_depth
+        self.binarized_symbol_lookup = alphabet
+
+        new_transitions = {}
+        new_stop_states = []
+        # encode reading
+        origin_source_states = sorted(set(state for state, _ in self.transitions.keys()))
+        for oss in origin_source_states:
+            current_source_id = 0
+            current_target_id = 1
+            read_transition_count = 2**(bit_depth+1)-2
+            for i in range(read_transition_count//2):  # divide by 2 since we handle the 0 and 1 case in one iteration
+                new_transitions[(cat_ids(oss, current_source_id), "0")] = (cat_ids(oss, current_target_id), "0", ">")
+                current_target_id += 1
+                new_transitions[(cat_ids(oss, current_source_id), "1")] = (cat_ids(oss, current_target_id), "1", ">")
+                current_target_id += 1
+                current_source_id += 1
+            # encode write, move and state change for each read result
+            for i in range(alphabet_size):
+                if (oss, alphabet[i]) in self.transitions:
+                    origin_target_state, origin_target_symbol, origin_target_dir = self.transitions[(oss, alphabet[i])]
+                    origin_target_symbol_id = inverse_alphabet[origin_target_symbol]
+                    origin_target_symbol_id_binary = _to_binary(origin_target_symbol_id, bit_depth)
+                    # encode backtrack after reading
+                    symbol_encoding = 2 ** bit_depth - 2 + i + 1  # offset +1 from the initial state
+                    current_source_id = symbol_encoding
+                    for j in range(bit_depth):
+                        new_transitions[(cat_ids(oss, current_source_id), "0")] = (cat_ids(oss, current_target_id), "0", "<")
+                        new_transitions[(cat_ids(oss, current_source_id), "1")] = (cat_ids(oss, current_target_id), "1", "<")
+                        current_source_id = current_target_id
+                        current_target_id += 1
+                    # encode writing
+                    for j in range(bit_depth):
+                        write_symbol = origin_target_symbol_id_binary[j]
+                        new_transitions[(cat_ids(oss, current_source_id), "0")] = (cat_ids(oss, current_target_id), write_symbol, ">")
+                        new_transitions[(cat_ids(oss, current_source_id), "1")] = (cat_ids(oss, current_target_id), write_symbol, ">")
+                        current_source_id = current_target_id
+                        current_target_id += 1
+                    # encode backtrack after writing
+                    for j in range(bit_depth):
+                        new_transitions[(cat_ids(oss, current_source_id), "0")] = (cat_ids(oss, current_target_id), "0", "<")
+                        new_transitions[(cat_ids(oss, current_source_id), "1")] = (cat_ids(oss, current_target_id), "1", "<")
+                        current_source_id = current_target_id
+                        current_target_id += 1
+                    # encode head movement
+                    direction = origin_target_dir
+                    for j in range(bit_depth-1):  # end one early to allow special transition of final state
+                        new_transitions[(cat_ids(oss, current_source_id), "0")] = (cat_ids(oss, current_target_id), "0", direction)
+                        new_transitions[(cat_ids(oss, current_source_id), "1")] = (cat_ids(oss, current_target_id), "1", direction)
+                        current_source_id = current_target_id
+                        current_target_id += 1
+                    # encode state change
+                    ots = origin_target_state
+                    new_target_state = cat_ids(ots, 0)
+                    if ots in self.stop_states:
+                        new_stop_states.append(new_target_state)
+                    new_transitions[(cat_ids(oss, current_source_id), "0")] = (new_target_state, "0", direction)
+                    new_transitions[(cat_ids(oss, current_source_id), "1")] = (new_target_state, "1", direction)
+
+        new_tape = ""
+        for symbol in self.tape:
+            new_tape += _to_binary(inverse_alphabet[symbol], bit_depth)
+        new_tape = list(new_tape)
+
+        self.transitions = new_transitions
+        self.stop_states = new_stop_states
+        self.tape_index = 0
+        self.tape = new_tape
+        self.initial_state = cat_ids(self.initial_state, 0)
+        self.current_state = self.initial_state
+        self.blank = "0"
 
     def test(self):
         assert 0 <= self.tape_index < len(self.tape)
@@ -125,6 +222,17 @@ class TuringMachine:
             print("   state: {state}, steps: {steps}".format(state=self.current_state, steps=self.steps), flush=True,
                   end="" * 100)
         # time.sleep(0.1)
+
+    def decode_binarized_tape(self):
+        assert self.is_binarized_tm
+        output = []
+        tape_string = "".join(self.tape)
+        while len(tape_string) >= self.binarized_bit_depth:
+            word = tape_string[0:self.binarized_bit_depth]
+            tape_string = tape_string[self.binarized_bit_depth:]
+            word_id = int(word, 2)
+            output.append(self.binarized_symbol_lookup[word_id])
+        return output
 
     def run(self, linebreak=False):
         while True:
