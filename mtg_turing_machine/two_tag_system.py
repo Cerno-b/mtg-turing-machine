@@ -199,7 +199,7 @@ class TwoTagSystem:
 
     def print_definition(self):
         for key, value in self.transitions.items():
-            print("{key} -> {value}".format(key=key, value=value))
+            print("{key}->{value}".format(key=key, value=value))
         print("Number of transitions:", len(self.transitions))
         print("Initial state:", self.state)
         print()
@@ -214,13 +214,41 @@ class TwoTagSystem:
                 print(first, " -> ", self.transitions[first])
             self.prev = first
 
-    def run(self):
+    def get_brief_state(self):
+        state_copy = self.state
+        current_symbol = []
+        count = 0
+        brief = ""
+        while len(state_copy) >= 2:
+            symbol = state_copy[0:2]
+            state_copy = state_copy[2:]
+            if current_symbol == symbol:
+                count += 1
+            else:
+                if current_symbol:
+                    brief += "({symbol})^{count}, ".format(count=count, symbol=" ".join(current_symbol))
+                current_symbol = symbol
+                count = 1
+        brief += "({symbol})^{count}, ".format(count=count, symbol=" ".join(current_symbol))
+        if len(state_copy) > 0:
+            brief += "({symbol})^1, ".format(symbol=" ".join(state_copy))
+        return brief
+
+    def run(self, brief=False):
         first = self.state[0]
-        self.print_definition()
-        print(first, " -> ", self.transitions[first])
+        if brief:
+            print("Number of transitions:", len(self.transitions))
+            print("Initial state:", self.get_brief_state())
+        else:
+            self.print_definition()
+            print(first, " -> ", self.transitions[first])
         while self.state[0] != self.halt_symbol:
+            first = self.state[0]
             self.step()
-            self.print()
+            if brief:
+                print("\rstep:", self.step_number, "- trans:", first, "->", self.transitions[first], "- state:", self.get_brief_state())
+            else:
+                self.print()
         print()
         print("Final Result:")
         m = self.state.count("a_#")

@@ -5,19 +5,19 @@ from universal_turing_machine import UniversalTuringMachine
 from two_tag_system import TwoTagSystem, encode_tm_to_2tag
 
 
-def load_tm_test():
-    transitions = {
-        ("q0", "A"): ("q0", "B", ">"),
-        ("q0", "B"): ("q0", "A", ">"),
-        ("q0", " "): ("qend", " ", "-")
-    }
-    tape = "AAAAAABBBBB"
-    tape_index = 0
-    initial_state = "q0"
-    stop_states = ["qend"]
-
-    definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index)
-    return TuringMachine(definition)
+# def load_tm_test():
+#     transitions = {
+#         ("q0", "A"): ("q0", "B", ">"),
+#         ("q0", "B"): ("q0", "A", ">"),
+#         ("q0", " "): ("qend", " ", "-")
+#     }
+#     tape = "AAAAAABBBBB"
+#     tape_index = 0
+#     initial_state = "q0"
+#     stop_states = ["qend"]
+#
+#     definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index)
+#     return TuringMachine(definition)
 
 
 def load_tm2_test():
@@ -133,10 +133,11 @@ def main():
     # version = "utm"
     # version = "tm"
     # version = "2tm"
-    # version = "2tm2tag"
+    # version = "2tm_2tag"
     # version = "2tag"
     # version = "2tm_2tag_utm"
-    version = "tm_2tm"
+    # version = "tm_2tm"
+    version = "tm_2tm_2tag"
 
     transitions = {
         "X": ["X"]}
@@ -158,7 +159,7 @@ def main():
     elif version == "2tm":
         tm = load_tm2_test()
         tm.run(linebreak=True)
-    elif version == "2tm2tag":
+    elif version == "2tm_2tag":
         tm = load_tm2_test()
         two_tag = TwoTagSystem(tm)
         two_tag.run()
@@ -176,6 +177,11 @@ def main():
         tm.convert_to_two_symbol()
         tm.run(linebreak=True)
         print("Decoded tape:", tm.decode_binarized_tape())
+    elif version == "tm_2tm_2tag":
+        tm = load_tm_test()
+        tm.convert_to_two_symbol()
+        two_tag = TwoTagSystem(tm)
+        two_tag.run(brief=True)
 
 
 if __name__ == '__main__':
