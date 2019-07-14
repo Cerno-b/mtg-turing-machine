@@ -179,8 +179,13 @@ def main():
         print("Decoded tape:", tm.decode_binarized_tape())
     elif version == "tm_2tm_2tag":
         tm = load_tm_test()
+        print("Original Machine:")
+        tm.print(linebreak=True)
         tm.convert_to_two_symbol()
+        print("2-Symbol Machine:")
+        tm.print(linebreak=True)
         two_tag = TwoTagSystem(tm)
+        print("2-tag System")
         two_tag.run(brief=True)
 
 

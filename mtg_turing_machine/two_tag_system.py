@@ -10,7 +10,7 @@ def get_alphabet(transitions):
 def convert_tm_to_instantaneous_tm(turing_machine):
     assert turing_machine.tape_index == 0
     initial = turing_machine.initial_state
-    inst_initial = initial + "_inst_0"
+    inst_initial = "q_init"
     transitions = [
         (inst_initial, "0", ">", initial + "_0", initial + "_1")
     ]
@@ -48,33 +48,23 @@ def convert_tm_to_instantaneous_tm(turing_machine):
         new_tgt_state_1_id = state_dict[tgt_state_1]
         if new_state_id != -1:
             new_transitions.append((new_state_id, inst_write, inst_move, new_tgt_state_0_id, new_tgt_state_1_id))
-    transitions = new_transitions
+    # transitions = new_transitions
 
-    tape_q = state_dict[inst_initial]
+    # tape_q = state_dict[inst_initial]
+    tape_q = inst_initial
     tape_m = 0
     tape_n = 0
     for i, cell in enumerate(turing_machine.tape):
         tape_n += int(cell) * 2**i
     inst_tape = (tape_q, tape_m, tape_n)
-    return transitions, inst_tape
+    return transitions, inst_tape, inst_stop_states
 
 
-def set_direction(string, direction):
-    if direction == "<":
-        if "A" in string or "a" in string:
-            string = string.replace("A", "B")
-            string = string.replace("a", "b")
-        elif "B" in string or "b" in string:
-            string = string.replace("B", "A")
-            string = string.replace("b", "a")
-    return string
-
-
-def encode_transition_as_2tag(transition):
+def encode_transition_as_2tag(transition, stop_states):
     state_id, inst_write, inst_move, inst_change_0_id, inst_change_1_id = transition
-    if inst_change_0_id < 0:
+    if inst_change_0_id in stop_states:
         inst_change_0_id = "#"  # set stop symbol
-    if inst_change_1_id < 0:
+    if inst_change_1_id in stop_states:
         inst_change_1_id = "#"
     assert inst_write in ("0", "1")
     assert inst_move in ("<", ">")
@@ -133,14 +123,12 @@ def encode_transition_as_2tag(transition):
 
     new_enc_transitions = {}
     for source, targets in enc_transitions.items():
-        # source = set_direction(source, inst_move)
         source = source.replace("$", "_" + str(state_id))
         new_targets = []
         for target in targets:
             if ("A!0" == target and inst_change_0_id == "#") or ("A!1" in target and inst_change_1_id == "#"):
                 target = "#"
             else:
-                # target = set_direction(target, inst_move)
                 target = target.replace("$", "_" + str(state_id))
                 target = target.replace("!0", "_" + str(inst_change_0_id))
                 target = target.replace("!1", "_" + str(inst_change_1_id))
@@ -150,14 +138,15 @@ def encode_transition_as_2tag(transition):
     return new_enc_transitions
 
 
-def encode_instantaneous_tm_as_2tag(transitions, tape):
+def encode_instantaneous_tm_as_2tag(transitions, tape, start_state, stop_states):
     tape_q, tape_m, tape_n = tape
-    enc_tape = ["A_0", "x"] + ["a_0", "x"]*tape_m + ["B_0", "x"] + ["b_0", "x"]*tape_n
+    ss = start_state
+    enc_tape = ["A_" + ss, "x"] + ["a_" + ss, "x"]*tape_m + ["B_" + ss, "x"] + ["b_" + ss, "x"]*tape_n
 
     enc_transitions = {}
 
     for transition in transitions:
-        new_transitions = encode_transition_as_2tag(transition)
+        new_transitions = encode_transition_as_2tag(transition, stop_states)
         for key, value in new_transitions.items():
             assert key not in enc_transitions
             enc_transitions[key] = value
@@ -169,8 +158,8 @@ def encode_tm_to_2tag(turing_machine):
     assert isinstance(turing_machine, TuringMachine)
     assert turing_machine.blank == '0'
     assert get_alphabet(turing_machine.transitions) == {'0', '1'}
-    transitions, tape = convert_tm_to_instantaneous_tm(turing_machine)
-    transitions, tape = encode_instantaneous_tm_as_2tag(transitions, tape)
+    transitions, tape, stop_states = convert_tm_to_instantaneous_tm(turing_machine)
+    transitions, tape = encode_instantaneous_tm_as_2tag(transitions, tape, "q_init", stop_states)
     return transitions, tape
 
 
