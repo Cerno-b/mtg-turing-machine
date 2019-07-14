@@ -48,7 +48,44 @@ def load_tm2_test():
     return TuringMachine(definition)
 
 
-def load_tm_test():
+def load_tm_make_palindrome():
+    transitions = {
+        ("q0", "0"): ("q0", "0", ">"),
+        ("q0", "1"): ("q0", "1", ">"),
+        ("q0", "o"): ("q0", "0", ">"),
+        ("q0", "i"): ("q0", "1", ">"),
+        ("q0", "_"): ("q1", "_", "<"),
+        ("q1", "0"): ("q2", "o", ">"),
+        ("q1", "1"): ("q3", "i", ">"),
+        ("q1", "o"): ("q1", "o", "<"),
+        ("q1", "i"): ("q1", "i", "<"),
+        ("q2", "_"): ("q1", "o", "<"),
+        ("q3", "_"): ("q1", "i", "<"),
+        ("q2", "0"): ("q2", "0", ">"),
+        ("q2", "1"): ("q2", "1", ">"),
+        ("q2", "o"): ("q2", "o", ">"),
+        ("q2", "i"): ("q2", "i", ">"),
+        ("q3", "0"): ("q3", "0", ">"),
+        ("q3", "1"): ("q3", "1", ">"),
+        ("q3", "o"): ("q3", "o", ">"),
+        ("q3", "i"): ("q3", "i", ">"),
+        ("q1", "_"): ("q4", "_", ">"),
+        ("q4", "o"): ("q4", "0", ">"),
+        ("q4", "i"): ("q4", "1", ">"),
+        ("q4", "0"): ("q4", "0", "<"),
+        ("q4", "1"): ("q4", "1", "<"),
+        ("q4", "_"): ("qend", "_", ">")
+    }
+    tape = "10"
+    tape_index = 0
+    initial_state = "q0"
+    blank = "_"
+    stop_states = ["qend"]
+    definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index, blank=blank)
+    return TuringMachine(definition)
+
+
+def load_tm_dec_to_bin():
     transitions = {
         ("q0", "0"): ("q0", "0", ">"),
         ("q0", "1"): ("q0", "1", ">"),
@@ -119,7 +156,7 @@ def load_tm_test():
         ("q9", "_"): ("q12", "_", "<"),
         ("q12", "_"): ("q1", "0", "<")
     }
-    tape = "11"
+    tape = "3"
     tape_index = 0
     initial_state = "q0"
     blank = "_"
@@ -170,15 +207,16 @@ def main():
         utm.set_tape_string_from_2tag(two_tag)
         utm.run(linebreak=True)
     elif version == "tm":
-        tm = load_tm_test()
+        tm = load_tm_make_palindrome()
         tm.run(linebreak=True)
     elif version == "tm_2tm":
-        tm = load_tm_test()
+        tm = load_tm_make_palindrome()
         tm.convert_to_two_symbol()
+        print(tm.binarized_bit_depth)
         tm.run(linebreak=True)
         print("Decoded tape:", tm.decode_binarized_tape())
     elif version == "tm_2tm_2tag":
-        tm = load_tm_test()
+        tm = load_tm_make_palindrome()
         print("Original Machine:")
         tm.print(linebreak=True)
         tm.convert_to_two_symbol()

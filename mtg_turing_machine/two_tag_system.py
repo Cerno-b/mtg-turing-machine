@@ -195,13 +195,10 @@ class TwoTagSystem:
 
     def print(self):
         first = self.state[0]
-        if self.prev != first:
-            print("step {step}: {state}".format(step=self.step_number, state=self.state))
-            if first == self.halt_symbol:
-                print("Halt Symbol reached.")
-            else:
-                print(first, " -> ", self.transitions[first])
-            self.prev = first
+        print("\rstep:", self.step_number, "- trans:", first, "->", self.transitions[first], "- state:", self.get_brief_state())
+        if first == self.halt_symbol:
+            print("Halt Symbol reached.")
+        self.prev = first
 
     def get_brief_state(self):
         state_copy = self.state
@@ -230,12 +227,13 @@ class TwoTagSystem:
             print("Initial state:", self.get_brief_state())
         else:
             self.print_definition()
-            print(first, " -> ", self.transitions[first])
+            print(first, "->", self.transitions[first])
         while self.state[0] != self.halt_symbol:
-            first = self.state[0]
             self.step()
+            first = self.state[0]
             if brief:
-                print("\rstep:", self.step_number, "- trans:", first, "->", self.transitions[first], "- state:", self.get_brief_state())
+                if first.startswith("A"):
+                    self.print()
             else:
                 self.print()
         print()
