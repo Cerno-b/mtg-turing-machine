@@ -41,6 +41,9 @@ class TuringMachine:
             self.stop_states = data.stop_states
             self.blank = data.blank
             self.steps = 0
+            alphabet = [symbol for _, symbol in data.transitions.keys()]
+            alphabet_lengths = [len(a) for a in alphabet]
+            self.max_symbol_length = max(alphabet_lengths)
             self.test()
         elif isinstance(data, str):
             self.setup_from_path(data)
@@ -207,15 +210,11 @@ class TuringMachine:
         if not linebreak:
             print("\r", end="")
         for i, symbol in enumerate(self.tape):
+            symbol += " "*(self.max_symbol_length-len(symbol))
             if i == self.tape_index:
-                print("[", end="")
+                print("[{symbol}]".format(symbol=symbol), end="")
             else:
-                print(" ", end="")
-            print(symbol, end="")
-            if i == self.tape_index:
-                print("]", end="")
-            else:
-                print(" ", end="")
+                print(" {symbol} ".format(symbol=symbol), end="")
         if linebreak:
             print("   state: {state}, steps: {steps}".format(state=self.current_state, steps=self.steps), flush=True)
         else:

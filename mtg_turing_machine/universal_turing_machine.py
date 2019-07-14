@@ -10,8 +10,8 @@ def encode_2tag_to_utm(two_tag_system):
         for symbol in targets:
             alphabet.add(symbol)
     alphabet = sorted(alphabet)
-    if two_tag_system.halt_symbol not in alphabet:
-        alphabet.append(two_tag_system.halt_symbol)
+    alphabet = [a for a in alphabet if a != two_tag_system.halt_symbol]
+    alphabet.append(two_tag_system.halt_symbol)  # make sure the halt symbol appears last for better encoding
 
     input_string = two_tag_system.state
 
@@ -28,7 +28,7 @@ def encode_2tag_to_utm(two_tag_system):
         else:
             previous_transition_length = 0
 
-    initial_tape = "tt"
+    initial_tape = ["c1<", "c1<"]
 
     for i, letter in enumerate(reversed(alphabet)):
         if letter in transitions:
@@ -36,11 +36,12 @@ def encode_2tag_to_utm(two_tag_system):
             transition = reversed(transition)
             transition_list = ["1"*letter_encodings[t] for t in transition]
             transition_encoding = "bb" + "1b".join(transition_list)
+            transition_encoding = list(transition_encoding)
             print("transition {i}: encoding: {enc}".format(i=i, enc=transition_encoding))
 
             initial_tape += transition_encoding
 
-    initial_tape += "bb^"
+    initial_tape += list("b^b")
 
     input_encoding = ""
     for i, letter in enumerate(input_string):
@@ -48,7 +49,7 @@ def encode_2tag_to_utm(two_tag_system):
         print("data {i}: encoding: {enc}".format(i=i, enc=string))
         input_encoding += string + "c"
 
-    initial_tape += input_encoding
+    initial_tape += list(input_encoding)
 
     print()
     print("letter encodings:")
@@ -64,11 +65,12 @@ def encode_2tag_to_utm(two_tag_system):
 
 class UniversalTuringMachine:
     def __init__(self):
-        self._tm = TuringMachine("rogozhin_enc.txt")
+        self._tm = TuringMachine("rogozhin.txt")
+        self._tm.blank = "1<"
 
     def set_tape_string(self, string):
-        self._tm.tape_index = string.find("^")
-        self._tm.tape = list(string.replace("^", ""))
+        self._tm.tape_index = string.index("^")
+        self._tm.tape = [symbol for symbol in string if symbol != "^"]
 
     def set_tape_string_from_2tag(self, two_tag_system):
         self.set_tape_string(encode_2tag_to_utm(two_tag_system))

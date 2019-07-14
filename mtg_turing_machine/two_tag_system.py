@@ -169,11 +169,13 @@ class TwoTagSystem:
             self.transitions, self.state = encode_tm_to_2tag(data)
             self.halt_symbol = "#"
             self.step_number = 0
+            self.from_turing_machine = True
         else:
             self.transitions = data
             self.state = ""
             self.halt_symbol = ""
             self.step_number = 0
+            self.from_turing_machine = False
         self.prev = None
 
     def set_input_string(self, state, halt_symbol):
@@ -195,9 +197,12 @@ class TwoTagSystem:
 
     def print(self):
         first = self.state[0]
-        print("\rstep:", self.step_number, "- trans:", first, "->", self.transitions[first], "- state:", self.get_brief_state())
         if first == self.halt_symbol:
+            print("\rstep:", self.step_number, "- state:", self.get_brief_state())
             print("Halt Symbol reached.")
+        else:
+            print("\rstep:", self.step_number, "- trans:", first, "->", self.transitions[first], "- state:",
+                  self.get_brief_state())
         self.prev = first
 
     def get_brief_state(self):
@@ -236,10 +241,12 @@ class TwoTagSystem:
                     self.print()
             else:
                 self.print()
-        print()
-        print("Final Result:")
-        m = self.state.count("a_#")
-        n = self.state.count("b_#")
-        m_str = str(bin(m))[2:] if m > 0 else ""
-        n_str = str(bin(n))[2:] if n > 0 else ""
-        print(m_str + "^" + n_str)
+
+        if self.from_turing_machine:
+            print()
+            print("Final Result:")
+            m = self.state.count("a_#")
+            n = self.state.count("b_#")
+            m_str = str(bin(m))[2:] if m > 0 else ""
+            n_str = str(bin(n))[2:] if n > 0 else ""
+            print(m_str + "^" + n_str)

@@ -13,8 +13,8 @@ q1	b3	b1>	L	q2      #              q1	P	F	L	q2
 q1	c	1>	L	q2      #              q1	c	X	L	q2
 q1	c>	c<	R	q1      #              q1	U	V	R	q1
 q1	c<	c1>	L	q1      #              q1	V	H	L	q1
-ql	c1>	c1<	R	q2      #              q1	H	t	R	q2
-q1	c1<	--	-	--      #              q1	t	--	-	--
+q1	c1>	c1<	R	q2      #              q1	H	t	R	q2
+q1	c1<	-	-	-       #              q1	t	-	-	-
 q1	c2	1<	R	q1      #              q1	W	_	R	q1
                                       
 q2	1	1<	R	q2       #             q2	1	_	R	q2

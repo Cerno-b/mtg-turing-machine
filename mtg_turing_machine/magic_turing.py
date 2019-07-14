@@ -167,17 +167,18 @@ def load_tm_dec_to_bin():
 
 def main():
 
-    # version = "utm"
+    version = "utm"
     # version = "tm"
     # version = "2tm"
     # version = "2tm_2tag"
     # version = "2tag"
     # version = "2tm_2tag_utm"
     # version = "tm_2tm"
-    version = "tm_2tm_2tag"
+    # version = "tm_2tm_2tag"
 
     transitions = {
-        "X": ["X"]}
+        "X": ["X"]
+    }
     halt_symbol = "#"
     string = "XXXXXXXXXX#"
     string_list = list(string)
