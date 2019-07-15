@@ -48,6 +48,20 @@ def load_tm2_test():
     return TuringMachine(definition)
 
 
+def load_tm_add_one():
+    transitions = {
+        ("q0", "1"): ("q0", "1", ">"),
+        ("q0", "0"): ("qend", "1", ">")
+    }
+    tape = "11"
+    tape_index = 0
+    initial_state = "q0"
+    blank = "0"
+    stop_states = ["qend"]
+    definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index, blank=blank)
+    return TuringMachine(definition)
+
+
 def load_tm_make_palindrome():
     transitions = {
         ("q0", "0"): ("q0", "0", ">"),
@@ -167,7 +181,7 @@ def load_tm_dec_to_bin():
 
 def main():
 
-    version = "utm"
+    # version = "utm"
     # version = "tm"
     # version = "2tm"
     # version = "2tm_2tag"
@@ -175,6 +189,7 @@ def main():
     # version = "2tm_2tag_utm"
     # version = "tm_2tm"
     # version = "tm_2tm_2tag"
+    version = "tm_2tm_2tag_utm"
 
     transitions = {
         "X": ["X"]
@@ -226,6 +241,23 @@ def main():
         two_tag = TwoTagSystem(tm)
         print("2-tag System")
         two_tag.run(brief=True)
+    elif version == "tm_2tm_2tag_utm":
+        tm = load_tm_add_one()
+        print("Original Machine:")
+        alphabet = set([a for _, a in tm.transitions.keys()])
+        print("  {} symbols, {} transitions".format(len(alphabet), len(tm.transitions)))
+        tm.convert_to_two_symbol()
+        print("2-Symbol Machine:")
+        print("  2 symbols, {} transitions".format(len(tm.transitions)))
+        two_tag = TwoTagSystem(tm)
+        print("2-tag System:")
+        alphabet = set([a for a in two_tag.transitions.keys()])
+        print("  {} symbols, {} transitions".format(len(alphabet), len(tm.transitions)))
+        # two_tag.print()
+        print("UTM:")
+        utm = UniversalTuringMachine()
+        utm.set_tape_string_from_2tag(two_tag, brief=True, write_to_file=False)
+        utm.run(write_to_file=False, brief=True)
 
 
 if __name__ == '__main__':

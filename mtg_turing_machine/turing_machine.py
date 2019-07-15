@@ -90,6 +90,9 @@ class TuringMachine:
         alphabet = sorted(set(alphabet))
         alphabet.remove(self.blank)
         alphabet = [self.blank] + alphabet  # make sure that the blank has the index 0 (encoded 000...0)
+        if len(alphabet) == 2:
+            print("Conversion to 2-symbol TM skipped: Was already 2-symbol")
+            return
         inverse_alphabet = {symbol: i for i, symbol in enumerate(alphabet)}
         alphabet_size = len(alphabet)
         bit_depth = int(math.ceil(math.log(alphabet_size)/math.log(2)))
@@ -206,20 +209,28 @@ class TuringMachine:
 
         return False
 
-    def print(self, linebreak=False):
+    def print(self, linebreak=False, fid=None):
         if not linebreak:
             print("\r", end="")
         for i, symbol in enumerate(self.tape):
             symbol += " "*(self.max_symbol_length-len(symbol))
             if i == self.tape_index:
-                print("[{symbol}]".format(symbol=symbol), end="")
+                if fid:
+                    fid.write("[{symbol}]".format(symbol=symbol))
+                else:
+                    print("[{symbol}]".format(symbol=symbol), end="")
             else:
-                print(" {symbol} ".format(symbol=symbol), end="")
+                if fid:
+                    fid.write(" {symbol} ".format(symbol=symbol))
+                else:
+                    print(" {symbol} ".format(symbol=symbol), end="")
         if linebreak:
             print("   state: {state}, steps: {steps}".format(state=self.current_state, steps=self.steps), flush=True)
         else:
             print("   state: {state}, steps: {steps}".format(state=self.current_state, steps=self.steps), flush=True,
                   end="" * 100)
+        if fid:
+            fid.write("\n")
         # time.sleep(0.1)
 
     def decode_binarized_tape(self):
@@ -233,10 +244,19 @@ class TuringMachine:
             output.append(self.binarized_symbol_lookup[word_id])
         return output
 
-    def run(self, linebreak=False):
+    def run(self, linebreak=False, write_to_file=False, brief=False):
+        fid = None
+        if write_to_file:
+            fid = open("tm_log.txt", "w")
         while True:
-            self.print(linebreak)
+            if brief:
+                if self.steps % 10000 == 0:
+                    print("steps: {}".format(self.steps))
+            else:
+                self.print(linebreak=linebreak, fid=fid)
             stopped = self.step()
             if stopped:
                 break
+        if write_to_file:
+            fid.close()
         print("\nDone.")

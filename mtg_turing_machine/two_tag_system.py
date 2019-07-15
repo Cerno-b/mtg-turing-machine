@@ -12,7 +12,7 @@ def convert_tm_to_instantaneous_tm(turing_machine):
     initial = turing_machine.initial_state
     inst_initial = "q_init"
     transitions = [
-        (inst_initial, "0", ">", initial + "_0", initial + "_1")
+        (inst_initial, turing_machine.tape[0], ">", initial + "_0", initial + "_1")
     ]
     inst_stop_states = []
     for (src_state, read), (tgt_state, write, move) in turing_machine.transitions.items():
