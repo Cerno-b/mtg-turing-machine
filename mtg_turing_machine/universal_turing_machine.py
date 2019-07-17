@@ -9,11 +9,25 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
         fid = open("utm_tape.txt", "w")
 
     transitions = two_tag_system.transitions
-    alphabet = set()
+    lefts = set()
+    rights = set()
     for key, targets in transitions.items():
-        alphabet.add(key)
+        lefts.add(key)
         for symbol in targets:
-            alphabet.add(symbol)
+            rights.add(symbol)
+    only_rights = rights.difference(lefts)
+
+    inputs = set()
+    for symbol in two_tag_system.state:
+        inputs.add(symbol)
+
+    # heal inconsistencies in the 2tag definition
+    for symbol in only_rights.union(inputs):
+        if symbol != two_tag_system.halt_symbol:
+            pass
+            # transitions[symbol] = [symbol]
+
+    alphabet = lefts.union(rights).union(inputs)
     alphabet = sorted(alphabet)
     alphabet = [a for a in alphabet if a != two_tag_system.halt_symbol]
     alphabet.append(two_tag_system.halt_symbol)  # make sure the halt symbol appears last for better encoding
@@ -95,20 +109,42 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
         fid.close()
         sys.exit("'write_to_file' is set to True, stopping computation here.")
 
-    return initial_tape
+    return initial_tape, letter_encodings
 
 
 class UniversalTuringMachine:
     def __init__(self):
         self._tm = TuringMachine("rogozhin.txt")
         self._tm.blank = "1<"
+        self.letter_encodings = {}
 
     def set_tape_string(self, string):
         self._tm.tape_index = string.index("^")
         self._tm.tape = [symbol for symbol in string if symbol != "^"]
 
     def set_tape_string_from_2tag(self, two_tag_system, brief=False, write_to_file=False):
-        self.set_tape_string(encode_2tag_to_utm(two_tag_system, brief=brief, write_to_file=write_to_file))
+        tape, letter_encodings = encode_2tag_to_utm(two_tag_system, brief=brief, write_to_file=write_to_file)
+        self.set_tape_string(tape)
+        self.letter_encodings = letter_encodings
 
     def run(self, linebreak=False, write_to_file=False, brief=False):
+        if write_to_file:
+            with open("letter_encodings.txt", "w") as fid:
+                max_len = max([len(s) for s in self.letter_encodings.keys()])
+                for key, value in self.letter_encodings.items():
+                    left = str(key) + ": "
+                    left = left.ljust(max_len + 3)
+                    fid.write("{left}{enc}\n".format(left=left, enc=value))
+
         self._tm.run(linebreak=linebreak, write_to_file=write_to_file, brief=brief)
+
+        inverse_encoding = {value: key for key, value in self.letter_encodings.items()}
+        print()
+        print("Output:")
+        count = 0
+        for symbol in self._tm.tape:
+            if symbol == "1":
+                count += 1
+            if symbol == "c" and count > 0:
+                print(inverse_encoding[count], end=" ")
+                count = 0

@@ -26,6 +26,7 @@ class TuringDefinition:
 
 class TuringMachine:
     def __init__(self, data):
+        self.prev_out_string = ""
         self.is_binarized_tm = False
         self.binarized_bit_depth = None
         self.binarized_symbol_lookup = None
@@ -210,28 +211,58 @@ class TuringMachine:
         return False
 
     def print(self, linebreak=False, fid=None):
-        if not linebreak:
-            print("\r", end="")
-        for i, symbol in enumerate(self.tape):
-            symbol += " "*(self.max_symbol_length-len(symbol))
-            if i == self.tape_index:
-                if fid:
-                    fid.write("[{symbol}]".format(symbol=symbol))
+        variant = 1
+
+        if variant == 1:
+            cur_symbol = ""
+            count = 0
+            out_string = ""
+            for symbol in reversed(self.tape):
+                if not cur_symbol:
+                    cur_symbol = symbol
+                if symbol != cur_symbol:
+                    out_string = "{count: 3d}{symbol: >4}".format(count=count, symbol=cur_symbol+",") + out_string
+                    if "b" in cur_symbol:
+                        break
+                    # if fid:
+                    #     fid.write("{count} {symbol}, ".format(count=count, symbol=cur_symbol))
+                    # else:
+                    #     print("{count} {symbol}, ".format(count=count, symbol=cur_symbol), end="")
+                    cur_symbol = symbol
+                    count = 1
                 else:
-                    print("[{symbol}]".format(symbol=symbol), end="")
-            else:
+                    count += 1
+            if "b" in cur_symbol:
+                out_string = "{count: 3d}{symbol: >4}".format(count=count, symbol=cur_symbol+",") + out_string
+            if self.prev_out_string != out_string:
                 if fid:
-                    fid.write(" {symbol} ".format(symbol=symbol))
+                    fid.write(out_string + "\n")
                 else:
-                    print(" {symbol} ".format(symbol=symbol), end="")
-        if linebreak:
-            print("   state: {state}, steps: {steps}".format(state=self.current_state, steps=self.steps), flush=True)
+                    print(out_string)
+            self.prev_out_string = out_string
         else:
-            print("   state: {state}, steps: {steps}".format(state=self.current_state, steps=self.steps), flush=True,
-                  end="" * 100)
-        if fid:
-            fid.write("\n")
-        # time.sleep(0.1)
+            if not linebreak:
+                print("\r", end="")
+            for i, symbol in enumerate(self.tape):
+                symbol += " "*(self.max_symbol_length-len(symbol))
+                if i == self.tape_index:
+                    if fid:
+                        fid.write("[{symbol}]".format(symbol=symbol))
+                    else:
+                        print("[{symbol}]".format(symbol=symbol), end="")
+                else:
+                    if fid:
+                        fid.write(" {symbol} ".format(symbol=symbol))
+                    else:
+                        print(" {symbol} ".format(symbol=symbol), end="")
+            if linebreak:
+                print("   state: {state}, steps: {steps}".format(state=self.current_state, steps=self.steps), flush=True)
+            else:
+                print("   state: {state}, steps: {steps}".format(state=self.current_state, steps=self.steps), flush=True,
+                      end="" * 100)
+            if fid:
+                fid.write("\n")
+            # time.sleep(0.1)
 
     def decode_binarized_tape(self):
         assert self.is_binarized_tm
@@ -256,6 +287,8 @@ class TuringMachine:
                 self.print(linebreak=linebreak, fid=fid)
             stopped = self.step()
             if stopped:
+                if brief:
+                    self.print(linebreak=linebreak, fid=fid)
                 break
         if write_to_file:
             fid.close()

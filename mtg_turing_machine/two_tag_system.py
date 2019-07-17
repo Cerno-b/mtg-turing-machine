@@ -86,7 +86,7 @@ def encode_transition_as_2tag(transition, stop_states):
             "D$_0": ["x", "A!0", "x"],
             "d$_0": ["a!0", "x"],
             "T$_0": ["B!0", "x"],
-            "t$_0": ["b!0", "x"]
+            "t$_0": ["b!0", "x"],
         }
     elif inst_move == "<":
         enc_transitions = {
@@ -157,7 +157,9 @@ def encode_instantaneous_tm_as_2tag(transitions, tape, start_state, stop_states)
 def encode_tm_to_2tag(turing_machine):
     assert isinstance(turing_machine, TuringMachine)
     assert turing_machine.blank == '0'
-    assert get_alphabet(turing_machine.transitions) == {'0', '1'}
+    assert get_alphabet(turing_machine.transitions) == {'0', '1'} \
+        or get_alphabet(turing_machine.transitions) == {"0"} \
+        or get_alphabet(turing_machine.transitions) == {"1"}
     transitions, tape, stop_states = convert_tm_to_instantaneous_tm(turing_machine)
     transitions, tape = encode_instantaneous_tm_as_2tag(transitions, tape, "q_init", stop_states)
     return transitions, tape

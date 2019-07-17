@@ -48,6 +48,20 @@ def load_tm2_test():
     return TuringMachine(definition)
 
 
+def load_tm_write_one():
+    transitions = {
+        ("q0", "0"): ("qend", "1", ">"),
+        ("q0", "1"): ("qend", "1", ">")
+    }
+    tape = "0"
+    tape_index = 0
+    initial_state = "q0"
+    blank = "0"
+    stop_states = ["qend"]
+    definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index, blank=blank)
+    return TuringMachine(definition)
+
+
 def load_tm_add_one():
     transitions = {
         ("q0", "1"): ("q0", "1", ">"),
@@ -192,10 +206,11 @@ def main():
     version = "tm_2tm_2tag_utm"
 
     transitions = {
-        "X": ["X"]
+        "X": ["X"],
+        ":": ["i"],
     }
     halt_symbol = "#"
-    string = "XXXXXXXXXX#"
+    string = "XX::XX::XX::#"
     string_list = list(string)
 
     two_tag = TwoTagSystem(transitions)
@@ -242,7 +257,7 @@ def main():
         print("2-tag System")
         two_tag.run(brief=True)
     elif version == "tm_2tm_2tag_utm":
-        tm = load_tm_add_one()
+        tm = load_tm_write_one()
         print("Original Machine:")
         alphabet = set([a for _, a in tm.transitions.keys()])
         print("  {} symbols, {} transitions".format(len(alphabet), len(tm.transitions)))
@@ -252,12 +267,16 @@ def main():
         two_tag = TwoTagSystem(tm)
         print("2-tag System:")
         alphabet = set([a for a in two_tag.transitions.keys()])
+        for key, value in two_tag.transitions.items():
+            print(key, value)
         print("  {} symbols, {} transitions".format(len(alphabet), len(tm.transitions)))
         # two_tag.print()
         print("UTM:")
         utm = UniversalTuringMachine()
-        utm.set_tape_string_from_2tag(two_tag, brief=True, write_to_file=False)
-        utm.run(write_to_file=False, brief=True)
+        write_to_file = True
+        brief = False
+        utm.set_tape_string_from_2tag(two_tag, write_to_file=False, brief=brief)
+        utm.run(write_to_file=write_to_file, brief=brief)
 
 
 if __name__ == '__main__':
