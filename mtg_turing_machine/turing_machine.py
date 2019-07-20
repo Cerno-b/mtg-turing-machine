@@ -30,12 +30,13 @@ class TuringMachine:
         self.is_binarized_tm = False
         self.binarized_bit_depth = None
         self.binarized_symbol_lookup = None
+        self.pre_binarized_blank = None
         if isinstance(data, TuringDefinition):
             self.transitions = data.transitions
-            if data.tape is None:
-                self.tape = [" "]
-            else:
+            if data.tape:
                 self.tape = list(data.tape)
+            else:
+                self.tape = [self.blank]
             self.tape_index = data.tape_index
             self.initial_state = data.initial_state
             self.current_state = data.initial_state
@@ -98,10 +99,6 @@ class TuringMachine:
         alphabet_size = len(alphabet)
         bit_depth = int(math.ceil(math.log(alphabet_size)/math.log(2)))
 
-        self.is_binarized_tm = True
-        self.binarized_bit_depth = bit_depth
-        self.binarized_symbol_lookup = alphabet
-
         new_transitions = {}
         new_stop_states = []
         # encode reading
@@ -163,6 +160,11 @@ class TuringMachine:
             new_tape += _to_binary(inverse_alphabet[symbol], bit_depth)
         new_tape = list(new_tape)
 
+        self.is_binarized_tm = True
+        self.binarized_bit_depth = bit_depth
+        self.binarized_symbol_lookup = alphabet
+        self.pre_binarized_blank = self.blank
+
         self.transitions = new_transitions
         self.stop_states = new_stop_states
         self.tape_index = 0
@@ -177,8 +179,45 @@ class TuringMachine:
             assert head_dir in ["<", "-", ">"]
 
     def set_tape_string(self, string):
-        self.tape_index = string.find("^")
-        self.tape = list(string.replace("^", ""))
+        if "^" in string:
+            if string.endswith("^"):
+                string += self.blank
+            self.tape_index = string.find("^")
+            if string == "^":
+                self.tape = [self.blank]
+            else:
+                self.tape = list(string.replace("^", ""))
+        else:
+            self.tape_index = 0
+            if string:
+                self.tape = list(string)
+            else:
+                self.tape = [self.blank]
+
+    def get_stripped_tape(self, decode_binarized=False):
+        if decode_binarized:
+            tape = self.decode_binarized_tape()
+            blank = self.pre_binarized_blank
+        else:
+            tape = self.tape
+            blank = self.blank
+        while True:
+            if tape:
+                if tape[0] == blank:
+                    tape = tape[1:]
+                else:
+                    break
+            else:
+                break
+        while True:
+            if tape:
+                if tape[-1] == blank:
+                    tape = tape[0:-1]
+                else:
+                    break
+            else:
+                break
+        return tape
 
     def step(self):
         if self.current_state in self.stop_states:
