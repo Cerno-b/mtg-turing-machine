@@ -9,49 +9,22 @@ def get_alphabet(transitions):
 
 def convert_tm_to_instantaneous_tm(turing_machine):
     assert turing_machine.tape_index == 0
-    initial = turing_machine.initial_state
-    inst_initial = "q_init"
-    transitions = [
-        (inst_initial, turing_machine.tape[0], ">", initial + "_0", initial + "_1")
-    ]
+    transitions = []
     inst_stop_states = []
     for (src_state, read), (tgt_state, write, move) in turing_machine.transitions.items():
         inst_state = src_state + "_" + read
         inst_write = write
         inst_move = move
         if tgt_state in turing_machine.stop_states:
-            inst_change_0 = tgt_state
-            inst_change_1 = tgt_state
+            inst_change_0 = inst_state
+            inst_change_1 = inst_state
             inst_stop_states.append(inst_state)
         else:
             inst_change_0 = tgt_state + "_0"
             inst_change_1 = tgt_state + "_1"
         transitions.append((inst_state, inst_write, inst_move, inst_change_0, inst_change_1))
 
-    state_dict = {}
-    for s in inst_stop_states:
-        state_dict[s] = -1
-    counter = 0
-    new_transitions = []
-    for inst_state, inst_write, inst_move, tgt_state_0, tgt_state_1 in transitions:
-        if inst_state not in state_dict:
-            state_dict[inst_state] = counter
-            counter += 1
-        if tgt_state_0 not in state_dict:
-            state_dict[tgt_state_0] = counter
-            counter += 1
-        if tgt_state_1 not in state_dict:
-            state_dict[tgt_state_1] = counter
-            counter += 1
-        new_state_id = state_dict[inst_state]
-        new_tgt_state_0_id = state_dict[tgt_state_0]
-        new_tgt_state_1_id = state_dict[tgt_state_1]
-        if new_state_id != -1:
-            new_transitions.append((new_state_id, inst_write, inst_move, new_tgt_state_0_id, new_tgt_state_1_id))
-    # transitions = new_transitions
-
-    # tape_q = state_dict[inst_initial]
-    tape_q = inst_initial
+    tape_q = None
     tape_m = 0
     tape_n = 0
     for i, cell in enumerate(turing_machine.tape):
@@ -140,7 +113,12 @@ def encode_transition_as_2tag(transition, stop_states):
 
 def encode_instantaneous_tm_as_2tag(transitions, tape, start_state, stop_states):
     tape_q, tape_m, tape_n = tape
-    ss = start_state
+    if tape_n % 2 == 0:
+        ss = start_state + "_0"
+    elif tape_n % 2 == 1:
+        ss = start_state + "_1"
+    else:
+        assert False
     enc_tape = ["A_" + ss, "x"] + ["a_" + ss, "x"]*tape_m + ["B_" + ss, "x"] + ["b_" + ss, "x"]*tape_n
 
     enc_transitions = {}
@@ -161,7 +139,7 @@ def encode_tm_to_2tag(turing_machine):
         or get_alphabet(turing_machine.transitions) == {"0"} \
         or get_alphabet(turing_machine.transitions) == {"1"}
     transitions, tape, stop_states = convert_tm_to_instantaneous_tm(turing_machine)
-    transitions, tape = encode_instantaneous_tm_as_2tag(transitions, tape, "q_init", stop_states)
+    transitions, tape = encode_instantaneous_tm_as_2tag(transitions, tape, turing_machine.initial_state, stop_states)
     return transitions, tape
 
 

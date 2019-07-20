@@ -202,8 +202,8 @@ def main():
     # version = "2tag"
     # version = "2tm_2tag_utm"
     # version = "tm_2tm"
-    # version = "tm_2tm_2tag"
-    version = "tm_2tm_2tag_utm"
+    version = "tm_2tm_2tag"
+    # version = "tm_2tm_2tag_utm"
 
     transitions = {
         "X": ["X"],
