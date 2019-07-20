@@ -1,5 +1,6 @@
 from turing_machine import TuringMachine
 from turing_machine import TuringDefinition
+from two_tag_system import TwoTagSystem
 
 
 def load_tm2_test():
@@ -34,6 +35,22 @@ def load_tm_write_one():
     transitions = {
         ("q0", "0"): ("qend", "1", ">"),
         ("q0", "1"): ("qend", "1", ">")
+    }
+    tape = "0"
+    tape_index = 0
+    initial_state = "q0"
+    blank = "0"
+    stop_states = ["qend"]
+    definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index, blank=blank)
+    return TuringMachine(definition)
+
+
+def load_tm_write_one_two():
+    transitions = {
+        ("q0", "0"): ("q1", "1", ">"),
+        ("q0", "1"): ("q1", "1", ">"),
+        ("q1", "0"): ("qend", "2", ">"),
+        ("q1", "1"): ("qend", "2", ">")
     }
     tape = "0"
     tape_index = 0
@@ -173,3 +190,32 @@ def load_tm_dec_to_bin():
     stop_states = ["qend"]
     definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index, blank=blank)
     return TuringMachine(definition)
+
+
+def load_two_tag_divide_by_2():
+    transitions = {
+        "X": ["X"],
+        ":": ["i"],
+    }
+    halt_symbol = "#"
+    string = "XX::XX::XX::#"
+    string_list = list(string)
+
+    two_tag = TwoTagSystem(transitions)
+    two_tag.set_input_string(string_list, halt_symbol)
+    return two_tag
+
+
+def load_two_tag_collatz():
+    transitions = {
+        "a": ["b", "c"],
+        "b": ["a"],
+        "c": ["a", "a", "a"],
+    }
+    halt_symbol = "#"
+    string = "aaa"
+    string_list = list(string)
+
+    two_tag = TwoTagSystem(transitions)
+    two_tag.set_input_string(string_list, halt_symbol)
+    return two_tag

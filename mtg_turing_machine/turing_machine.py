@@ -194,7 +194,7 @@ class TuringMachine:
             else:
                 self.tape = [self.blank]
 
-    def get_stripped_tape(self, decode_binarized=False):
+    def get_stripped_tape(self, decode_binarized=False, tape=None):
         if decode_binarized:
             tape = self.decode_binarized_tape()
             blank = self.pre_binarized_blank

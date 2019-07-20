@@ -33,24 +33,15 @@ def main():
     version = "tm_2tm_2tag"
     # version = "tm_2tm_2tag_utm"
 
-    transitions = {
-        "X": ["X"],
-        ":": ["i"],
-    }
-    halt_symbol = "#"
-    string = "XX::XX::XX::#"
-    string_list = list(string)
-
-    two_tag = TwoTagSystem(transitions)
-    two_tag.set_input_string(string_list, halt_symbol)
-
     if version == "utm":
+        two_tag = definitions.load_two_tag_divide_by_2()
         utm = UniversalTuringMachine()
         # turing_machine.set_tape_string("ttbb1111111bb11b111111b1111111bb^1c1c")
         # turing_machine.set_tape_string("ttbb1bb^1c1c1c1c1c1c1c1c1c1c111c")
         utm.set_tape_string_from_2tag(two_tag)
         utm.run(linebreak=True)
     elif version == "2tag":
+        two_tag = definitions.load_two_tag_divide_by_2()
         two_tag.run()
     elif version == "2tm":
         tm = definitions.load_tm2_test()

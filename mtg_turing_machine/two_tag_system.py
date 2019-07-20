@@ -152,7 +152,7 @@ class TwoTagSystem:
             self.from_turing_machine = True
         else:
             self.transitions = data
-            self.state = ""
+            self.state = [""]
             self.halt_symbol = ""
             self.step_number = 0
             self.from_turing_machine = False
@@ -160,7 +160,7 @@ class TwoTagSystem:
 
     def set_input_string(self, state, halt_symbol):
         self.step_number = 0
-        self.state = state
+        self.state = list(state)
         self.halt_symbol = halt_symbol
 
     def step(self):
@@ -184,6 +184,32 @@ class TwoTagSystem:
             print("\rstep:", self.step_number, "- trans:", first, "->", self.transitions[first], "- state:",
                   self.get_brief_state())
         self.prev = first
+
+    def get_tm_tape(self):
+        assert self.from_turing_machine
+        assert self.state[0] == "#" or self.state[0].startswith("A")
+        assert self.state[1] == "x"
+
+        state = self.state[2:]
+        m = 0
+        n = 0
+        while not state[0].startswith("B"):
+            assert state[0].startswith("a") and state[1] == "x"
+            m += 1
+            state = state[2:]
+        assert state[0].startswith("B") and state[1] == "x"
+        state = state[2:]
+        while state:
+            assert state[0].startswith("b") and state[1] == "x"
+            n += 1
+            if len(state) > 2:
+                state = state[2:]
+            else:
+                assert len(state) == 2
+                state = []
+        left = bin(m) if m > 0 else ""
+        right = bin(n) if n > 0 else ""
+        return left[2:] + "^" + right[2:]
 
     def get_brief_state(self):
         state_copy = self.state
@@ -214,6 +240,8 @@ class TwoTagSystem:
             self.print_definition()
             print(first, "->", self.transitions[first])
         while self.state[0] != self.halt_symbol:
+            if len(self.state) < 2:
+                break
             self.step()
             first = self.state[0]
             if brief:
