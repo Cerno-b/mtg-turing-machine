@@ -16,9 +16,9 @@ def convert_tm_to_instantaneous_tm(turing_machine):
         inst_write = write
         inst_move = move
         if tgt_state in turing_machine.stop_states:
-            inst_change_0 = inst_state
-            inst_change_1 = inst_state
-            inst_stop_states.append(inst_state)
+            inst_change_0 = tgt_state
+            inst_change_1 = tgt_state
+            inst_stop_states.append(tgt_state)
         else:
             inst_change_0 = tgt_state + "_0"
             inst_change_1 = tgt_state + "_1"
@@ -113,12 +113,14 @@ def encode_transition_as_2tag(transition, stop_states):
 
 def encode_instantaneous_tm_as_2tag(transitions, tape, start_state, stop_states):
     tape_q, tape_m, tape_n = tape
-    if tape_n % 2 == 0:
-        ss = start_state + "_0"
-    elif tape_n % 2 == 1:
-        ss = start_state + "_1"
-    else:
-        assert False
+    ss = "q_init_0"
+    transitions.append((ss, "0", ">", start_state + "_0", start_state + "_1"))
+    #if tape_n % 2 == 0:
+    #    ss = start_state + "_0"
+    #elif tape_n % 2 == 1:
+    #    ss = start_state + "_1"
+    #else:
+    #    assert False
     enc_tape = ["A_" + ss, "x"] + ["a_" + ss, "x"]*tape_m + ["B_" + ss, "x"] + ["b_" + ss, "x"]*tape_n
 
     enc_transitions = {}
@@ -207,9 +209,9 @@ class TwoTagSystem:
             else:
                 assert len(state) == 2
                 state = []
-        left = bin(m) if m > 0 else ""
-        right = bin(n) if n > 0 else ""
-        return left[2:] + "^" + right[2:]
+        left = bin(m)[2:] if m > 0 else ""
+        right = bin(n)[2:] if n > 0 else ""
+        return left + "^" + right
 
     def get_brief_state(self):
         state_copy = self.state

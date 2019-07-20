@@ -20,7 +20,8 @@ def run_two_tag_from_tm(tm, tape):
     if tm.is_binarized_tm:
         tm.set_tape_string(tape)
         tape = tm.get_stripped_tape(decode_binarized=True)
-    return tape
+    tape = list(tape)
+    return [t for t in tape if t != "^"]
 
 
 class TestTwoTagSystem(TestCase):
@@ -45,12 +46,12 @@ class TestTwoTagSystem(TestCase):
     def test_from_tm(self):
         tm = definitions.load_tm_write_one()
         result = run_two_tag_from_tm(tm, "")
-        self.assertEqual(result, "1^")
+        self.assertEqual(result, ["1"])
 
         tm = definitions.load_tm_add_one()
         result = run_two_tag_from_tm(tm, "11")
-        self.assertEqual(result, "111^")
+        self.assertEqual(result, ["1", "1", "1"])
 
         tm = definitions.load_tm_write_one_two()
         result = run_two_tag_from_tm(tm, "")
-        self.assertEqual(result, "12^")
+        self.assertEqual(result, ["1", "2"])

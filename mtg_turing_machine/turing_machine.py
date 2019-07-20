@@ -180,8 +180,6 @@ class TuringMachine:
 
     def set_tape_string(self, string):
         if "^" in string:
-            if string.endswith("^"):
-                string += self.blank
             self.tape_index = string.find("^")
             if string == "^":
                 self.tape = [self.blank]
@@ -222,6 +220,9 @@ class TuringMachine:
     def step(self):
         if self.current_state in self.stop_states:
             return True
+
+        if self.tape_index == len(self.tape):
+            self.tape += [self.blank]
 
         in_symbol = self.tape[self.tape_index]
         if not (self.current_state, in_symbol) in self.transitions:
@@ -307,6 +308,8 @@ class TuringMachine:
         assert self.is_binarized_tm
         output = []
         tape_string = "".join(self.tape)
+        while len(tape_string) % self.binarized_bit_depth != 0:
+            tape_string = "0" + tape_string
         while len(tape_string) >= self.binarized_bit_depth:
             word = tape_string[0:self.binarized_bit_depth]
             tape_string = tape_string[self.binarized_bit_depth:]
