@@ -308,8 +308,12 @@ class TuringMachine:
         assert self.is_binarized_tm
         output = []
         tape_string = "".join(self.tape)
-        while len(tape_string) % self.binarized_bit_depth != 0:
+        tape_index = self.tape_index
+        while tape_index % self.binarized_bit_depth != 0:
             tape_string = "0" + tape_string
+            tape_index += 1
+        while len(tape_string) % self.binarized_bit_depth != 0:
+            tape_string += "0"
         while len(tape_string) >= self.binarized_bit_depth:
             word = tape_string[0:self.binarized_bit_depth]
             tape_string = tape_string[self.binarized_bit_depth:]

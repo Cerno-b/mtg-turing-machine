@@ -1,4 +1,4 @@
-from unittest import TestCase
+import unittest
 
 import definitions
 
@@ -11,7 +11,7 @@ def run_tm(tm, tape, convert_to_two_symbol):
     return tm.get_stripped_tape(decode_binarized=tm.is_binarized_tm)
 
 
-class TestTuringMachine(TestCase):
+class TestTuringMachine(unittest.TestCase):
     def test_run_write_one(self, convert_to_two_symbol=False):
         tm = definitions.load_tm_write_one()
         result = run_tm(tm, tape="", convert_to_two_symbol=convert_to_two_symbol)
@@ -67,3 +67,7 @@ class TestTuringMachine(TestCase):
 
     def test_run_dec_to_bin_as_2_symbol(self):
         self.test_run_dec_to_bin(convert_to_two_symbol=True)
+
+
+if __name__ == '__main__':
+    unittest.main()
