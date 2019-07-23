@@ -219,3 +219,50 @@ def load_two_tag_collatz():
     two_tag = TwoTagSystem(transitions)
     two_tag.set_input_string(string_list, halt_symbol)
     return two_tag
+
+
+def load_two_tag_manually_converted_from_simple_tm():
+    transitions = {
+        # init left
+        'A_q_init_0': ['C_q_init_0', 'x'],
+        'C_q_init_0': ['D_q_init_0_1', 'D_q_init_0_0'],
+        'D_q_init_0_0': ['x', 'A_q0_0', 'x'],
+        'D_q_init_0_1': ['A_q0_1', 'x'],
+        # init right
+        'B_q_init_0': ['S_q_init_0'],
+        'S_q_init_0': ['T_q_init_0_1', 'T_q_init_0_0'],
+        'T_q_init_0_0': ['B_q0_0', 'x'],
+        'T_q_init_0_1': ['B_q0_1', 'x'],
+        # work left
+        'A_q0_0': ['C_q0_0', 'x', 'c_q0_0', 'x'],
+        'A_q0_1': ['C_q0_1', 'x', 'c_q0_1', 'x'],
+        'C_q0_0': ['D_q0_0_1', 'D_q0_0_0'],
+        'C_q0_1': ['D_q0_1_1', 'D_q0_1_0'],
+        'c_q0_0': ['d_q0_0_1', 'd_q0_0_0'],
+        'c_q0_1': ['d_q0_1_1', 'd_q0_1_0'],
+        'D_q0_0_0': ['x', '#', 'x'],
+        'D_q0_0_1': ['#', 'x'],
+        'D_q0_1_0': ['x', '#', 'x'],
+        'D_q0_1_1': ['#', 'x'],
+        'd_q0_0_0': ['a_#', 'x'],
+        'd_q0_0_1': ['a_#', 'x'],
+        'd_q0_1_0': ['a_#', 'x'],
+        'd_q0_1_1': ['a_#', 'x'],
+        # work right
+        'B_q0_0': ['S_q0_0'],
+        'B_q0_1': ['S_q0_1'],
+        'S_q0_0': ['T_q0_0_1', 'T_q0_0_0'],
+        'S_q0_1': ['T_q0_1_1', 'T_q0_1_0'],
+        'T_q0_0_0': ['B_#', 'x'],
+        'T_q0_0_1': ['B_#', 'x'],
+        'T_q0_1_0': ['B_#', 'x'],
+        'T_q0_1_1': ['B_#', 'x']
+    }
+
+    halt_symbol = "#"
+    string_list = ["A_q_init_0", "x", 'B_q_init_0', "x"]
+
+    two_tag = TwoTagSystem(transitions)
+    two_tag.set_input_string(string_list, halt_symbol)
+    return two_tag
+
