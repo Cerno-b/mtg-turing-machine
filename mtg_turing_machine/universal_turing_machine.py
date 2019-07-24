@@ -3,6 +3,25 @@ import sys
 from turing_machine import TuringMachine
 
 
+def simplify_tape(tape):
+    temp_tape = []
+    current_sub = []
+    for t in tape:
+        if not current_sub:
+            current_sub.append(t)
+        else:
+            if current_sub[0] == t:
+                current_sub.append(t)
+            else:
+                temp_tape.append(current_sub)
+                current_sub = [t]
+
+    out_tape = []
+    for sub in temp_tape:
+        out_tape.append((sub[0], len(sub)))
+    return out_tape
+
+
 def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
     fid = None
     if write_to_file:
@@ -21,13 +40,16 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
     for symbol in two_tag_system.state:
         inputs.add(symbol)
 
-    # heal inconsistencies in the 2tag definition
-    for symbol in only_rights.union(inputs):
-        if symbol != two_tag_system.halt_symbol:
-            pass
-            # transitions[symbol] = [symbol]
+    # make sure all input symbols are part of the transitions
+    assert lefts.union(rights).add(two_tag_system.halt_symbol) \
+        == lefts.union(rights).union(inputs).add(two_tag_system.halt_symbol)
 
-    alphabet = lefts.union(rights).union(inputs)
+    # heal inconsistencies in the 2tag definition
+    for symbol in only_rights:
+        if symbol != two_tag_system.halt_symbol:
+            transitions[symbol] = [symbol]
+
+    alphabet = lefts.union(rights)
     alphabet = sorted(alphabet)
     alphabet = [a for a in alphabet if a != two_tag_system.halt_symbol]
     alphabet.append(two_tag_system.halt_symbol)  # make sure the halt symbol appears last for better encoding
@@ -109,6 +131,19 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
         fid.close()
         sys.exit("'write_to_file' is set to True, stopping computation here.")
 
+    out_tape = simplify_tape(initial_tape)
+
+    #inverted_encoding = {v: k for k, v in letter_encodings.items()}
+    #for i, (sym, count) in enumerate(out_tape):
+    #    print(sym, count, end=", ")
+    #    if sym == "1":
+    #        if out_tape[i+1] == ("b", 1):
+    #            enc = inverted_encoding[count-1]
+    #        else:
+    #            enc = inverted_encoding[count]
+    #        print("-->", enc, end="")
+    #    print()
+
     return initial_tape, letter_encodings
 
 
@@ -127,6 +162,21 @@ class UniversalTuringMachine:
         self.set_tape_string(tape)
         self.letter_encodings = letter_encodings
 
+    def get_tape_from_2tag(self):
+        inverse_encoding = {value: key for key, value in self.letter_encodings.items()}
+        out_list = []
+        count = 0
+        for symbol in self._tm.tape:
+            if symbol == "1":
+                count += 1
+            if symbol == "c" and count > 0:
+                out_list.append(inverse_encoding[count])
+                count = 0
+        return out_list
+
+    def get_tape(self):
+        return self._tm.tape
+
     def run(self, linebreak=False, write_to_file=False, brief=False):
         if write_to_file:
             with open("letter_encodings.txt", "w") as fid:
@@ -138,13 +188,6 @@ class UniversalTuringMachine:
 
         self._tm.run(linebreak=linebreak, write_to_file=write_to_file, brief=brief)
 
-        inverse_encoding = {value: key for key, value in self.letter_encodings.items()}
         print()
         print("Output:")
-        count = 0
-        for symbol in self._tm.tape:
-            if symbol == "1":
-                count += 1
-            if symbol == "c" and count > 0:
-                print(inverse_encoding[count], end=" ")
-                count = 0
+        print(self.get_tape_from_2tag())

@@ -223,17 +223,14 @@ def load_two_tag_collatz():
 
 def load_two_tag_manually_converted_from_simple_tm():
     transitions = {
-        # init left
         'A_q_init_0': ['C_q_init_0', 'x'],
         'C_q_init_0': ['D_q_init_0_1', 'D_q_init_0_0'],
         'D_q_init_0_0': ['x', 'A_q0_0', 'x'],
         'D_q_init_0_1': ['A_q0_1', 'x'],
-        # init right
         'B_q_init_0': ['S_q_init_0'],
         'S_q_init_0': ['T_q_init_0_1', 'T_q_init_0_0'],
         'T_q_init_0_0': ['B_q0_0', 'x'],
         'T_q_init_0_1': ['B_q0_1', 'x'],
-        # work left
         'A_q0_0': ['C_q0_0', 'x', 'c_q0_0', 'x'],
         'A_q0_1': ['C_q0_1', 'x', 'c_q0_1', 'x'],
         'C_q0_0': ['D_q0_0_1', 'D_q0_0_0'],
@@ -248,7 +245,6 @@ def load_two_tag_manually_converted_from_simple_tm():
         'd_q0_0_1': ['a_#', 'x'],
         'd_q0_1_0': ['a_#', 'x'],
         'd_q0_1_1': ['a_#', 'x'],
-        # work right
         'B_q0_0': ['S_q0_0'],
         'B_q0_1': ['S_q0_1'],
         'S_q0_0': ['T_q0_0_1', 'T_q0_0_0'],
@@ -256,7 +252,25 @@ def load_two_tag_manually_converted_from_simple_tm():
         'T_q0_0_0': ['B_#', 'x'],
         'T_q0_0_1': ['B_#', 'x'],
         'T_q0_1_0': ['B_#', 'x'],
-        'T_q0_1_1': ['B_#', 'x']
+        'T_q0_1_1': ['B_#', 'x'],
+        'a_q_init_0': ['c_q_init_0', 'x', 'c_q_init_0', 'x'],
+        'c_q_init_0': ['d_q_init_0_1', 'd_q_init_0_0'],
+        'd_q_init_0_0': ['a_q0_0', 'x'],
+        'd_q_init_0_1': ['a_q0_1', 'x'],
+        'a_q0_0': ['c_q0_0', 'x', 'c_q0_0', 'x'],
+        'a_q0_1': ['c_q0_1', 'x', 'c_q0_1', 'x'],
+        'b_q_init_0': ['s_q_init_0'],
+        's_q_init_0': ['t_q_init_0_1', 't_q_init_0_0'],
+        't_q_init_0_0': ['b_q0_0', 'x'],
+        't_q_init_0_1': ['b_q0_1', 'x'],
+        'b_q0_0': ['s_q0_0'],
+        'b_q0_1': ['s_q0_1'],
+        's_q0_0': ['t_q0_0_1', 't_q0_0_0'],
+        's_q0_1': ['t_q0_1_1', 't_q0_1_0'],
+        't_q0_0_0': ['b_#', 'x'],
+        't_q0_0_1': ['b_#', 'x'],
+        't_q0_1_0': ['b_#', 'x'],
+        't_q0_1_1': ['b_#', 'x']
     }
 
     halt_symbol = "#"

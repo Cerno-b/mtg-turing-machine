@@ -261,7 +261,7 @@ class TuringMachine:
                 if not cur_symbol:
                     cur_symbol = symbol
                 if symbol != cur_symbol:
-                    out_string = "{count: 3d}{symbol: >4}".format(count=count, symbol=cur_symbol+",") + out_string
+                    out_string = "{entry: >7}".format(entry=cur_symbol + "^" + str(count) + ",") + out_string
                     if "b" in cur_symbol:
                         break
                     # if fid:
@@ -272,8 +272,8 @@ class TuringMachine:
                     count = 1
                 else:
                     count += 1
-            if "b" in cur_symbol:
-                out_string = "{count: 3d}{symbol: >4}".format(count=count, symbol=cur_symbol+",") + out_string
+            # if "b" in cur_symbol:
+            #     out_string = "{entry: >7}".format(entry=cur_symbol + "^" + str(count) + ",") + out_string
             if self.prev_out_string != out_string:
                 if fid:
                     fid.write(out_string + "\n")
