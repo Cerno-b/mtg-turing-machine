@@ -162,7 +162,7 @@ class UniversalTuringMachine:
         self.set_tape_string(tape)
         self.letter_encodings = letter_encodings
 
-    def get_tape_from_2tag(self):
+    def get_tape_as_2tag(self):
         inverse_encoding = {value: key for key, value in self.letter_encodings.items()}
         out_list = []
         count = 0
@@ -172,7 +172,27 @@ class UniversalTuringMachine:
             if symbol == "c" and count > 0:
                 out_list.append(inverse_encoding[count])
                 count = 0
-        return out_list
+        return ["#"] + out_list
+
+    def get_tape_from_2tag_decoded_tm(self):
+        out_list = self.get_tape_as_2tag()
+        left = []
+        right = []
+        for symbol in out_list:
+            if symbol == "x":
+                continue
+            if right or symbol == "B_#":
+                right.append(symbol)
+            else:
+                left.append(symbol)
+        assert right[0] == "B_#"
+        right = right[1:]
+        m = len(left)
+        n = len(right)
+        left_str = bin(m)[2:]
+        right_str = bin(n)[2:] if n > 0 else ""
+        right_str = "".join((reversed(right_str)))
+        return left_str + right_str
 
     def get_tape(self):
         return self._tm.tape
@@ -190,4 +210,4 @@ class UniversalTuringMachine:
 
         print()
         print("Output:")
-        print(self.get_tape_from_2tag())
+        print(self.get_tape_as_2tag())

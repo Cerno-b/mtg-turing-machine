@@ -211,6 +211,7 @@ class TwoTagSystem:
                 state = []
         left = bin(m)[2:] if m > 0 else ""
         right = bin(n)[2:] if n > 0 else ""
+        right = "".join((reversed(right)))
         return left + "^" + right
 
     def get_brief_state(self):
