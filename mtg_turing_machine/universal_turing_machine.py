@@ -22,7 +22,7 @@ def simplify_tape(tape):
     return out_tape
 
 
-def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
+def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True, silent=True):
     fid = None
     if write_to_file:
         fid = open("utm_tape.txt", "w")
@@ -55,7 +55,8 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
     alphabet.append(two_tag_system.halt_symbol)  # make sure the halt symbol appears last for better encoding
 
     input_string = two_tag_system.state
-    print(input_string)
+    if not silent:
+        print(input_string)
 
     letter_encodings = {}
 
@@ -78,7 +79,7 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
         initial_tape = ["c1<", "c1<"]
     symbol_count += 2
 
-    if brief:
+    if brief and not silent:
         print("encoding alphabet with {} letters".format(len(alphabet)))
 
     for i, letter in enumerate(reversed(alphabet)):
@@ -88,7 +89,7 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
             transition_list = ["1"*letter_encodings[t] for t in transition]
             transition_encoding = "bb" + "1b".join(transition_list)
             transition_encoding = list(transition_encoding)
-            if not brief:
+            if not brief and not silent:
                 print("transition {i}: encoding: {enc}".format(i=i, enc=transition_encoding))
 
             if write_to_file:
@@ -97,6 +98,7 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
                 initial_tape += transition_encoding
             symbol_count += len(transition_encoding)
 
+    symbol_count_transition = symbol_count
     if write_to_file:
         fid.write("b ^ b ")
     else:
@@ -106,7 +108,8 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
     input_encoding = ""
     for i, letter in enumerate(input_string):
         string = "1"*letter_encodings[letter]
-        print("data {i}: encoding: {enc}".format(i=i, enc=string))
+        if not silent:
+            print("data {i}: encoding: {enc}".format(i=i, enc=string))
         input_encoding += string + "c"
 
     if write_to_file:
@@ -114,8 +117,9 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
     else:
         initial_tape += list(input_encoding)
     symbol_count += len(list(input_encoding))
+    symbol_count_input = symbol_count - symbol_count_transition
 
-    if not brief:
+    if not brief and not silent:
         print()
         print("letter encodings:")
         print()
@@ -125,7 +129,9 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True):
         print("initial tape:", initial_tape)
         print("input:", input_string, "->", input_encoding)
 
-    print("tape contains {} symbols".format(symbol_count))
+    print("tape contains {} symbols, {} to the left and {} to the right of the head".format(symbol_count,
+                                                                                            symbol_count_transition,
+                                                                                            symbol_count_input))
 
     if write_to_file:
         fid.close()
@@ -157,8 +163,8 @@ class UniversalTuringMachine:
         self._tm.tape_index = string.index("^")
         self._tm.tape = [symbol for symbol in string if symbol != "^"]
 
-    def set_tape_string_from_2tag(self, two_tag_system, brief=False, write_to_file=False):
-        tape, letter_encodings = encode_2tag_to_utm(two_tag_system, brief=brief, write_to_file=write_to_file)
+    def set_tape_string_from_2tag(self, two_tag_system, brief=False, write_to_file=False, silent=False):
+        tape, letter_encodings = encode_2tag_to_utm(two_tag_system, brief=brief, write_to_file=write_to_file, silent=silent)
         self.set_tape_string(tape)
         self.letter_encodings = letter_encodings
 
@@ -197,7 +203,7 @@ class UniversalTuringMachine:
     def get_tape(self):
         return self._tm.tape
 
-    def run(self, linebreak=False, write_to_file=False, brief=False):
+    def run(self, linebreak=False, write_to_file=False, brief=False, silent=False):
         if write_to_file:
             with open("letter_encodings.txt", "w") as fid:
                 max_len = max([len(s) for s in self.letter_encodings.keys()])
@@ -206,7 +212,7 @@ class UniversalTuringMachine:
                     left = left.ljust(max_len + 3)
                     fid.write("{left}{enc}\n".format(left=left, enc=value))
 
-        self._tm.run(linebreak=linebreak, write_to_file=write_to_file, brief=brief)
+        self._tm.run(linebreak=linebreak, write_to_file=write_to_file, brief=brief, silent=silent)
 
         print()
         print("Output:")

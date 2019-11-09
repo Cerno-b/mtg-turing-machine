@@ -1,4 +1,5 @@
 import sys
+import timeit
 
 from universal_turing_machine import UniversalTuringMachine
 from two_tag_system import TwoTagSystem, encode_tm_to_2tag
@@ -30,8 +31,9 @@ def main():
     # version = "2tag"
     # version = "2tm_2tag_utm"
     # version = "tm_2tm"
-    version = "tm_2tm_2tag"
+    # version = "tm_2tm_2tag"
     # version = "tm_2tm_2tag_utm"
+    version = "add_unary"
 
     if version == "utm":
         two_tag = definitions.load_two_tag_divide_by_2()
@@ -40,6 +42,26 @@ def main():
         # turing_machine.set_tape_string("ttbb1bb^1c1c1c1c1c1c1c1c1c1c111c")
         utm.set_tape_string_from_2tag(two_tag)
         utm.run(linebreak=True)
+    elif version == "add_unary":
+        time = 0
+
+        tm = definitions.load_tm_add_unary()
+        tm.set_tape_string("11x111")
+        tm.print_summary()
+        # tm.run()
+        print("\n\n")
+        tm.convert_to_two_symbol()
+        tm.print_summary()
+        two_tag = TwoTagSystem(tm)
+        two_tag.print_summary()
+
+        # time = timeit.timeit(lambda: two_tag.run(silent=True), number=1)
+
+        utm = UniversalTuringMachine()
+        utm.set_tape_string_from_2tag(two_tag, silent=True)
+        time = timeit.timeit(lambda: utm.run(brief=True), number=1)
+        print(time)
+
     elif version == "2tag":
         two_tag = definitions.load_two_tag_divide_by_2()
         two_tag.run()

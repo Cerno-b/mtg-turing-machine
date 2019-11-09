@@ -171,10 +171,18 @@ class TwoTagSystem:
         self.step_number += 1
 
     def print_definition(self):
+        alphabet = set()
         for key, value in self.transitions.items():
-            print("{key}->{value}".format(key=key, value=value))
+            alphabet.add(key)
+            alphabet = alphabet.union(set(value))
+        print("Transitions:")
+        for key, value in self.transitions.items():
+            print("  {key}->{value}".format(key=key, value=value))
         print("Number of transitions:", len(self.transitions))
+        print("Alphabet: {}".format(sorted(alphabet)))
+        print("Alphabet size: {}".format(len(alphabet)))
         print("Initial state:", self.state)
+        print("Initial state size:", len(self.state))
         print()
 
     def print(self):
@@ -186,6 +194,11 @@ class TwoTagSystem:
             print("\rstep:", self.step_number, "- trans:", first, "->", self.transitions[first], "- state:",
                   self.get_brief_state())
         self.prev = first
+
+    def print_summary(self):
+        print("Two-Tag System")
+        print("--------------")
+        self.print_definition()
 
     def get_tm_tape(self):
         assert self.from_turing_machine
@@ -234,24 +247,26 @@ class TwoTagSystem:
             brief += "({symbol})^1, ".format(symbol=" ".join(state_copy))
         return brief
 
-    def run(self, brief=False):
+    def run(self, brief=False, silent=False):
         first = self.state[0]
-        if brief:
-            print("Number of transitions:", len(self.transitions))
-            print("Initial state:", self.get_brief_state())
-        else:
-            self.print_definition()
-            print(first, "->", self.transitions[first])
+        if not silent:
+            if brief:
+                print("Number of transitions:", len(self.transitions))
+                print("Initial state:", self.get_brief_state())
+            else:
+                self.print_definition()
+                print(first, "->", self.transitions[first])
         while self.state[0] != self.halt_symbol:
             if len(self.state) < 2:
                 break
             self.step()
             first = self.state[0]
-            if brief:
-                if first.startswith("A"):
+            if not silent:
+                if brief:
+                    if first.startswith("A"):
+                        self.print()
+                else:
                     self.print()
-            else:
-                self.print()
 
         if self.from_turing_machine:
             print()

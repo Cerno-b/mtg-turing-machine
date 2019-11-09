@@ -250,6 +250,24 @@ class TuringMachine:
 
         return False
 
+    def print_summary(self):
+        states = set()
+        for lhs, rhs in self.transitions.items():
+            states.add(lhs[0])
+            states.add(rhs[0])
+
+        alphabet = sorted(set([symbol for _, symbol in self.transitions.keys()]))
+
+        print("Turing Machine")
+        print("--------------")
+        print("Alphabet: {}".format(" ".join(alphabet)))
+        print("Blank: {}".format(self.blank))
+        print("States: {}".format(" ".join(sorted(states))))
+        print("Transitions:")
+        for lhs, rhs in sorted(self.transitions.items()):
+            print("  ({}) -> ({})".format(" ".join(lhs), " ".join(rhs)))
+        print("Tape: {}".format(" ".join(self.tape)))
+
     def print(self, linebreak=False, fid=None):
         variant = 1
 
@@ -321,13 +339,13 @@ class TuringMachine:
             output.append(self.binarized_symbol_lookup[word_id])
         return output
 
-    def run(self, linebreak=False, write_to_file=False, brief=False):
+    def run(self, linebreak=False, write_to_file=False, brief=False, silent=False):
         fid = None
         if write_to_file:
             fid = open("tm_log.txt", "w")
         while True:
             if brief:
-                if self.steps % 10000 == 0:
+                if self.steps % 100000 == 0:
                     print("steps: {}".format(self.steps))
             else:
                 self.print(linebreak=linebreak, fid=fid)
@@ -335,6 +353,7 @@ class TuringMachine:
             if stopped:
                 if brief:
                     self.print(linebreak=linebreak, fid=fid)
+                print("{} steps taken".format(self.steps))
                 break
         if write_to_file:
             fid.close()

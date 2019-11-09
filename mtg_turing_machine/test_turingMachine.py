@@ -12,6 +12,12 @@ def run_tm(tm, tape, convert_to_two_symbol):
 
 
 class TestTuringMachine(unittest.TestCase):
+
+    def test_run_add_unary(self, convert_to_two_symbol=False):
+        tm = definitions.load_tm_add_unary()
+        result = run_tm(tm, tape="111x11", convert_to_two_symbol=convert_to_two_symbol)
+        self.assertEqual(result, ["1", "1", "1", "1", "1", "x"])
+
     def test_run_write_one(self, convert_to_two_symbol=False):
         tm = definitions.load_tm_write_one()
         result = run_tm(tm, tape="", convert_to_two_symbol=convert_to_two_symbol)
@@ -52,6 +58,9 @@ class TestTuringMachine(unittest.TestCase):
         tm = definitions.load_tm_dec_to_bin()
         result = run_tm(tm, tape="9", convert_to_two_symbol=convert_to_two_symbol)
         self.assertEqual(result, ["1", "0", "0", "1"])
+
+    def test_run_add_unary_as_2_symbol(self):
+        self.test_run_add_unary(convert_to_two_symbol=True)
 
     def test_run_write_one_as_2_symbol(self):
         self.test_run_write_one(convert_to_two_symbol=True)
