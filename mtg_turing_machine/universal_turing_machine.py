@@ -53,6 +53,9 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True, silent=T
     alphabet = sorted(alphabet)
     alphabet = [a for a in alphabet if a != two_tag_system.halt_symbol]
     alphabet.append(two_tag_system.halt_symbol)  # make sure the halt symbol appears last for better encoding
+    if "x" in alphabet:
+        alphabet = [a for a in alphabet if a != "x"]
+        alphabet = ["x"] + alphabet  # make sure the x symbol appears first for better encoding
 
     input_string = two_tag_system.state
     if not silent:
