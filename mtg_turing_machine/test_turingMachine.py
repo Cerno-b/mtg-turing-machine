@@ -18,6 +18,11 @@ class TestTuringMachine(unittest.TestCase):
         result = run_tm(tm, tape="111x11", convert_to_two_symbol=convert_to_two_symbol)
         self.assertEqual(result, ["1", "1", "1", "1", "1", "x"])
 
+    def test_run_add_unary_2_symbol(self, convert_to_two_symbol=False):
+        tm = definitions.load_tm_add_unary_two_symbol()
+        result = run_tm(tm, tape="111011", convert_to_two_symbol=convert_to_two_symbol)
+        self.assertEqual(result, ["1", "1", "1", "1", "1"])
+
     def test_run_write_one(self, convert_to_two_symbol=False):
         tm = definitions.load_tm_write_one()
         result = run_tm(tm, tape="", convert_to_two_symbol=convert_to_two_symbol)
