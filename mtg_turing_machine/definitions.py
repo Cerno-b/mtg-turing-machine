@@ -48,6 +48,24 @@ def load_tm_add_unary():
     return TuringMachine(definition)
 
 
+def load_tm_add_unary_two_symbol():
+    transitions = {
+        ("q0", "1"): ("q0", "1", ">"),
+        ("q0", "0"): ("q1", "0", ">"),
+        ("q1", "0"): ("qend", "0", "<"),
+        ("q1", "1"): ("q2", "0", "<"),
+        ("q2", "0"): ("q3", "1", ">"),
+        ("q3", "0"): ("q1", "0", ">"),
+    }
+    tape = "111011"
+    tape_index = 0
+    initial_state = "q0"
+    blank = "0"
+    stop_states = ["qend"]
+    definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index, blank=blank)
+    return TuringMachine(definition)
+
+
 def load_tm_write_one():
     transitions = {
         ("q0", "0"): ("qend", "1", ">"),
