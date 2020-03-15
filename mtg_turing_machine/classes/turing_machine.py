@@ -4,7 +4,7 @@ import math
 
 
 def _strip_list(input_list, item):
-    """Strips all occurrences of an item from the beginning and end of a list"""
+    """Strip all occurrences of an item from the beginning and end of a list"""
     while True:
         if input_list:
             if input_list[0] == item:
@@ -38,7 +38,7 @@ class TuringDefinition:
     def __init__(self, transitions, initial_state, stop_states, tape=None, tape_index=0, blank=" "):
         """
         Arguments:
-            transitions:        The transition function as dictionary of the form
+            transitions:        The transition function as dictionary in the form
                                     {(source_state, read_symbol): (target_state, write_symbol, head_direction)}
                                     head_direction can be '<', '-', '>'
             initial_state:      The Turing machine's initial state (string)
@@ -121,7 +121,7 @@ class TuringMachine:
 
         The main differences:
             The order of the transition function elements is
-                (old state, read, write, head direction, new state).
+                (source state, read, write, head direction, target state).
             The blank symbol is '_' by default and will be internally converted to a ' '.
                 If a different blank shall be used, it needs to be set manually after calling this function.
             The head directions are defined as 'L', 'R' and '-', which will be converted to '<', '>' and '-'."""
@@ -135,12 +135,12 @@ class TuringMachine:
                 line = re.sub(r"#.*", "", line)  # remove comments
                 line = line.strip()
                 if line:
-                    old_state, read_symbol, write_symbol, head_dir, new_state = line.split("\t")
+                    source_state, read_symbol, write_symbol, head_dir, target_state = line.split("\t")
 
                     if first_line:
                         # the first line defines the initial state
                         assert initial_state is None
-                        initial_state = old_state
+                        initial_state = source_state
                         first_line = False
                     if read_symbol == "_":
                         read_symbol = " "
@@ -155,7 +155,7 @@ class TuringMachine:
                     else:
                         sys.exit("Error reading definition file: invalid head symbol: " + head_dir)
 
-                    transitions[(old_state, read_symbol)] = (new_state, write_symbol, head_dir)
+                    transitions[(source_state, read_symbol)] = (target_state, write_symbol, head_dir)
         definition = TuringDefinition(transitions, initial_state, stop_states)
         return definition
 
