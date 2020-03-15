@@ -5,6 +5,8 @@ import mtg_turing_machine.classes.instances as examples
 from mtg_turing_machine.classes.universal_turing_machine import UniversalTuringMachine
 from mtg_turing_machine.classes.two_tag_system import TwoTagSystem
 
+_RUN_LONG_TESTS = False
+
 
 def run_utm_from_two_tag(two_tag, string):
     two_tag.set_input_string(string, "#")
@@ -52,23 +54,24 @@ class TestUniversalTuringMachine(unittest.TestCase):
 
     # this runs for a long time (forever?) maybe the utm cannot handle a 2-tag system without stopping symbol
     # that would normally stop when it runs out of readable letters
-    #def test_collatz(self):
+    # def test_collatz(self):
     #    two_tag = definitions.load_two_tag_collatz()
     #    state = run_utm_from_two_tag(two_tag, "aaa")
     #    self.assertEqual(state, ["a"])
 
     def test_from_tm(self):
-        tm = examples.load_tm_write_one()
-        result = run_utm_from_tm(tm, "")
-        self.assertEqual(result, ["1"])
+        if _RUN_LONG_TESTS:
+            tm = examples.load_tm_write_one()
+            result = run_utm_from_tm(tm, "")
+            self.assertEqual(result, ["1"])
 
-        tm = examples.load_tm_add_one()
-        result = run_utm_from_tm(tm, "11")
-        self.assertEqual(result, ["1", "1", "1"])
+            tm = examples.load_tm_add_one()
+            result = run_utm_from_tm(tm, "11")
+            self.assertEqual(result, ["1", "1", "1"])
 
-        tm = examples.load_tm_write_one_two()
-        result = run_utm_from_tm(tm, "")
-        self.assertEqual(result, ["1", "2"])
+            tm = examples.load_tm_write_one_two()
+            result = run_utm_from_tm(tm, "")
+            self.assertEqual(result, ["1", "2"])
 
 #        tm = definitions.load_tm_make_palindrome()
 #        result = run_utm_from_tm(tm, "10")

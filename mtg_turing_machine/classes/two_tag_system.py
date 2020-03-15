@@ -1,4 +1,4 @@
-from .turing_machine import TuringMachine, TuringDefinition
+from .turing_machine import TuringMachine
 
 
 def get_alphabet(transitions):
@@ -8,14 +8,14 @@ def get_alphabet(transitions):
 
 
 def convert_tm_to_instantaneous_tm(turing_machine):
-    assert turing_machine.tape_index == 0
+    assert turing_machine.definition.tape_index == 0
     transitions = []
     inst_stop_states = []
-    for (src_state, read), (tgt_state, write, move) in turing_machine.transitions.items():
+    for (src_state, read), (tgt_state, write, move) in turing_machine.definition.transitions.items():
         inst_state = src_state + "_" + read
         inst_write = write
         inst_move = move
-        if tgt_state in turing_machine.stop_states:
+        if tgt_state in turing_machine.definition.stop_states:
             inst_change_0 = tgt_state
             inst_change_1 = tgt_state
             inst_stop_states.append(tgt_state)
@@ -27,7 +27,7 @@ def convert_tm_to_instantaneous_tm(turing_machine):
     tape_q = None
     tape_m = 0
     tape_n = 0
-    for i, cell in enumerate(turing_machine.tape):
+    for i, cell in enumerate(turing_machine.definition.tape):
         tape_n += int(cell) * 2**i
     inst_tape = (tape_q, tape_m, tape_n)
     return transitions, inst_tape, inst_stop_states
@@ -115,11 +115,11 @@ def encode_instantaneous_tm_as_2tag(transitions, tape, start_state, stop_states)
     tape_q, tape_m, tape_n = tape
     ss = "q_init_0"
     transitions.append((ss, "0", ">", start_state + "_0", start_state + "_1"))
-    #if tape_n % 2 == 0:
-    #    ss = start_state + "_0"
-    #elif tape_n % 2 == 1:
-    #    ss = start_state + "_1"
-    #else:
+    # if tape_n % 2 == 0:
+    #     ss = start_state + "_0"
+    # elif tape_n % 2 == 1:
+    #     ss = start_state + "_1"
+    # else:
     #    assert False
     enc_tape = ["A_" + ss, "x"] + ["a_" + ss, "x"]*tape_m + ["B_" + ss, "x"] + ["b_" + ss, "x"]*tape_n
 
@@ -136,12 +136,13 @@ def encode_instantaneous_tm_as_2tag(transitions, tape, start_state, stop_states)
 
 def encode_tm_to_2tag(turing_machine):
     assert isinstance(turing_machine, TuringMachine)
-    assert turing_machine.blank == '0'
-    assert get_alphabet(turing_machine.transitions) == {'0', '1'} \
-        or get_alphabet(turing_machine.transitions) == {"0"} \
-        or get_alphabet(turing_machine.transitions) == {"1"}
+    assert turing_machine.definition.blank == '0'
+    assert get_alphabet(turing_machine.definition.transitions) == {'0', '1'} \
+        or get_alphabet(turing_machine.definition.transitions) == {"0"} \
+        or get_alphabet(turing_machine.definition.transitions) == {"1"}
     transitions, tape, stop_states = convert_tm_to_instantaneous_tm(turing_machine)
-    transitions, tape = encode_instantaneous_tm_as_2tag(transitions, tape, turing_machine.initial_state, stop_states)
+    transitions, tape = encode_instantaneous_tm_as_2tag(transitions, tape,
+                                                        turing_machine.definition.initial_state, stop_states)
     return transitions, tape
 
 

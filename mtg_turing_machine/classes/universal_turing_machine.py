@@ -146,18 +146,18 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True, silent=T
         fid.close()
         sys.exit("'write_to_file' is set to True, stopping computation here.")
 
-    out_tape = simplify_tape(initial_tape)
-
-    #inverted_encoding = {v: k for k, v in letter_encodings.items()}
-    #for i, (sym, count) in enumerate(out_tape):
-    #    print(sym, count, end=", ")
-    #    if sym == "1":
-    #        if out_tape[i+1] == ("b", 1):
-    #            enc = inverted_encoding[count-1]
-    #        else:
-    #            enc = inverted_encoding[count]
-    #        print("-->", enc, end="")
-    #    print()
+    # out_tape = simplify_tape(initial_tape)
+    #
+    # inverted_encoding = {v: k for k, v in letter_encodings.items()}
+    # for i, (sym, count) in enumerate(out_tape):
+    #     print(sym, count, end=", ")
+    #     if sym == "1":
+    #         if out_tape[i+1] == ("b", 1):
+    #             enc = inverted_encoding[count-1]
+    #         else:
+    #             enc = inverted_encoding[count]
+    #         print("-->", enc, end="")
+    #     print()
 
     return initial_tape, letter_encodings
 
@@ -165,17 +165,18 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True, silent=T
 class UniversalTuringMachine:
     def __init__(self):
         current_dir = os.path.dirname(__file__)
-        rogozhin_definition_path = os.path.join(current_dir, "rogozhin.txt")
-        self._tm = TuringMachine(rogozhin_definition_path)
-        self._tm.blank = "1<"
+        definition_path = os.path.join(current_dir, "rogozhin.txt")
+        self._tm = TuringMachine(definition_path)
+        self._tm.definition.blank = "1<"
         self.letter_encodings = {}
 
     def set_tape_string(self, string):
-        self._tm.tape_index = string.index("^")
-        self._tm.tape = [symbol for symbol in string if symbol != "^"]
+        self._tm.definition.tape_index = string.index("^")
+        self._tm.definition.tape = [symbol for symbol in string if symbol != "^"]
 
     def set_tape_string_from_2tag(self, two_tag_system, brief=False, write_to_file=False, silent=False):
-        tape, letter_encodings = encode_2tag_to_utm(two_tag_system, brief=brief, write_to_file=write_to_file, silent=silent)
+        tape, letter_encodings = encode_2tag_to_utm(two_tag_system, brief=brief,
+                                                    write_to_file=write_to_file, silent=silent)
         self.set_tape_string(tape)
         self.letter_encodings = letter_encodings
 
@@ -183,7 +184,7 @@ class UniversalTuringMachine:
         inverse_encoding = {value: key for key, value in self.letter_encodings.items()}
         out_list = []
         count = 0
-        for symbol in self._tm.tape:
+        for symbol in self._tm.definition.tape:
             if symbol == "1":
                 count += 1
             if symbol == "c" and count > 0:
@@ -212,9 +213,9 @@ class UniversalTuringMachine:
         return left_str + right_str
 
     def get_tape(self):
-        return self._tm.tape
+        return self._tm.definition.tape
 
-    def run(self, linebreak=False, write_to_file=False, brief=False, silent=False):
+    def run(self, linebreak=False, write_to_file=False, brief=False):
         if write_to_file:
             with open("letter_encodings.txt", "w") as fid:
                 max_len = max([len(s) for s in self.letter_encodings.keys()])
@@ -223,7 +224,7 @@ class UniversalTuringMachine:
                     left = left.ljust(max_len + 3)
                     fid.write("{left}{enc}\n".format(left=left, enc=value))
 
-        self._tm.run(linebreak=linebreak, write_to_file=write_to_file, brief=brief, silent=silent)
+        self._tm.run(line_break=linebreak, write_to_file=write_to_file, brief=brief)
 
         print()
         print("Output:")

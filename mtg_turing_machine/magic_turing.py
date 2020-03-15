@@ -66,7 +66,7 @@ def main():
         two_tag.run()
     elif version == "2tm":
         tm = examples.load_tm2_test()
-        tm.run(linebreak=True)
+        tm.run(line_break=True)
     elif version == "2tm_2tag":
         tm = examples.load_tm2_test()
         two_tag = TwoTagSystem(tm)
@@ -79,20 +79,20 @@ def main():
         utm.run(linebreak=True)
     elif version == "tm":
         tm = examples.load_tm_make_palindrome()
-        tm.run(linebreak=True)
+        tm.run(line_break=True)
     elif version == "tm_2tm":
         tm = examples.load_tm_make_palindrome()
         tm.convert_to_two_symbol()
         print(tm.binarized_bit_depth)
-        tm.run(linebreak=True)
+        tm.run(line_break=True)
         print("Decoded tape:", tm.decode_binarized_tape())
     elif version == "tm_2tm_2tag":
         tm = examples.load_tm_make_palindrome()
         print("Original Machine:")
-        tm.print(linebreak=True)
+        tm.print(line_break=True)
         tm.convert_to_two_symbol()
         print("2-Symbol Machine:")
-        tm.print(linebreak=True)
+        tm.print(line_break=True)
         two_tag = TwoTagSystem(tm)
         print("2-tag System")
         two_tag.run(brief=True)

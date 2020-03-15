@@ -17,7 +17,7 @@ def run_two_tag_from_tm(tm, tape):
     two_tag = TwoTagSystem(tm)
     two_tag.run(brief=True)
     tape = two_tag.get_tm_tape()
-    if tm.is_binarized_tm:
+    if tm.has_been_binarized:
         tm.set_tape_string(tape)
         tape = tm.get_stripped_tape(decode_binarized=True)
     tape = list(tape)

@@ -4,12 +4,12 @@ import mtg_turing_machine.classes.instances as examples
 
 
 def run_tm(tm, tape=None, convert_to_two_symbol=False):
-    if tape:
+    if tape is not None:
         tm.set_tape_string(tape)
     if convert_to_two_symbol:
         tm.convert_to_two_symbol()
     tm.run()
-    return tm.get_stripped_tape(decode_binarized=tm.is_binarized_tm)
+    return tm.get_stripped_tape(decode_binarized=tm.has_been_binarized)
 
 
 class TestTuringMachine(unittest.TestCase):
