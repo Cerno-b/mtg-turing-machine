@@ -6,17 +6,17 @@ from mtg_turing_machine.classes.two_tag_system import TwoTagSystem
 
 
 def run_two_tag(two_tag, string):
-    two_tag.set_input_string(string, "#")
+    two_tag.set_initial_word(string, "#")
     two_tag.run()
-    return two_tag.state
+    return two_tag.current_word
 
 
 def run_two_tag_from_tm(tm, tape):
     tm.set_tape_string(tape)
     tm.convert_to_two_symbol()
-    two_tag = TwoTagSystem(tm)
+    two_tag = TwoTagSystem(tm.definition)
     two_tag.run(brief=True)
-    tape = two_tag.get_tm_tape()
+    tape = two_tag.get_word_as_tm_tape()
     if tm.has_been_binarized:
         tm.set_tape_string(tape)
         tape = tm.get_stripped_tape(decode_binarized=True)

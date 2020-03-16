@@ -9,7 +9,7 @@ _RUN_LONG_TESTS = False
 
 
 def run_utm_from_two_tag(two_tag, string):
-    two_tag.set_input_string(string, "#")
+    two_tag.set_initial_word(string, "#")
     utm = UniversalTuringMachine()
     utm.set_tape_string_from_2tag(two_tag)
     utm.run(brief=True)
@@ -27,8 +27,8 @@ def run_utm_from_tm(tm, string):
     utm.run(brief=True)
 
     two_tag_state = utm.get_tape_as_2tag()
-    two_tag.set_input_string(two_tag_state, two_tag.halt_symbol)
-    tape = two_tag.get_tm_tape()
+    two_tag.set_initial_word(two_tag_state, two_tag.halting_symbol)
+    tape = two_tag.get_word_as_tm_tape()
 
     if tm.is_binarized_tm:
         tm.set_tape_string(tape)

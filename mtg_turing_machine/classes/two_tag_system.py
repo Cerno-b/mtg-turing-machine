@@ -1,30 +1,46 @@
-from .turing_machine import TuringMachine
+from .turing_machine import TuringDefinition
 
 
 class TwoTagSystem:
     """Two tag system main class
     Attributes:
-        transitions:            State transitions as dictionary in the form
-                                    {symbol: list of symbols}
-        state:                  The current state (list of symbols)
-        halt_symbol:            Symbol indicating when the two tag system should halt.
+        production_rules:       Production rules (dict), corresponds to the transition function of a Turing machine
+        current_word:           The current word (list of symbols), corresponds to the tape of a Turing machine
+        halting_symbol:         Symbol indicating when the two tag system should halt.
         steps:                  The number of steps the two tag system has taken so far
         from_turing_machine:    Flag indicating that the two tag system has been converted from a Turing machine
-        prev:                   Todo: check if still needed
         """
-    def __init__(self, transitions):
-        if isinstance(transitions, TuringMachine):
-            self.transitions, self.state = self.encode_tm_to_2tag(transitions)
-            self.halt_symbol = "#"
-            self.steps = 0
-            self.from_turing_machine = True
+
+    def __init__(self, definition):
+        """Initialize
+        Arguments:
+            definition: Definition of the two tag system. Either a Turing Machine Definition or production rules
+                - Turing machine as binary TuringDefinition (binary Turing machine only consists of the symbols 0 and 1)
+                - Production rules as a dictionary of the form:
+                    {symbol: list of symbols}
+            """
+        assert isinstance(definition, TuringDefinition) or isinstance(definition, dict)
+        if isinstance(definition, TuringDefinition):
+            self.init_from_turing_machine(definition)
         else:
-            self.transitions = transitions
-            self.state = [""]
-            self.halt_symbol = ""
+            self.production_rules = definition
+            self.current_word = [""]
+            self.halting_symbol = ""
             self.steps = 0
             self.from_turing_machine = False
-        self.prev = None
+
+    def init_from_turing_machine(self, tm_definition):
+        """Initialize the two tag system from a binary Turing machine"""
+        assert isinstance(tm_definition, TuringDefinition)
+        assert tm_definition.blank == '0'
+        alphabet = self.get_alphabet(tm_definition.transitions)
+        assert alphabet == {'0', '1'} or alphabet == {"0"} or alphabet == {"1"}
+
+        self.production_rules, self.current_word = self.convert_tm_to_two_tag_system(tm_definition)
+
+        self.halting_symbol = "#"
+        self.steps = 0
+        self.from_turing_machine = True
 
     @staticmethod
     def get_alphabet(transitions):
@@ -34,57 +50,92 @@ class TwoTagSystem:
         return alphabet
 
     @staticmethod
-    def convert_tm_to_instantaneous_tm(turing_machine):
-        """Convert a binary Turing machine to a form that allows executing reading and writing in a single step.
-        This duplicates the number of states.
-        For details refer to the Cocke/Minsky paper in the literature directory."""
-        assert turing_machine.definition.tape_index == 0
-        output_transitions = []
-        output_stop_states = []
-
-        for transition in turing_machine.definition.transitions.items():
-            (source_state, read_symbol), (target_state, write_symbol, direction) = transition
-            output_state = source_state + "_" + read_symbol
-            output_write_symbol = write_symbol
-            output_direction = direction
-
-            # the output form will have separate states for having read a 0 or a 1
-            if target_state in turing_machine.definition.stop_states:
-                output_state_change_0 = target_state
-                output_state_change_1 = target_state
-                output_stop_states.append(target_state)
-            else:
-                output_state_change_0 = target_state + "_0"
-                output_state_change_1 = target_state + "_1"
-
-            transition = (output_state, output_write_symbol, output_direction,
-                          output_state_change_0, output_state_change_1)
-            output_transitions.append(transition)
+    def convert_tm_to_two_tag_system(tm_definition):
+        """Convert a binary Turing machine to a two tag system.
+        For details refer to the Cocke/Minsky paper in the 'literature' directory."""
 
         # Todo: adapt and test to make it work with arbitrary TM head positions.
-        assert turing_machine.definition.tape_index == 0
+        assert tm_definition.tape_index == 0
 
-        # express the tape (which only consists of 0 and 1) as two binary numbers, m and n (left and right of the head)
+        # first, convert the Turing machine into a tm-like construct that allows reading and writing simultaneously
+
+        adapted_transitions = []  # list of transitions adapted to the tm-like construct
+
+        for transition in tm_definition.transitions.items():
+            (source_state, read_symbol), (target_state, write_symbol, direction) = transition
+            adapted_state = source_state + "_" + read_symbol
+
+            # the tm-like construct will have separate states for having read a 0 or a 1
+            if target_state in tm_definition.stop_states:
+                adapted_state_change_0 = target_state
+                adapted_state_change_1 = target_state
+            else:
+                adapted_state_change_0 = target_state + "_0"
+                adapted_state_change_1 = target_state + "_1"
+
+            adapted_transition = (adapted_state, write_symbol, direction,
+                                  adapted_state_change_0, adapted_state_change_1)
+            adapted_transitions.append(adapted_transition)
+
+        # Express the tm tape (which only has 0s and 1s) as two binary numbers, m and n (left and right of the head)
         tape_m = 0
         tape_n = 0
-        for i, symbol in enumerate(turing_machine.definition.tape):
+        for i, symbol in enumerate(tm_definition.tape):
             tape_n += int(symbol) * 2 ** i
-        output_tape = (tape_m, tape_n)
-        return output_transitions, output_tape, output_stop_states
+
+        # A special unique start state (uss) needs to be prepended since the Turing machine's original start state
+        # was split into two states and we must begin with a single start state
+        uss = "q_init_0"
+        tm_initial_state = tm_definition.initial_state
+        uss_transition = (uss, "0", ">", tm_initial_state + "_0", tm_initial_state + "_1")
+        adapted_transitions.append(uss_transition)
+
+        # Convert the start tape's two binary numbers into a two tag system's start word of the form
+        # [A x a x a x... a x B x b x b x...b x] where each a x and b x occurs m and n times, respectively.
+        # The upper case A x and B x only occur once and act as separators between the left and right hand side
+        # Each adapted state 's' will receive their own A and B variants, named a_'s' and b_'s'.
+        # In this instance, 's' is the unique start state uss. The remaining a_'s' and b_'s' will be defined later.
+        start_word = ["A_" + uss, "x"] + ["a_" + uss, "x"] * tape_m + ["B_" + uss, "x"] + ["b_" + uss, "x"] * tape_n
+
+        production_rules = {}
+
+        # convert the tm's adapted transitions to two tag system production rules
+        for adapted_transition in adapted_transitions:
+            prod_rules = TwoTagSystem.transition_to_production_rules(adapted_transition, tm_definition.stop_states)
+
+            # add the production rules for a single transition to the dictionary of all production rules
+            for key, value in prod_rules.items():
+                assert key not in production_rules
+                production_rules[key] = value
+
+        return production_rules, start_word
 
     @staticmethod
-    def encode_transition_as_2tag(transition, stop_states):
-        state_id, inst_write, inst_move, inst_change_0_id, inst_change_1_id = transition
-        if inst_change_0_id in stop_states:
-            inst_change_0_id = "#"  # set stop symbol
-        if inst_change_1_id in stop_states:
-            inst_change_1_id = "#"
-        assert inst_write in ("0", "1")
-        assert inst_move in ("<", ">")
+    def transition_to_production_rules(adapted_transition, tm_stop_states):
+        """Convert a single adapted Turing machine transition into
+        a set of multiple two tag system production rules
+        Arguments:
+            adapted_transition: The transition to be converted (5-tuple, see function convert_tm_to_two_tag_system())
+            tm_stop_states:     The Turing machine's stop states (list)"""
 
-        if inst_move == ">":
-            enc_transitions = {
-                "A$": ["C$", "x"] if inst_write == "0" else ["C$", "x", "c$", "x"],
+        tm_state, tm_write_symbol, tm_direction, tm_state_change_0, tm_state_change_1 = adapted_transition
+
+        # rename the stop states to the stopping symbol "#"
+        if tm_state_change_0 in tm_stop_states:
+            tm_state_change_0 = "#"
+        if tm_state_change_1 in tm_stop_states:
+            tm_state_change_1 = "#"
+
+        assert tm_write_symbol in ("0", "1")  # make sure the Turing machine is actually binary
+        assert tm_direction in ("<", ">")  # only left and right head movement is supported
+
+        # set up the production rules for right and left head movement according to the Cocke and Minsky paper
+        # refer to the paper in the "literature" directory for details
+        # The strings "$", "!0" and "!1" are placeholders and will be replaced by
+        # the corresponding adapted Turing machine state names.
+        if tm_direction == ">":
+            production_rules = {
+                "A$": ["C$", "x"] if tm_write_symbol == "0" else ["C$", "x", "c$", "x"],
                 "a$": ["c$", "x", "c$", "x"],
                 "B$": ["S$"],
                 "b$": ["s$"],
@@ -101,8 +152,8 @@ class TwoTagSystem:
                 "T$_0": ["B!0", "x"],
                 "t$_0": ["b!0", "x"],
             }
-        elif inst_move == "<":
-            enc_transitions = {
+        elif tm_direction == "<":
+            production_rules = {
                 # switch A and B (is now called Z)
                 "A$": ["Z$", "x"],
                 "a$": ["z$", "x"],
@@ -110,7 +161,7 @@ class TwoTagSystem:
                 "Z$": ["S$"],
                 "z$": ["s$"],
                 # B takes the role of (formerly) A
-                "B$": ["C$", "x"] if inst_write == "0" else ["C$", "x", "c$", "x"],
+                "B$": ["C$", "x"] if tm_write_symbol == "0" else ["C$", "x", "c$", "x"],
                 "b$": ["c$", "x", "c$", "x"],
                 "C$": ["D$_1", "D$_0"],
                 "c$": ["d$_1", "d$_0"],
@@ -134,171 +185,172 @@ class TwoTagSystem:
         else:
             assert False
 
-        new_enc_transitions = {}
-        for source, targets in enc_transitions.items():
-            source = source.replace("$", "_" + str(state_id))
-            new_targets = []
-            for target in targets:
-                if ("A!0" == target and inst_change_0_id == "#") or ("A!1" in target and inst_change_1_id == "#"):
+        # iterate over the production rules and make some final adaptations
+        final_production_rules = {}
+        for source_symbol, target_symbols in production_rules.items():
+            source_symbol = source_symbol.replace("$", "_" + str(tm_state))  # replace placeholder by tm state names
+
+            # iterate over the targets (right-hand side) of the production rules and make some final adaptations
+            final_targets = []
+            for target in target_symbols:
+                # set the halting symbol to the target to make the two tag system stop
+                if (target == "A!0" and tm_state_change_0 == "#") or (target == "A!1" and tm_state_change_1 == "#"):
                     target = "#"
-                else:
-                    target = target.replace("$", "_" + str(state_id))
-                    target = target.replace("!0", "_" + str(inst_change_0_id))
-                    target = target.replace("!1", "_" + str(inst_change_1_id))
-                new_targets.append(target)
-            new_enc_transitions[source] = new_targets
+                else:  # if not stopping, replace placeholders by tm state names
+                    target = target.replace("$", "_" + str(tm_state))
+                    target = target.replace("!0", "_" + str(tm_state_change_0))
+                    target = target.replace("!1", "_" + str(tm_state_change_1))
+                final_targets.append(target)
+            final_production_rules[source_symbol] = final_targets
 
-        return new_enc_transitions
+        return final_production_rules
 
-    @staticmethod
-    def encode_instantaneous_tm_as_2tag(transitions, tape, start_state, stop_states):
-        tape_m, tape_n = tape
-        ss = "q_init_0"
-        transitions.append((ss, "0", ">", start_state + "_0", start_state + "_1"))
-        # if tape_n % 2 == 0:
-        #     ss = start_state + "_0"
-        # elif tape_n % 2 == 1:
-        #     ss = start_state + "_1"
-        # else:
-        #    assert False
-        enc_tape = ["A_" + ss, "x"] + ["a_" + ss, "x"] * tape_m + ["B_" + ss, "x"] + ["b_" + ss, "x"] * tape_n
-
-        enc_transitions = {}
-
-        for transition in transitions:
-            new_transitions = TwoTagSystem.encode_transition_as_2tag(transition, stop_states)
-            for key, value in new_transitions.items():
-                assert key not in enc_transitions
-                enc_transitions[key] = value
-
-        return enc_transitions, enc_tape
-
-    @staticmethod
-    def encode_tm_to_2tag(turing_machine):
-        assert isinstance(turing_machine, TuringMachine)
-        assert turing_machine.definition.blank == '0'
-        assert TwoTagSystem.get_alphabet(turing_machine.definition.transitions) == {'0', '1'} \
-            or TwoTagSystem.get_alphabet(turing_machine.definition.transitions) == {"0"} \
-            or TwoTagSystem.get_alphabet(turing_machine.definition.transitions) == {"1"}
-        transitions, tape, stop_states = TwoTagSystem.convert_tm_to_instantaneous_tm(turing_machine)
-        transitions, tape = TwoTagSystem.encode_instantaneous_tm_as_2tag(transitions, tape,
-                                                                         turing_machine.definition.initial_state,
-                                                                         stop_states)
-        return transitions, tape
-
-    def set_input_string(self, state, halt_symbol):
+    def set_initial_word(self, initial_word, halting_symbol):
+        """Set the initial word and halting symbol. This will reset the steps counter."""
         self.steps = 0
-        self.state = list(state)
-        self.halt_symbol = halt_symbol
+        self.current_word = list(initial_word)
+        self.halting_symbol = halting_symbol
 
     def step(self):
-        first = self.state[0]
-        self.state = self.state[2:] + self.transitions[first]
+        """Compute a single step of the two tag system"""
+        # cut off the first two symbols and place the result of the production rule based on the first symbol to the
+        # end of the word
+        first_symbol = self.current_word[0]
+        self.current_word = self.current_word[2:] + self.production_rules[first_symbol]
         self.steps += 1
 
     def print_definition(self):
+        """Print a summary of the current two tag system definition"""
         alphabet = set()
-        for key, value in self.transitions.items():
+        for key, value in self.production_rules.items():
             alphabet.add(key)
             alphabet = alphabet.union(set(value))
-        print("Transitions:")
-        for key, value in self.transitions.items():
+
+        print("Production Rules:")
+        for key, value in self.production_rules.items():
             print("  {key}->{value}".format(key=key, value=value))
-        print("Number of transitions:", len(self.transitions))
+        print("Number of production rules:", len(self.production_rules))
         print("Alphabet: {}".format(sorted(alphabet)))
         print("Alphabet size: {}".format(len(alphabet)))
-        print("Initial state:", self.state)
-        print("Initial state size:", len(self.state))
+        print("Initial word:", self.current_word)
+        print("Initial word length:", len(self.current_word))
         print()
 
-    def print(self):
-        first = self.state[0]
-        if first == self.halt_symbol:
-            print("\rstep:", self.steps, "- state:", self.get_brief_state())
-            print("Halt Symbol reached.")
-        else:
-            print("\rstep:", self.steps, "- trans:", first, "->", self.transitions[first], "- state:",
-                  self.get_brief_state())
-        self.prev = first
-
     def print_summary(self):
+        """Print a summary of the current two tag system definition with a header"""
         print("Two-Tag System")
         print("--------------")
         self.print_definition()
 
-    def get_tm_tape(self):
-        assert self.from_turing_machine
-        assert self.state[0] == "#" or self.state[0].startswith("A")
-        assert self.state[1] == "x"
+    def print(self):
+        """Print the current state of the two tag system"""
+        first_symbol = self.current_word[0]
+        if first_symbol == self.halting_symbol:
+            print("\rstep:", self.steps, "- word:", self.get_brief_word())
+            print("Halting Symbol reached.")
+        else:
+            print("\rstep:", self.steps,
+                  "- rule:", first_symbol, "->", self.production_rules[first_symbol],
+                  "- word:", self.get_brief_word())
 
-        state = self.state[2:]
+    def get_word_as_tm_tape(self):
+        """Return the two tag system's current word in the form of the original binary TM's tape"""
+
+        assert self.from_turing_machine
+        # make sure the two tag system has finished a cycle that marks the beginning of a TM step
+        assert self.current_word[0] == "#" or self.current_word[0].startswith("A")
+        assert self.current_word[1] == "x"
+
+        # the word should now look like this:
+        # - a single "A x"
+        # - one or more "a x"
+        # - a single "B x"
+        # - one or more "b x"
+        # A x and B x act as separators
+
+        word = self.current_word[2:]  # cut off the initial "A x"
         m = 0
         n = 0
-        while not state[0].startswith("B"):
-            assert state[0].startswith("a") and state[1] == "x"
+
+        # count all "a x" until "B x" is reached
+        while not word[0].startswith("B"):
+            assert word[0].startswith("a") and word[1] == "x"
             m += 1
-            state = state[2:]
-        assert state[0].startswith("B") and state[1] == "x"
-        state = state[2:]
-        while state:
-            assert state[0].startswith("b") and state[1] == "x"
+            assert len(word) % 2 == 0
+            word = word[2:]
+
+        assert word[0].startswith("B") and word[1] == "x"
+        word = word[2:]  # cut off the "B x"
+
+        # count all "b x" until the end
+        while word:
+            assert word[0].startswith("b") and word[1] == "x"
             n += 1
-            if len(state) > 2:
-                state = state[2:]
-            else:
-                assert len(state) == 2
-                state = []
+            assert len(word) % 2 == 0
+            word = word[2:]
+
+        # convert numbers to binary strings, with the right string reversed
         left = bin(m)[2:] if m > 0 else ""
         right = bin(n)[2:] if n > 0 else ""
         right = "".join((reversed(right)))
-        return left + "^" + right
+        return left + "^" + right  # mark the head position with a ^
 
-    def get_brief_state(self):
-        state_copy = self.state
-        current_symbol = []
+    def get_brief_word(self):
+        """The two tag system's word will get very long if the tts was derived from a Turing machine.
+        Instead of outputting all 'a x' and 'b x' repetitions, repeated occurrences of symbol pairs will be
+        represented by the pair, followed by its count, e.g. '[a x]^5' for 5 occurrences of the 'a x' pair."""
+        word_copy = self.current_word
+        current_symbol_pair = []
         count = 0
-        brief = ""
-        while len(state_copy) >= 2:
-            symbol = state_copy[0:2]
-            state_copy = state_copy[2:]
-            if current_symbol == symbol:
+
+        brief_word = ""
+        while len(word_copy) >= 2:
+
+            # cut off a symbol pair
+            symbol_pair = word_copy[0:2]
+            word_copy = word_copy[2:]
+
+            if current_symbol_pair == symbol_pair:  # if it fits the currently counted pair, increment
                 count += 1
-            else:
-                if current_symbol:
-                    brief += "({symbol})^{count}, ".format(count=count, symbol=" ".join(current_symbol))
-                current_symbol = symbol
+            else:  # otherwise switch to the new pair and append the old one to the brief word
+                if current_symbol_pair:
+                    brief_word += "({symbol})^{count}, ".format(count=count, symbol=" ".join(current_symbol_pair))
+                current_symbol_pair = symbol_pair
                 count = 1
-        brief += "({symbol})^{count}, ".format(count=count, symbol=" ".join(current_symbol))
-        if len(state_copy) > 0:
-            brief += "({symbol})^1, ".format(symbol=" ".join(state_copy))
-        return brief
+        brief_word += "({symbol})^{count}, ".format(count=count, symbol=" ".join(current_symbol_pair))
+
+        # if a single symbol is left (odd number of symbols in the word), append it
+        if len(word_copy) > 0:
+            brief_word += "({symbol})^1, ".format(symbol=" ".join(word_copy))
+        return brief_word
 
     def run(self, brief=False, silent=False):
-        first = self.state[0]
+        """Run the two tag system until it reaches a halting symbol and stops.
+        Arguments:
+            brief:  Print updates in brief format
+            silent: Suppress any output except the final result"""
+        first_symbol = self.current_word[0]
         if not silent:
             if brief:
-                print("Number of transitions:", len(self.transitions))
-                print("Initial state:", self.get_brief_state())
+                print("Number of transitions:", len(self.production_rules))
+                print("Initial state:", self.get_brief_word())
             else:
                 self.print_definition()
-                print(first, "->", self.transitions[first])
-        while self.state[0] != self.halt_symbol:
-            if len(self.state) < 2:
-                break
+                print(first_symbol, "->", self.production_rules[first_symbol])
+        # repeat until halting symbol reached or current word becomes shorter than 2 symbols
+        while self.current_word[0] != self.halting_symbol and len(self.current_word) >= 2:
             self.step()
-            first = self.state[0]
+            first_symbol = self.current_word[0]
             if not silent:
-                if brief:
-                    if first.startswith("A"):
+                # in case of a tts based on a tm, only give status updates after one tts cycle ends
+                if brief and self.from_turing_machine:
+                    if first_symbol.startswith("A"):
                         self.print()
-                else:
+                else:  # in all other cases (brief == False or tts not based on tm), always give status updates
                     self.print()
 
+        # in case of tts based on a tm, convert the final word back to a tm tape
         if self.from_turing_machine:
             print()
             print("Final Result:")
-            m = self.state.count("a_#")
-            n = self.state.count("b_#")
-            m_str = str(bin(m))[2:] if m > 0 else ""
-            n_str = str(bin(n))[2:] if n > 0 else ""
-            print(m_str + "^" + n_str)
+            print(self.get_word_as_tm_tape())

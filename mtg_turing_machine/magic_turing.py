@@ -106,8 +106,8 @@ def main():
         print("  2 symbols, {} transitions".format(len(tm.transitions)))
         two_tag = TwoTagSystem(tm)
         print("2-tag System:")
-        alphabet = set([a for a in two_tag.transitions.keys()])
-        for key, value in two_tag.transitions.items():
+        alphabet = set([a for a in two_tag.production_rules.keys()])
+        for key, value in two_tag.production_rules.items():
             print(key, value)
         print("  {} symbols, {} transitions".format(len(alphabet), len(tm.transitions)))
         # two_tag.print()

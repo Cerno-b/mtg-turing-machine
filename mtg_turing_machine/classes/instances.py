@@ -237,7 +237,7 @@ def load_two_tag_divide_by_2():
     string_list = list(string)
 
     two_tag = TwoTagSystem(transitions)
-    two_tag.set_input_string(string_list, halt_symbol)
+    two_tag.set_initial_word(string_list, halt_symbol)
     return two_tag
 
 
@@ -252,7 +252,7 @@ def load_two_tag_collatz():
     string_list = list(string)
 
     two_tag = TwoTagSystem(transitions)
-    two_tag.set_input_string(string_list, halt_symbol)
+    two_tag.set_initial_word(string_list, halt_symbol)
     return two_tag
 
 
@@ -312,5 +312,5 @@ def load_two_tag_manually_converted_from_simple_tm():
     string_list = ["A_q_init_0", "x", 'B_q_init_0', "x"]
 
     two_tag = TwoTagSystem(transitions)
-    two_tag.set_input_string(string_list, halt_symbol)
+    two_tag.set_initial_word(string_list, halt_symbol)
     return two_tag

@@ -28,7 +28,7 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True, silent=T
     if write_to_file:
         fid = open("utm_tape.txt", "w")
 
-    transitions = two_tag_system.transitions
+    transitions = two_tag_system.production_rules
     lefts = set()
     rights = set()
     for key, targets in transitions.items():
@@ -38,27 +38,27 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True, silent=T
     only_rights = rights.difference(lefts)
 
     inputs = set()
-    for symbol in two_tag_system.state:
+    for symbol in two_tag_system.current_word:
         inputs.add(symbol)
 
     # make sure all input symbols are part of the transitions
-    assert lefts.union(rights).add(two_tag_system.halt_symbol) \
-        == lefts.union(rights).union(inputs).add(two_tag_system.halt_symbol)
+    assert lefts.union(rights).add(two_tag_system.halting_symbol) \
+        == lefts.union(rights).union(inputs).add(two_tag_system.halting_symbol)
 
     # heal inconsistencies in the 2tag definition
     for symbol in only_rights:
-        if symbol != two_tag_system.halt_symbol:
+        if symbol != two_tag_system.halting_symbol:
             transitions[symbol] = [symbol]
 
     alphabet = lefts.union(rights)
     alphabet = sorted(alphabet)
-    alphabet = [a for a in alphabet if a != two_tag_system.halt_symbol]
-    alphabet.append(two_tag_system.halt_symbol)  # make sure the halt symbol appears last for better encoding
+    alphabet = [a for a in alphabet if a != two_tag_system.halting_symbol]
+    alphabet.append(two_tag_system.halting_symbol)  # make sure the halt symbol appears last for better encoding
     if "x" in alphabet:
         alphabet = [a for a in alphabet if a != "x"]
         alphabet = ["x"] + alphabet  # make sure the x symbol appears first for better encoding
 
-    input_string = two_tag_system.state
+    input_string = two_tag_system.current_word
     if not silent:
         print(input_string)
 
