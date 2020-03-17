@@ -39,8 +39,8 @@ def main():
         utm = UniversalTuringMachine()
         # turing_machine.set_tape_string("ttbb1111111bb11b111111b1111111bb^1c1c")
         # turing_machine.set_tape_string("ttbb1bb^1c1c1c1c1c1c1c1c1c1c111c")
-        utm.set_tape_string_from_2tag(two_tag)
-        utm.run(linebreak=True)
+        utm.set_tape_string_from_two_tag(two_tag)
+        utm.run(line_break=True)
     elif version == "add_unary":
         time = 0
 
@@ -57,7 +57,7 @@ def main():
         # time = timeit.timeit(lambda: two_tag.run(silent=True), number=1)
 
         utm = UniversalTuringMachine()
-        utm.set_tape_string_from_2tag(two_tag, silent=True)
+        utm.set_tape_string_from_two_tag(two_tag, silent=True)
         time = timeit.timeit(lambda: utm.run(brief=True), number=1)
         print(time)
 
@@ -75,8 +75,8 @@ def main():
         tm = examples.load_tm2_test()
         two_tag = TwoTagSystem(tm)
         utm = UniversalTuringMachine()
-        utm.set_tape_string_from_2tag(two_tag)
-        utm.run(linebreak=True)
+        utm.set_tape_string_from_two_tag(two_tag)
+        utm.run(line_break=True)
     elif version == "tm":
         tm = examples.load_tm_make_palindrome()
         tm.run(line_break=True)
@@ -115,7 +115,7 @@ def main():
         utm = UniversalTuringMachine()
         write_to_file = True
         brief = False
-        utm.set_tape_string_from_2tag(two_tag, write_to_file=False, brief=brief)
+        utm.set_tape_string_from_two_tag(two_tag, write_to_file=False, brief=brief)
         utm.run(write_to_file=write_to_file, brief=brief)
 
 

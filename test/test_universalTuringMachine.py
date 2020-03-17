@@ -11,9 +11,9 @@ _RUN_LONG_TESTS = False
 def run_utm_from_two_tag(two_tag, string):
     two_tag.set_initial_word(string, "#")
     utm = UniversalTuringMachine()
-    utm.set_tape_string_from_2tag(two_tag)
+    utm.set_tape_string_from_two_tag(two_tag)
     utm.run(brief=True)
-    return utm.get_tape_as_2tag()
+    return utm.decode_tape_as_two_tag_word()
 
 
 def run_utm_from_tm(tm, string):
@@ -23,10 +23,10 @@ def run_utm_from_tm(tm, string):
     two_tag = TwoTagSystem(tm)
 
     utm = UniversalTuringMachine()
-    utm.set_tape_string_from_2tag(two_tag)
+    utm.set_tape_string_from_two_tag(two_tag)
     utm.run(brief=True)
 
-    two_tag_state = utm.get_tape_as_2tag()
+    two_tag_state = utm.decode_tape_as_two_tag_word()
     two_tag.set_initial_word(two_tag_state, two_tag.halting_symbol)
     tape = two_tag.get_word_as_tm_tape()
 
