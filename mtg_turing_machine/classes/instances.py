@@ -3,35 +3,11 @@ from .turing_machine import TuringDefinition
 from .two_tag_system import TwoTagSystem
 
 
-def load_tm2_test():
-    transitions = {
-        ("qs", "0"): ("qs",   "0", ">"),
-        ("qs", "1"): ("q0",   "0", ">"),
-        ("q0", "0"): ("q1",   "0", ">"),
-        ("q0", "1"): ("q0",   "1", ">"),
-        ("q1", "0"): ("q1",   "0", ">"),
-        ("q1", "1"): ("q2",   "1", ">"),
-        ("q2", "0"): ("q6",   "0", "<"),
-        ("q2", "1"): ("q3",   "0", "<"),
-        ("q3", "0"): ("qerr", "0", "<"),
-        ("q3", "1"): ("q4",   "0", "<"),
-        ("q4", "0"): ("q4",   "0", "<"),
-        ("q4", "1"): ("q5",   "1", ">"),
-        ("q5", "0"): ("q0",   "1", ">"),
-        ("q5", "1"): ("qerr", "1", ">"),
-        ("q6", "0"): ("qerr", "0", ">"),
-        ("q6", "1"): ("qend", "0", "<"),
-    }
-    tape = "11011001101"
-    tape_index = 0
-    initial_state = "qs"
-    blank = "0"
-    stop_states = ["qend", "qerr"]
-    definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index, blank=blank)
-    return TuringMachine(definition)
-
-
 def load_tm_add_unary():
+    """Turing Machine 'Unary Adder'.
+    Computes the sum of two numbers in unary.
+    This machine has three symbols for testing purposes.
+    Check load_tm_add_unary_two_symbol() for an example with just two symbols"""
     transitions = {
         ("q0", "1"): ("q0", "1", ">"),
         ("q0", "x"): ("q1", "x", ">"),
@@ -49,6 +25,9 @@ def load_tm_add_unary():
 
 
 def load_tm_add_unary_two_symbol():
+    """Turing Machine 'Unary Adder'.
+    Optimized version of load_tm_add_unary() that only has two symbols.
+    This makes the machine a binary Turing Machine."""
     transitions = {
         ("q0", "1"): ("q0", "1", ">"),
         ("q0", "0"): ("q1", "0", ">"),
@@ -67,6 +46,8 @@ def load_tm_add_unary_two_symbol():
 
 
 def load_tm_write_one():
+    """Turing Machine 'Write 1'.
+    Very simplistic machine that replaces the current symbol with 1."""
     transitions = {
         ("q0", "0"): ("qend", "1", ">"),
         ("q0", "1"): ("qend", "1", ">")
@@ -81,6 +62,8 @@ def load_tm_write_one():
 
 
 def load_tm_write_one_two():
+    """Turing Machine 'Write 1 2'.
+    Simplistic machine that replaces the next two symbols with 1 and 2"""
     transitions = {
         ("q0", "0"): ("q1", "1", ">"),
         ("q0", "1"): ("q1", "1", ">"),
@@ -97,6 +80,8 @@ def load_tm_write_one_two():
 
 
 def load_tm_add_one():
+    """Turing Machine 'Add 1'.
+    Adds an additional 1 to the end of a string of ones."""
     transitions = {
         ("q0", "1"): ("q0", "1", ">"),
         ("q0", "0"): ("qend", "1", ">")
@@ -111,6 +96,8 @@ def load_tm_add_one():
 
 
 def load_tm_make_palindrome():
+    """Turing Machine 'Make Palindrome'.
+    Appends the input tape to the end in reversed form to create a palindrome."""
     transitions = {
         ("q0", "0"): ("q0", "0", ">"),
         ("q0", "1"): ("q0", "1", ">"),
@@ -148,6 +135,8 @@ def load_tm_make_palindrome():
 
 
 def load_tm_dec_to_bin():
+    """Turing Machine 'Decimal to Binary Converter'.
+    Reads a decimal number from the tape and replaces it with its binary representation."""
     transitions = {
         ("q0", "0"): ("q0", "0", ">"),
         ("q0", "1"): ("q0", "1", ">"),
@@ -227,7 +216,9 @@ def load_tm_dec_to_bin():
     return TuringMachine(definition)
 
 
-def load_two_tag_divide_by_2():
+def load_two_tag_cut_in_half():
+    """Two Tag System 'Cut In Half'. 
+    Trivial two tag system that takes the input word and removes each second letter."""
     transitions = {
         "X": ["X"],
         ":": ["i"],
@@ -242,6 +233,8 @@ def load_two_tag_divide_by_2():
 
 
 def load_two_tag_collatz():
+    """Two Tag System 'Compute Collatz Sequence'.
+    Computes a Collatz sequence (https://en.wikipedia.org/wiki/Tag_system#Example:_Computation_of_Collatz_sequences)"""
     transitions = {
         "a": ["b", "c"],
         "b": ["a"],
@@ -257,6 +250,8 @@ def load_two_tag_collatz():
 
 
 def load_two_tag_manually_converted_from_simple_tm():
+    """Two Tag System 'Converted From TM'.
+    A two tag system manually converted from a simple Turing machine unit testing the conversion process."""
     transitions = {
         'A_q_init_0': ['C_q_init_0', 'x'],
         'C_q_init_0': ['D_q_init_0_1', 'D_q_init_0_0'],

@@ -26,15 +26,15 @@ def run_two_tag_from_tm(tm, tape):
 
 class TestTwoTagSystem(unittest.TestCase):
     def test_divide_by_two(self):
-        two_tag = examples.load_two_tag_divide_by_2()
+        two_tag = examples.load_two_tag_cut_in_half()
         state = run_two_tag(two_tag, "XXXXXXXX#")
         self.assertEqual(state, ["#", "X", "X", "X", "X"])
 
-        two_tag = examples.load_two_tag_divide_by_2()
+        two_tag = examples.load_two_tag_cut_in_half()
         state = run_two_tag(two_tag, "X:X:X:X:#")
         self.assertEqual(state, ["#", "X", "X", "X", "X"])
 
-        two_tag = examples.load_two_tag_divide_by_2()
+        two_tag = examples.load_two_tag_cut_in_half()
         state = run_two_tag(two_tag, "XX::XX::#")
         self.assertEqual(state, ["#", "X", "i", "X", "i"])
 

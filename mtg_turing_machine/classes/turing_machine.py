@@ -280,6 +280,7 @@ class TuringMachine:
         for symbol in self.definition.tape:
             new_tape += _to_binary(symbol_to_idx_lookup[symbol], bit_depth)
         new_tape = list(new_tape)
+        tape_index = self.definition.tape_index * bit_depth
 
         # overwrite members, the old definition will be lost
         self.has_been_binarized = True
@@ -289,7 +290,7 @@ class TuringMachine:
 
         self.definition.transitions = new_transitions
         self.definition.stop_states = new_stop_states
-        self.definition.tape_index = 0
+        self.definition.tape_index = tape_index
         self.definition.tape = new_tape
         self.definition.blank = "0"
         self.definition.initial_state = self.definition.initial_state + "_" + str(0)

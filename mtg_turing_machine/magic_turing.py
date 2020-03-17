@@ -35,7 +35,7 @@ def main():
     version = "add_unary"
 
     if version == "utm":
-        two_tag = examples.load_two_tag_divide_by_2()
+        two_tag = examples.load_two_tag_cut_in_half()
         utm = UniversalTuringMachine()
         # turing_machine.set_tape_string("ttbb1111111bb11b111111b1111111bb^1c1c")
         # turing_machine.set_tape_string("ttbb1bb^1c1c1c1c1c1c1c1c1c1c111c")
@@ -62,7 +62,7 @@ def main():
         print(time)
 
     elif version == "2tag":
-        two_tag = examples.load_two_tag_divide_by_2()
+        two_tag = examples.load_two_tag_cut_in_half()
         two_tag.run()
     elif version == "2tm":
         tm = examples.load_tm2_test()
