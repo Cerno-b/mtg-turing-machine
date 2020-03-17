@@ -13,7 +13,7 @@ def run_turing_machine(turing_machine, tape=None, convert_to_binary_tm=False):
         turing_machine.set_tape_string(tape)
     if convert_to_binary_tm:
         turing_machine.convert_to_two_symbol()
-    turing_machine.run()
+    turing_machine.run(brief=True)
     return turing_machine.get_stripped_tape(decode_binarized=turing_machine.has_been_binarized)
 
 
