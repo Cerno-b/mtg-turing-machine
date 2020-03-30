@@ -233,6 +233,14 @@ class UniversalTuringMachine:
         """Return UTM's tape"""
         return self._tm.definition.tape
 
+    def get_tape_index(self):
+        """Return the UTM's tape index"""
+        return self._tm.definition.tape_index
+
+    def get_transition(self):
+        """Return the UTM's transition function"""
+        return self._tm.definition.transitions
+
     def run(self, line_break=False, write_to_file=False, brief=False):
         """Run the UTM until it finishes.
         Arguments:

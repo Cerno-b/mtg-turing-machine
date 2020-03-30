@@ -3,12 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="1e8bc94f-c7fb-4c8e-ae8e-5ed22cc917e3" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Cerno_B.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/classes/instances.py" beforeDir="false" afterPath="$PROJECT_DIR$/mtg_turing_machine/classes/instances.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/classes/turing_machine.py" beforeDir="false" afterPath="$PROJECT_DIR$/mtg_turing_machine/classes/turing_machine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/magic_turing.py" beforeDir="false" afterPath="$PROJECT_DIR$/mtg_turing_machine/magic_turing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_turingMachine.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_turingMachine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_twoTagSystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_twoTagSystem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_universalTuringMachine.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_universalTuringMachine.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/classes/universal_turing_machine.py" beforeDir="false" afterPath="$PROJECT_DIR$/mtg_turing_machine/classes/universal_turing_machine.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,12 +17,12 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test_universalTuringMachine.py">
+        <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/universal_turing_machine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="25" column="45" lean-forward="true" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
+            <state relative-caret-position="494">
+              <caret line="240" column="47" selection-start-line="240" selection-start-column="47" selection-end-line="240" selection-end-column="47" />
               <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#0#10#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -33,31 +31,31 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/turing_machine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="282" column="45" lean-forward="true" selection-start-line="282" selection-start-column="45" selection-end-line="282" selection-end-column="45" />
+            <state relative-caret-position="735">
+              <caret line="157" column="101" lean-forward="true" selection-start-line="157" selection-start-column="20" selection-end-line="157" selection-end-column="101" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/universal_turing_machine.py">
+        <entry file="file://$PROJECT_DIR$/test/test_turingMachine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
+            <state relative-caret-position="289">
+              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
               <folding>
-                <element signature="e#0#10#0" expanded="true" />
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/test_turingMachine.py">
+        <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="603">
-              <caret line="140" lean-forward="true" selection-start-line="140" selection-end-line="140" />
+            <state relative-caret-position="765">
+              <caret line="147" column="55" selection-start-line="147" selection-start-column="55" selection-end-line="147" selection-end-column="55" />
               <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#0#12#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -66,7 +64,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://C:/Python35/Lib/unittest/case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
+            <state relative-caret-position="10030">
               <caret line="603" selection-start-line="603" selection-end-line="603" />
             </state>
           </provider>
@@ -75,7 +73,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://C:/Python35/Lib/unittest/suite.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
+            <state relative-caret-position="1360">
               <caret line="83" selection-start-line="83" selection-end-line="83" />
             </state>
           </provider>
@@ -84,7 +82,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://C:/Python35/Lib/unittest/runner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="532">
+            <state relative-caret-position="3655">
               <caret line="220" selection-start-line="220" selection-end-line="220" />
             </state>
           </provider>
@@ -93,7 +91,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/teamcity/unittestpy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
+            <state relative-caret-position="5066">
               <caret line="307" selection-start-line="307" selection-end-line="307" />
             </state>
           </provider>
@@ -102,17 +100,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://C:/Python35/Lib/unittest/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
+            <state relative-caret-position="938">
               <caret line="93" selection-start-line="93" selection-end-line="93" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/_jb_unittest_runner.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="34" selection-start-line="34" selection-end-line="34" />
             </state>
           </provider>
         </entry>
@@ -128,10 +117,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>rogo</find>
-      <find>_tm</find>
-      <find>old</find>
-      <find>new</find>
       <find>get_alphabet</find>
       <find>transitions</find>
       <find>encode_tm_to_2tag</find>
@@ -158,6 +143,10 @@
       <find>load_tm2_test</find>
       <find>_to_binary</find>
       <find>test_run_write_one</find>
+      <find>get_tape</find>
+      <find>definition</find>
+      <find>index</find>
+      <find>get</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -187,18 +176,19 @@
         <option value="$PROJECT_DIR$/test/test_universalTuringMachine.py" />
         <option value="$PROJECT_DIR$/test/test_twoTagSystem.py" />
         <option value="$PROJECT_DIR$/mtg_turing_machine/classes/two_tag_system.py" />
-        <option value="$PROJECT_DIR$/mtg_turing_machine/classes/universal_turing_machine.py" />
         <option value="$PROJECT_DIR$/mtg_turing_machine/classes/instances.py" />
         <option value="$PROJECT_DIR$/mtg_turing_machine/classes/turing_machine.py" />
         <option value="$PROJECT_DIR$/test/test_turingMachine.py" />
+        <option value="$PROJECT_DIR$/mtg_turing_machine/classes/universal_turing_machine.py" />
+        <option value="$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2" />
-    <option name="y" value="2" />
-    <option name="width" value="1022" />
-    <option name="height" value="726" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="974" />
+    <option name="height" value="1167" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -238,7 +228,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/catan_card" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -258,30 +248,38 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in test_turingMachine.py">
-    <configuration name="Unittests for test_turingMachine.TestTuringMachine.test_run_write_one_as_2_symbol" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.mtg_turing_machine">
+    <configuration name="mtg_turing_machine" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="pycode" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Python36\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/mtg_turing_machine/classes" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_turingMachine.TestTuringMachine.test_run_write_one_as_2_symbol&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <configuration name="Unittests for test_turingMachine.TestTuringMachine.test_run_write_one_two_as_2_sybol" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="pycode" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Python36\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_pattern" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;test_turingMachine.TestTuringMachine.test_run_write_one_two_as_2_sybol&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
@@ -291,11 +289,12 @@
       <module name="pycode" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Python36\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_pattern" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;test_turingMachine.TestTuringMachine.test_run_write_one_two_as_2_symbol&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
@@ -305,11 +304,12 @@
       <module name="pycode" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Python36\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_pattern" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;$PROJECT_DIR$/test&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
@@ -319,30 +319,31 @@
       <module name="pycode" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Python36\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_pattern" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;$PROJECT_DIR$/test/test_turingMachine.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python tests.Unittests for test_turingMachine.TestTuringMachine.test_run_write_one_as_2_symbol" />
       <item itemvalue="Python tests.Unittests for test_turingMachine.TestTuringMachine.test_run_write_one_two_as_2_sybol" />
       <item itemvalue="Python tests.Unittests for test_turingMachine.TestTuringMachine.test_run_write_one_two_as_2_symbol" />
-      <item itemvalue="Python tests.Unittests in test_turingMachine.py" />
       <item itemvalue="Python tests.Unittests in test" />
+      <item itemvalue="Python tests.Unittests in test_turingMachine.py" />
+      <item itemvalue="Python.mtg_turing_machine" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.mtg_turing_machine" />
         <item itemvalue="Python tests.Unittests in test_turingMachine.py" />
         <item itemvalue="Python tests.Unittests in test" />
         <item itemvalue="Python tests.Unittests for test_turingMachine.TestTuringMachine.test_run_write_one_two_as_2_symbol" />
         <item itemvalue="Python tests.Unittests for test_turingMachine.TestTuringMachine.test_run_write_one_two_as_2_sybol" />
-        <item itemvalue="Python tests.Unittests for test_turingMachine.TestTuringMachine.test_run_write_one_as_2_symbol" />
       </list>
     </recent_temporary>
   </component>
@@ -360,24 +361,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_for_test_turingMachine_TestTuringMachine_test_run_write_one_two_as_2_sybol - 2020.03.17 at 18h 42m 29s.xml">
-      <configuration name="Unittests for test_turingMachine.TestTuringMachine.test_run_write_one_two_as_2_sybol" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_for_test_turingMachine_TestTuringMachine_test_run_write_one_two_as_2_symbol - 2020.03.17 at 18h 42m 44s.xml">
-      <configuration name="Unittests for test_turingMachine.TestTuringMachine.test_run_write_one_two_as_2_symbol" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_for_test_turingMachine_TestTuringMachine_test_run_write_one_two_as_2_symbol - 2020.03.17 at 18h 43m 29s.xml">
-      <configuration name="Unittests for test_turingMachine.TestTuringMachine.test_run_write_one_two_as_2_symbol" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.17 at 18h 45m 54s.xml">
-      <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.17 at 18h 47m 35s.xml">
-      <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.17 at 18h 51m 35s.xml">
-      <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
-    </history-entry>
     <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.17 at 18h 52m 15s.xml">
       <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
     </history-entry>
@@ -390,12 +373,30 @@
     <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.17 at 18h 57m 13s.xml">
       <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
     </history-entry>
+    <history-entry file="Unittests_in_test - 2020.03.17 at 18h 58m 48s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2020.03.17 at 18h 59m 32s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.17 at 18h 59m 37s.xml">
+      <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.17 at 18h 59m 57s.xml">
+      <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.17 at 19h 00m 08s.xml">
+      <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.17 at 19h 00m 30s.xml">
+      <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49904215" visible="true" weight="0.18018967" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49904215" visible="true" weight="0.18018967" />
       <window_info id="Structure" order="1" sideWeight="0.50095785" side_tool="true" weight="0.24973656" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.32885906" />
@@ -431,11 +432,6 @@
           <url>file://$PROJECT_DIR$/universal_turing_machine.py</url>
           <line>51</line>
           <option name="timeStamp" value="144" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/test_turingMachine.py</url>
-          <line>123</line>
-          <option name="timeStamp" value="157" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/mtg_turing_machine/classes/turing_machine.py</url>
@@ -549,9 +545,7 @@
         <state relative-caret-position="-2300" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/rogozhin.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/rogozhin.txt" />
     <entry file="file://$PROJECT_DIR$/mtg_turing_machine/magic_turing.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
@@ -592,30 +586,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_universalTuringMachine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="25" column="45" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python35/Lib/unittest/case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10030">
+          <caret line="603" selection-start-line="603" selection-end-line="603" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://C:/Python35/Lib/unittest/suite.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
+        <state relative-caret-position="1360">
           <caret line="83" selection-start-line="83" selection-end-line="83" />
         </state>
       </provider>
     </entry>
     <entry file="file://C:/Python35/Lib/unittest/runner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
+        <state relative-caret-position="3655">
           <caret line="220" selection-start-line="220" selection-end-line="220" />
         </state>
       </provider>
     </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/teamcity/unittestpy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
+        <state relative-caret-position="5066">
           <caret line="307" selection-start-line="307" selection-end-line="307" />
         </state>
       </provider>
     </entry>
     <entry file="file://C:/Python35/Lib/unittest/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
+        <state relative-caret-position="938">
           <caret line="93" selection-start-line="93" selection-end-line="93" />
         </state>
       </provider>
@@ -627,46 +638,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Python35/Lib/unittest/case.py">
+    <entry file="file://$PROJECT_DIR$/test/test_turingMachine.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="603" selection-start-line="603" selection-end-line="603" />
+        <state relative-caret-position="289">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/rogozhin_utm_2_18.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="38" lean-forward="true" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/universal_turing_machine.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
+        <state relative-caret-position="494">
+          <caret line="240" column="47" selection-start-line="240" selection-start-column="47" selection-end-line="240" selection-end-column="47" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_universalTuringMachine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="25" column="45" lean-forward="true" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/turing_machine.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="282" column="45" lean-forward="true" selection-start-line="282" selection-start-column="45" selection-end-line="282" selection-end-column="45" />
+        <state relative-caret-position="735">
+          <caret line="157" column="101" lean-forward="true" selection-start-line="157" selection-start-column="20" selection-end-line="157" selection-end-column="101" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test_turingMachine.py">
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="603">
-          <caret line="140" lean-forward="true" selection-start-line="140" selection-end-line="140" />
+        <state relative-caret-position="765">
+          <caret line="147" column="55" selection-start-line="147" selection-start-column="55" selection-end-line="147" selection-end-column="55" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
