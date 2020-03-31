@@ -24,11 +24,21 @@ class UniversalTuringMachine:
         self.from_binary_turing_machine = False
         self.symbol_encodings = {}
 
+    def overwrite_tape_string(self, string):
+        """Overwrite an existing UTM's tape. The same as set_tape_string() with the difference that the internal
+        states of the UTM are not changed, especially the symbol encodings and information about the UTM's source.
+        Arguments:
+            string: The tape in string form.
+                    Expects to find exactly one head marker (^) right before the head position."""
+        assert string.count("^") == 1
+        self._tm.definition.tape_index = string.index("^")
+        self._tm.definition.tape = [symbol for symbol in string if symbol != "^"]
+
     def set_tape_string(self, string):
         """Set the UTM's tape.
         Arguments:
             string: The tape in string form.
-            Expects to find exactly one head marker (^) right before the head position."""
+                    Expects to find exactly one head marker (^) right before the head position."""
         assert string.count("^") == 1
         self._tm.definition.tape_index = string.index("^")
         self._tm.definition.tape = [symbol for symbol in string if symbol != "^"]
