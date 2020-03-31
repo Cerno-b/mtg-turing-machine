@@ -51,6 +51,8 @@ TOKEN_NAME_LOOKUP = {
 
 GREEN = "green"
 WHITE = "white"
+BLACK = "black"
+BLUE = "blue"
 
 XATHRID_NECROMANCER = "Xathrid Necromancer"
 ROTLUNG_REANIMATOR = "Rotlung Reanimator"
@@ -68,6 +70,7 @@ class Player:
         self.table_tape = set()
         self.table_control = []
         self.table_rest = []
+        self.win = False
 
     def print(self):
         print("Hand:")
@@ -152,8 +155,6 @@ class MagicTheGatheringTuringMachine:
         self.set_up_controllers(utm)
         self.set_up_remaining_cards()
         self.set_up_libraries()
-
-        self.stopped = False
 
     def print_tape(self):
         sorted_tokens = sorted(self.bob.table_tape, key=lambda t: t.power_toughness)
@@ -241,16 +242,16 @@ class MagicTheGatheringTuringMachine:
             name = ROTLUNG_REANIMATOR if target_state == "q1" else XATHRID_NECROMANCER
             phased_in = True if source_state == "q1" else False
             if target_state == "-":
-                color = "blue"
+                color = BLUE
             else:
                 color = WHITE if head_dir == "L" else GREEN
 
             if name == ROTLUNG_REANIMATOR:
                 text = f"Whenever Rotlung Reanimator or another [{trigger_type}] dies, create a 2/2 [{color}] [{target_type}] creature token"
-                gen_token = Token(target_type, color, 2, tapped=False)
+                gen_token = Token(write_symbol, color, 2, tapped=False)
             elif name == XATHRID_NECROMANCER:
                 text = f"Whenever Xathrid Necromancer or another [{trigger_type}] creature you control dies, create a tapped 2/2 [{color}] [{target_type}] creature token."
-                gen_token = Token(target_type, color, 2, tapped=True)
+                gen_token = Token(write_symbol, color, 2, tapped=True)
             else:
                 assert False
 
@@ -265,23 +266,41 @@ class MagicTheGatheringTuringMachine:
 
             control_cards.append(controller_card)
 
-        # add two special controllers that create more tokens once the end of the tape is reached.
+        # add two special controllers for Bob that create more tokens once the end of the tape is reached.
         # the cards do not phase like the rest
-        special_controllers = [
+        special_controllers_bob = [
             ("<", "<", GREEN),
             (">", ">", WHITE)
             ]
 
-        for read_symbol, write_symbol, color in special_controllers:
+        for read_symbol, write_symbol, color in special_controllers_bob:
             trigger_type = TOKEN_LOOKUP[read_symbol]
             target_type = TOKEN_LOOKUP[write_symbol]
             text = f"Whenever Rotlung Reanimator or another [{trigger_type}] dies, create a 2/2 [{color}] [{target_type}] creature token"
             controller_card = Card(ROTLUNG_REANIMATOR, text=text)
             controller_card.traits["trigger"] = read_symbol
-            controller_card.traits["gen_token"] =Token(target_type, color, 2, tapped=False)
+            controller_card.traits["gen_token"] = Token(write_symbol, color, 2, tapped=False)
             control_cards.append(controller_card)
 
         self.bob.table_control = control_cards
+
+        # add two special controllers for Alice that help adding more tokens once the end of the tape is reached
+        special_controllers_alice = [
+            ("<", "C", BLACK),
+            (">", "C", BLACK)
+        ]
+
+        control_cards = []
+        for read_symbol, write_symbol, color in special_controllers_alice:
+            trigger_type = TOKEN_LOOKUP[read_symbol]
+            target_type = TOKEN_LOOKUP[write_symbol]
+            text = f"Whenever Rotlung Reanimator or another [{trigger_type}] dies, create a 2/2 [{color}] [{target_type}] creature token"
+            controller_card = Card(ROTLUNG_REANIMATOR, text=text)
+            controller_card.traits["trigger"] = read_symbol
+            controller_card.traits["gen_token"] = Token(write_symbol, color, 2, tapped=False)
+            control_cards.append(controller_card)
+
+        self.alice.table_control = control_cards
 
     def set_up_remaining_cards(self):
         """Set up the remaining table cards that control the game flow."""
@@ -291,8 +310,6 @@ class MagicTheGatheringTuringMachine:
             ("Dread of Night", "[Black] creatures get -1/-1."),
             ("Dread of Night", "[Black] creatures get -1/-1."),
             ("Fungus Sliver", 'All [Incarnation] creatures have "Whenever this creature is dealt damage, put a +1/+1 counter on it."'),
-            (ROTLUNG_REANIMATOR, "Whenever Rotlung Reanimator or another [Lhurgoyf] dies, create a 2/2 black [Cephalid] creature token."),
-            (ROTLUNG_REANIMATOR, "Whenever Rotlung Reanimator or another [Rat] dies, create a 2/2 black [Cephalid] creature token."),
             ("Shared Triumph", "As Shared Triumph enters the battlefield, choose a creature type. Creatures of the chosen type get +1/+1. [Choice: Lhurgoyf]"),
             ("Shared Triumph", "As Shared Triumph enters the battlefield, choose a creature type. Creatures of the chosen type get +1/+1. [Choice: Rat]"),
             ("Vigor", "Trample. If damage would be dealt to another creature you control, prevent that damage. Put a +1/+1 counter on that creature for each 1 damage prevented this way. "
@@ -348,9 +365,9 @@ class MagicTheGatheringTuringMachine:
         for token in self.bob.table_tape:
             if token.power_toughness == 2:
                 self.bob.table_tape.remove(token)
-                for card in self.bob.table_control:
-                    if card.traits["trigger"] == token.creature_type:
-                        new_token = copy.copy(card.traits["gen_token"])  # new token belongs to Bob
+                for head_control_card in self.bob.table_control:
+                    if head_control_card.traits["trigger"] == token.creature_type:
+                        new_token = copy.copy(head_control_card.traits["gen_token"])  # new token belongs to Bob
 
                         # move Illusory Gains to new token
                         alice_head = list(self.alice.table_tape)[0]
@@ -358,9 +375,42 @@ class MagicTheGatheringTuringMachine:
                         new_token.attach(illusory_gains)  # this now belongs to Alice
                         assert illusory_gains.name == "Illusory Gains"
 
+                        # Shared Triumph increases power and toughness for end-of-tape tokens
+                        if new_token.creature_type in ["<", ">"]:
+                            new_token.power_toughness += 1
+
                         self.alice.table_tape.remove(alice_head)
                         self.alice.table_tape.add(new_token)
                         self.bob.table_tape.add(alice_head)
+
+                        # in case an end-of tape token (Lhurgoyf "<" or Rat ">") was created, Alice's Rotlung Reanimator
+                        # triggers and creates a 2/2 Cephalid token, which due to Dread of Night, immediately dies.
+                        # This triggers another of Bob's control cards. In the following, we skip the Cephalid
+                        # creation and destruction and immediately trigger the control card that reacts to a dying
+                        # Cephalid.
+                        # When the original Lhurgoyf or Rat triggered Bob's Rotlung Reanimator, it was recreated
+                        # as a new Lhurgoyf or Rat with 3/3. This step adds the actual 2/2 tape symbol. Remember that
+                        # Lhurgoyf and Rat are just end of tape markers for the MTG Turing machine, they do not exist
+                        # in the original machine.
+                        if new_token.creature_type in ["<", ">"]:
+                            for edge_control_card in self.bob.table_control:
+                                if edge_control_card.traits["trigger"] == "C":  # C is Cephalid
+                                    new_token = copy.copy(edge_control_card.traits["gen_token"])  # new token belongs to Bob
+
+                                    # move Illusory Gains to new token
+                                    alice_head = list(self.alice.table_tape)[0]
+                                    illusory_gains = alice_head.detach()  # this now belongs to Bob
+                                    new_token.attach(illusory_gains)  # this now belongs to Alice
+                                    assert illusory_gains.name == "Illusory Gains"
+
+                                    # Shared Triumph increases power and toughness for end-of-tape tokens
+                                    if new_token.creature_type in ["<", ">"]:
+                                        new_token.power_toughness += 1
+
+                                    self.alice.table_tape.remove(alice_head)
+                                    self.alice.table_tape.add(new_token)
+                                    self.bob.table_tape.add(alice_head)
+
 
 
     def step_cleansing_beam(self):
@@ -380,7 +430,14 @@ class MagicTheGatheringTuringMachine:
         head_token.power_toughness += 2
 
     def step_coalition_victory(self):
-        pass
+        """The machine halts when Alice wins the game. Coalition Victory immediately does so if Alice has lands
+        of every color and creatures of every color. The first condition is always true due to Prismatic Omen.
+        The second condition is almost true, since all her creatures have been given all colors except blue
+        via Prismatic Lace during the set up step. The missing blue creature is generated by the Turing machine if
+        a Rhino "c1<" is read in state q1. The corresponding Rotlung Reanimator creates a blue Assassin, which will
+        trigger the win condition of Coalition Victory in this step."""
+        if list(self.alice.table_tape)[0].color == BLUE:
+            self.alice.win = True
 
     def step_soul_snuffers(self):
         """Soul Snuffers performs the second part of the head movement (read the step_infest() comment).
@@ -455,6 +512,9 @@ class MagicTheGatheringTuringMachine:
         # is called here and not during the untap step.
         self.untap_alice()
 
+        if self.alice.win:
+            return
+
         # -- draw step --
         assert len(self.alice.hand) == 0
         self.alice.hand.append(self.alice.library.get())
@@ -486,7 +546,7 @@ class MagicTheGatheringTuringMachine:
         # == ENDING PHASE == (nothing to do)
 
     def run(self):
-        while not self.stopped:
+        while not self.alice.win:
             self.step()
 
     def get_utm(self):
