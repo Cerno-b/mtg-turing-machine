@@ -1,10 +1,9 @@
-import sys
 import timeit
 
-from universal_turing_machine import UniversalTuringMachine
-from two_tag_system import TwoTagSystem, encode_tm_to_2tag
+from mtg_turing_machine.classes.universal_turing_machine import UniversalTuringMachine
+from mtg_turing_machine.classes.two_tag_system import TwoTagSystem, encode_tm_to_2tag
 
-import definitions
+import mtg_turing_machine.classes.instances as examples
 
 
 # def load_tm_test():
@@ -36,7 +35,7 @@ def main():
     version = "add_unary"
 
     if version == "utm":
-        two_tag = definitions.load_two_tag_divide_by_2()
+        two_tag = examples.load_two_tag_divide_by_2()
         utm = UniversalTuringMachine()
         # turing_machine.set_tape_string("ttbb1111111bb11b111111b1111111bb^1c1c")
         # turing_machine.set_tape_string("ttbb1bb^1c1c1c1c1c1c1c1c1c1c111c")
@@ -45,7 +44,7 @@ def main():
     elif version == "add_unary":
         time = 0
 
-        tm = definitions.load_tm_add_unary()
+        tm = examples.load_tm_add_unary()
         tm.set_tape_string("11x111")
         tm.print_summary()
         # tm.run()
@@ -63,32 +62,32 @@ def main():
         print(time)
 
     elif version == "2tag":
-        two_tag = definitions.load_two_tag_divide_by_2()
+        two_tag = examples.load_two_tag_divide_by_2()
         two_tag.run()
     elif version == "2tm":
-        tm = definitions.load_tm2_test()
+        tm = examples.load_tm2_test()
         tm.run(linebreak=True)
     elif version == "2tm_2tag":
-        tm = definitions.load_tm2_test()
+        tm = examples.load_tm2_test()
         two_tag = TwoTagSystem(tm)
         two_tag.run()
     elif version == "2tm_2tag_utm":
-        tm = definitions.load_tm2_test()
+        tm = examples.load_tm2_test()
         two_tag = TwoTagSystem(tm)
         utm = UniversalTuringMachine()
         utm.set_tape_string_from_2tag(two_tag)
         utm.run(linebreak=True)
     elif version == "tm":
-        tm = definitions.load_tm_make_palindrome()
+        tm = examples.load_tm_make_palindrome()
         tm.run(linebreak=True)
     elif version == "tm_2tm":
-        tm = definitions.load_tm_make_palindrome()
+        tm = examples.load_tm_make_palindrome()
         tm.convert_to_two_symbol()
         print(tm.binarized_bit_depth)
         tm.run(linebreak=True)
         print("Decoded tape:", tm.decode_binarized_tape())
     elif version == "tm_2tm_2tag":
-        tm = definitions.load_tm_make_palindrome()
+        tm = examples.load_tm_make_palindrome()
         print("Original Machine:")
         tm.print(linebreak=True)
         tm.convert_to_two_symbol()
@@ -98,7 +97,7 @@ def main():
         print("2-tag System")
         two_tag.run(brief=True)
     elif version == "tm_2tm_2tag_utm":
-        tm = definitions.load_tm_write_one()
+        tm = examples.load_tm_write_one()
         print("Original Machine:")
         alphabet = set([a for _, a in tm.transitions.keys()])
         print("  {} symbols, {} transitions".format(len(alphabet), len(tm.transitions)))

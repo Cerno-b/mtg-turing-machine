@@ -1,6 +1,7 @@
 import sys
+import os
 
-from turing_machine import TuringMachine
+from .turing_machine import TuringMachine
 
 
 def simplify_tape(tape):
@@ -66,7 +67,12 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True, silent=T
     previous_transition_length = 0
     previous_encoding = 0
     for letter in alphabet:
+        print(letter)
+        print("prev enc", previous_encoding)
+        print("prev len", previous_transition_length)
         letter_encodings[letter] = previous_encoding + previous_transition_length + 1
+        print("enc", letter_encodings[letter])
+        print()
         previous_encoding = letter_encodings[letter]
         if letter in transitions:
             transition = transitions[letter]
@@ -158,7 +164,9 @@ def encode_2tag_to_utm(two_tag_system, brief=False, write_to_file=True, silent=T
 
 class UniversalTuringMachine:
     def __init__(self):
-        self._tm = TuringMachine("rogozhin.txt")
+        current_dir = os.path.dirname(__file__)
+        rogozhin_definition_path = os.path.join(current_dir, "rogozhin.txt")
+        self._tm = TuringMachine(rogozhin_definition_path)
         self._tm.blank = "1<"
         self.letter_encodings = {}
 

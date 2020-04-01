@@ -1,4 +1,4 @@
-from turing_machine import TuringMachine, TuringDefinition
+from .turing_machine import TuringMachine, TuringDefinition
 
 
 def get_alphabet(transitions):

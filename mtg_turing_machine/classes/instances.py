@@ -1,6 +1,6 @@
-from turing_machine import TuringMachine
-from turing_machine import TuringDefinition
-from two_tag_system import TwoTagSystem
+from .turing_machine import TuringMachine
+from .turing_machine import TuringDefinition
+from .two_tag_system import TwoTagSystem
 
 
 def load_tm2_test():
@@ -314,4 +314,3 @@ def load_two_tag_manually_converted_from_simple_tm():
     two_tag = TwoTagSystem(transitions)
     two_tag.set_input_string(string_list, halt_symbol)
     return two_tag
-

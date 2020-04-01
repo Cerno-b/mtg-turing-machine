@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1e8bc94f-c7fb-4c8e-ae8e-5ed22cc917e3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/literature/1-s2.0-S0304397596000771-main.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/literature/1904.09828.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/literature/p15-cocke.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/.idea/pycode.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/UTM.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/examples.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/magic_turing.py" beforeDir="false" afterPath="$PROJECT_DIR$/mtg_turing_machine/magic_turing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/rogozhin.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/rogozhin_enc.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/test_turingMachine.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/test_twoTagSystem.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/test_universalTuringMachine.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/turing_machine.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/two_tag_system.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mtg_turing_machine/universal_turing_machine.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/_magic_turing.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/ancient_tomb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/artificial_evolution.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/blazing_archon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/capsize.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/choke.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/claws_of_gix.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/cleansing_beam.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/cloak_of_invisibility.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/coalition_victory.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/aetherborn.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/basilisk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cephalid.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/aetherborn.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/basilisk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/cephalid.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/demon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/elf.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/faerie.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/giant.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/harpy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/illusion.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/juggernaut.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/kavu.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/leviathan.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/myr.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/noggle.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/orc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/pegasus.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/rhino.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/cut/sliver.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/demon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/elf.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/faerie.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/giant.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/harpy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/illusion.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/juggernaut.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/kavu.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/leviathan.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/mana/B.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/mana/C.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/mana/G.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/mana/R.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/mana/U.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/mana/W.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/myr.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/noggle.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/orc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/pegasus.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/rhino.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/creature_types/sliver.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/djinn_ilumnatus.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/donate.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/dread_of_night.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/fathom_feeder.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/fungus_sliver.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/gemstone_array.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/glamerdye.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/grim_monolith.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/illusory_gains.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/infest.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/karn_liberated.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/lotus_petal.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/magic_turing.pptx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/magic_turing_final.pptx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/magic_turing_pt2.pptx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/memnarch.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/mesmeric_orb.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/olivia_voldaren.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/power_artifact.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/presentation_text.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/presentation_text_pt2.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/presentation_text_pt2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/prismatic_lace.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/prismatic_omen.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/priviliged_position.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/reality_ripple.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/recycle.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/reito_lantern.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/riptide_replicator.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/rotlung_reanimator.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/shared_triumph.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/soul_snuffers.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/staff_of_domination.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/steely_resolve.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/stolen_identity.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/vigor.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/wheel_of_sun_and_moon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/wild_evocation.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/presentation/xathrid_necromancer.jpg" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/test_universalTuringMachine.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mtg_turing_machine/magic_turing.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="20" lean-forward="true" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/instances.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="21" column="40" lean-forward="true" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/test_turingMachine.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="27" column="35" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/turing_machine.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="200">
+              <caret line="281" column="20" selection-start-line="281" selection-start-column="20" selection-end-line="281" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mtg_turing_machine/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/test_twoTagSystem.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="4" column="32" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>blank</find>
+      <find>#</find>
+      <find>binarized_symbol_lookup</find>
+      <find>stop_states</find>
+      <find>decode_binarized_tape</find>
+      <find>/</find>
+      <find>letter_encodings</find>
+      <find>i</find>
+      <find>output:</find>
+      <find>get_stripped_tape</find>
+      <find>alphabet</find>
+      <find>run</find>
+      <find>100</find>
+      <find>1000</find>
+      <find>rogo</find>
+      <find>examples</find>
+      <find>load_tm2_test</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/magic_turing_test.py" />
+        <option value="$PROJECT_DIR$/test_turing_machine.py" />
+        <option value="$PROJECT_DIR$/test_twoTagSystem.py" />
+        <option value="$PROJECT_DIR$/two_tag_system.py" />
+        <option value="$PROJECT_DIR$/turing_machine.py" />
+        <option value="$PROJECT_DIR$/test_turingMachine.py" />
+        <option value="$PROJECT_DIR$/test_universalTuringMachine.py" />
+        <option value="$PROJECT_DIR$/universal_turing_machine.py" />
+        <option value="$PROJECT_DIR$/magic_turing.py" />
+        <option value="$PROJECT_DIR$/definitions.py" />
+        <option value="$PROJECT_DIR$/test_run_tm.py" />
+        <option value="$PROJECT_DIR$/test/test_run_tm.py" />
+        <option value="$PROJECT_DIR$/mtg_turing_machine/test_load_tm2_test.py" />
+        <option value="$PROJECT_DIR$/mtg_turing_machine/two_tag_system.py" />
+        <option value="$PROJECT_DIR$/mtg_turing_machine/__init__.py" />
+        <option value="$PROJECT_DIR$/mtg_turing_machine/universal_turing_machine.py" />
+        <option value="$PROJECT_DIR$/mtg_turing_machine/examples.py" />
+        <option value="$PROJECT_DIR$/test/test_twoTagSystem.py" />
+        <option value="$PROJECT_DIR$/test/test_universalTuringMachine.py" />
+        <option value="$PROJECT_DIR$/mtg_turing_machine/magic_turing.py" />
+        <option value="$PROJECT_DIR$/test/test_turingMachine.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="2" />
+    <option name="y" value="2" />
+    <option name="width" value="1022" />
+    <option name="height" value="726" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="mtg-turing-machine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mtg-turing-machine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="mtg-turing-machine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mtg-turing-machine" type="462c0819:PsiDirectoryNode" />
+              <item name="mtg_turing_machine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="mtg-turing-machine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mtg-turing-machine" type="462c0819:PsiDirectoryNode" />
+              <item name="mtg_turing_machine" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="mtg-turing-machine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mtg-turing-machine" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Users\Cerno_B\my_files\projects\programming\git_repos\mtg-turing-machine\mtg_turing_machine" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python tests.Unittests in test_turingMachine.py">
+    <configuration name="magic_turing" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pycode" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mtg_turing_machine/magic_turing.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in test" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="pycode" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in test_turingMachine.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="pycode" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/test_turingMachine.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.magic_turing" />
+      <item itemvalue="Python tests.Unittests in test" />
+      <item itemvalue="Python tests.Unittests in test_turingMachine.py" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Unittests in test_turingMachine.py" />
+        <item itemvalue="Python tests.Unittests in test" />
+        <item itemvalue="Python.magic_turing" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1e8bc94f-c7fb-4c8e-ae8e-5ed22cc917e3" name="Default Changelist" comment="" />
+      <created>1563628351961</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1563628351961</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="Unittests_in_test - 2020.03.15 at 16h 52m 48s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2020.03.15 at 16h 53m 02s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2020.03.15 at 16h 54m 26s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2020.03.15 at 17h 02m 49s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2020.03.15 at 17h 14m 54s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2020.03.15 at 17h 32m 38s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test - 2020.03.15 at 17h 41m 56s.xml">
+      <configuration name="Unittests in test" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.15 at 17h 44m 19s.xml">
+      <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.15 at 17h 46m 24s.xml">
+      <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_turingMachine_py - 2020.03.15 at 17h 49m 20s.xml">
+      <configuration name="Unittests in test_turingMachine.py" configurationId="tests" />
+    </history-entry>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49904215" visible="true" weight="0.12908325" />
+      <window_info id="Structure" order="1" sideWeight="0.50095785" side_tool="true" weight="0.24973656" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="0" weight="0.32885906" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32950193" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32885906" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.37967402" />
+      <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="5" weight="0.32885906" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Message" order="7" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test_twoTagSystem.py</url>
+          <line>52</line>
+          <option name="timeStamp" value="120" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test_twoTagSystem.py</url>
+          <line>46</line>
+          <option name="timeStamp" value="142" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/universal_turing_machine.py</url>
+          <line>51</line>
+          <option name="timeStamp" value="144" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="enc" />
+        <watch expression="sym" />
+        <watch expression="count" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>transitions['x']</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>b.difference(a)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>a.difference(b)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>sorted(inverted_encoding.items())</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>[]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>[e for e in letter_encodings[1:]]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>len(tape_string)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>sorted(transitions)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>sorted(transitions.items())</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/magic_turing_test.py" />
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/_jb_trialtest_runner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python35/Lib/unittest/suite.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python35/Lib/unittest/runner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="175" selection-start-line="175" selection-end-line="175" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python35/Lib/unittest/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="908">
+          <caret line="254" selection-start-line="254" selection-end-line="254" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/turing_machine.py" />
+    <entry file="file://$PROJECT_DIR$/magic_turing.py" />
+    <entry file="file://$PROJECT_DIR$/two_tag_system.py" />
+    <entry file="file://$PROJECT_DIR$/test_twoTagSystem.py" />
+    <entry file="file://$PROJECT_DIR$/test_universalTuringMachine.py" />
+    <entry file="file://$PROJECT_DIR$/_trial_temp-6/test.log" />
+    <entry file="file://$PROJECT_DIR$/universal_turing_machine.py" />
+    <entry file="file://$PROJECT_DIR$/examples.py" />
+    <entry file="file://$PROJECT_DIR$/test_run_tm.py" />
+    <entry file="file://$PROJECT_DIR$/test_turingMachine.py" />
+    <entry file="file://C:/Python35/Lib/unittest/case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="961">
+          <caret line="600" selection-start-line="600" selection-end-line="600" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_run_tm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python35/Lib/unittest/loader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/test_load_tm2_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/turing_machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/two_tag_system.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/universal_turing_machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="14" lean-forward="true" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/examples.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="40" lean-forward="true" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_twoTagSystem.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="4" column="32" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_universalTuringMachine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/magic_turing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="20" lean-forward="true" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/turing_machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="281" column="20" selection-start-line="281" selection-start-column="20" selection-end-line="281" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/instances.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="40" lean-forward="true" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test_turingMachine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="27" column="35" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

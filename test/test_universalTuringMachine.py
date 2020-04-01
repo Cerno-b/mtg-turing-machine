@@ -1,9 +1,9 @@
 import unittest
 
-import definitions
+import mtg_turing_machine.classes.instances as examples
 
-from universal_turing_machine import UniversalTuringMachine
-from two_tag_system import TwoTagSystem
+from mtg_turing_machine.classes.universal_turing_machine import UniversalTuringMachine
+from mtg_turing_machine.classes.two_tag_system import TwoTagSystem
 
 
 def run_utm_from_two_tag(two_tag, string):
@@ -38,15 +38,15 @@ def run_utm_from_tm(tm, string):
 
 class TestUniversalTuringMachine(unittest.TestCase):
     def test_divide_by_two(self):
-        two_tag = definitions.load_two_tag_divide_by_2()
+        two_tag = examples.load_two_tag_divide_by_2()
         tape = run_utm_from_two_tag(two_tag, "XXXXXXXX#")
         self.assertEqual(tape, ["#", "X", "X", "X", "X"])
 
-        two_tag = definitions.load_two_tag_divide_by_2()
+        two_tag = examples.load_two_tag_divide_by_2()
         state = run_utm_from_two_tag(two_tag, "X:X:X:X:#")
         self.assertEqual(state, ["#", "X", "X", "X", "X"])
 
-        two_tag = definitions.load_two_tag_divide_by_2()
+        two_tag = examples.load_two_tag_divide_by_2()
         state = run_utm_from_two_tag(two_tag, "XX::XX::#")
         self.assertEqual(state, ["#", "X", "i", "X", "i"])
 
@@ -58,15 +58,15 @@ class TestUniversalTuringMachine(unittest.TestCase):
     #    self.assertEqual(state, ["a"])
 
     def test_from_tm(self):
-        tm = definitions.load_tm_write_one()
+        tm = examples.load_tm_write_one()
         result = run_utm_from_tm(tm, "")
         self.assertEqual(result, ["1"])
 
-        tm = definitions.load_tm_add_one()
+        tm = examples.load_tm_add_one()
         result = run_utm_from_tm(tm, "11")
         self.assertEqual(result, ["1", "1", "1"])
 
-        tm = definitions.load_tm_write_one_two()
+        tm = examples.load_tm_write_one_two()
         result = run_utm_from_tm(tm, "")
         self.assertEqual(result, ["1", "2"])
 
