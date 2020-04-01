@@ -55,16 +55,33 @@ The non-binary Turing machine is defined as follows:
     blank = "_"
     stop_states = ["qend"]
     definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index, blank=blank)
-    tm = TuringMachine(definition)
+    turing_machine = TuringMachine(definition)
 ```
+
+In order to run the simulation and retrieve the results like this:
+
+```python
+turing_machine.run()
+tape = turing_machine.get_stripped_tape()
+```
+
+The tape will be stripped of blank symbols at the beginning and end
+
 ### Binary Turing Machine
 
 The binary Turing machine is a regular Turing machine that only consists of the symbols 0 and 1.
 
 You can convert a regular Turing machine to a binary one like this: 
-```
-# assume turing_machine has been constructed like described above.
+
+```python
 turing_machine.convert_to_two_symbol()
+```
+
+If the input machine was already binary, the conversion will be skipped. During the conversion, the original machine's symbol set will be converted to a binary representation, so after running, the machine, it needs to be converted back to the original machine's symbol set. This can be achieved like this, but only if the Turing machine has been automatically converted to binary:
+
+```python
+turing_machine.run()
+tape = turing_machine.get_stripped_tape(decode_binarized=True)
 ```
 
 Alternatively, you can construct a binary Turing machine manually, by limiting yourself to an alphabet of 0 and 1. This is very likely more runtime-efficient than the automatical conversion, but more complex machines are tricky to convert by hand.
@@ -97,9 +114,7 @@ A two tag system is defined like this:
 - the initial word (string), can also be a list of characters
 - the halt symbol. The 2-tag system stops when it reads this symbol. It also stops when the working string is too short to read two symbols
 
-Instead of passing a dictionary to the TwoTagSystem class, you can alternatively pass a TuringDefinition object that describes a **binary** Turing machine. If you do, the 2-tag system will be constructed based on the TuringDefinition. In that case, you don't neet do set an initial word, as that will be constructed from the Turing machine's tape. In order to use an arbitrary Turing machine, you need to convert it to a binary Turing machine first.
-
-```
+```python
     production_rules = {
         "a": ["b", "c"],
         "b": ["a"],
@@ -111,3 +126,73 @@ Instead of passing a dictionary to the TwoTagSystem class, you can alternatively
     two_tag = TwoTagSystem(production_rules)
     two_tag.set_initial_word(initial_word, halt_symbol)
 ```
+You run the 2-tag system like this:
+
+```python
+two_tag.run()
+result = two_tag.current_word
+```
+
+Instead of passing a dictionary to the TwoTagSystem class, you can alternatively pass a TuringDefinition object that describes a **binary** Turing machine. If you do, the 2-tag system will be constructed based on the TuringDefinition. In that case, you don't neet do set an initial word, as that will be constructed from the Turing machine's tape. In order to use an arbitrary Turing machine, you need to convert it to a binary Turing machine first.
+
+When building a 2-tag system from a Turing machine, the alphabet will get severely modified to fit to the 2-tag system's architecture. Convert the result back to the binary Turing machine representation like this:
+
+```python
+    two_tag.run()
+    tape = two_tag.get_word_as_tm_tape()
+```
+
+If the binary Turing machine was constructed automatically, you may want to reconstruct the original Turing machine's tape. The whole setup would look something like this:
+
+```python
+    turing_machine.convert_to_two_symbol()
+    two_tag = TwoTagSystem(turing_machine.definition)
+    two_tag.run()
+    tape = two_tag.get_word_as_tm_tape()
+    
+    # Write the tape to the original turing_machine and let it decode the string to the original alphabet.
+    # Check whether the original turing machine was already binary and skip the conversion if necessary.
+    if turing_machine.is_binarized_tm:
+        turing_machine.set_tape_string(tape)
+        tape = turing_machine.get_stripped_tape(decode_binarized=True)
+```
+
+### Universal Turing Machine
+
+The universal Turing machine used in this project is the UTM(2,18) defined by [Yurii Rogozhin](mtg-turing-machine\documentation\literature\1-s2.0-S0304397596000771-main.pdf). It is a regular Turing machine with a predefined transition function and alphabet. In order to run any other Turing machine on a UTM, it needs to be encoded to the UTM's tape. Writing a UTM's program by hand is very hard, but you can convert a 2-tag system to a UTM(2,18).
+
+```python
+    utm = UniversalTuringMachine()
+    utm.set_tape_string_from_two_tag(two_tag)
+    utm.run()
+    two_tag_string utm.decode_tape_as_two_tag_word()
+```
+
+Or, if you want to run the whole conversion chain, start with an arbitrary Turing machine, convert it to binary, then to a 2-tag system and finally to a UTM. Beware though, the whole conversion chain lets the complexity grow by orders of magnitude, don't expect the simulation to finish anytime soon.
+
+```
+    turing_machine.convert_to_two_symbol()
+    turing_machine.set_tape_string(string)
+
+    two_tag = TwoTagSystem(turing_machine)
+
+    utm = UniversalTuringMachine()
+    utm.set_tape_string_from_two_tag(two_tag)
+    utm.run(brief=True)
+
+    two_tag_state = utm.decode_tape_as_two_tag_word()
+    two_tag.set_initial_word(two_tag_state, two_tag.halting_symbol)
+    tape = two_tag.get_word_as_tm_tape()
+
+    if turing_machine.is_binarized_tm:
+        turing_machine.set_tape_string(tape)
+        tape = turing_machine.get_stripped_tape(decode_binarized=True)
+```
+
+
+# Sources
+
+This project is based on three papers that you can find in the repository:
+- [Magic: The Gathering is Turing Complete (Alex Churchill, Stella Biderman and Austin Herrick, 2019)](mtg-turing-machine\documentation\literature\1904.09828.pdf)
+- [Small universal Turing machines (Yurii Rogozhin, 1996)](mtg-turing-machine\documentation\literature\1-s2.0-S0304397596000771-main.pdf)
+- [Universality of Tag Systems With P = 2 (John Cocke and Marvin Minsky,1964)](mtg-turing-machine\documentation\literature\1p15-cocke.pdf)
