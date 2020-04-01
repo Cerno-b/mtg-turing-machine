@@ -171,17 +171,25 @@ class MagicTheGatheringTuringMachine:
         self.set_up_remaining_cards()
         self.set_up_libraries()
 
-    def print_tape(self):
+        self.state = 0  # keep track of state for printing
+        self.cycles = 0
+
+    def get_tape_sorted(self):
         tape = list(self.bob.table_tape)
         tape.append(list(self.alice.table_tape)[0])
 
         left_tokens = [t for t in tape if t.color == GREEN]
+        special_token = [t for t in tape if t.color == BLUE]  # at the end, the blue Assassin marks the head position
         right_tokens = [t for t in tape if t.color == WHITE]
 
         sorted_left_tokens = sorted(left_tokens, key=lambda t: t.power_toughness, reverse=True)
         sorted_right_tokens = sorted(right_tokens, key=lambda t: t.power_toughness)
+        return sorted_left_tokens + special_token + sorted_right_tokens
 
-        for token in sorted_left_tokens + sorted_right_tokens:
+    def print_tape(self):
+        sorted_tape = self.get_tape_sorted()
+        print(f"cycle {self.cycles}, q{self.state + 1}: ", end="")
+        for token in sorted_tape:
             if token.power_toughness == 2:
                 print(f"[{token.creature_type}]", end="")
             else:
@@ -245,14 +253,19 @@ class MagicTheGatheringTuringMachine:
         self.bob.table_tape = token_tape
 
     def decode_tape(self):
-        # todo decode to UTM character set + index
-        utm_tape = []
-        index = 0
-        left_tape = utm_tape[0:index]
-        right_tape = utm_tape[index:]
-        tape_string = left_tape + ["^"] + right_tape
-        self._utm.overwrite_tape_string(tape_string)
-        return self._utm.get_tape()
+        inverse_token_lookup = {v: k for k, v in TOKEN_LOOKUP.items()}
+        tape_sorted = self.get_tape_sorted()
+        decoded_tape = []
+        for token in tape_sorted:
+            # this could be nicer if we could protect the blue Assassin from Cleansing Beam,
+            # so that it would have the proper 2/2 that marks the head position.
+            if token.power_toughness == 4 and token.color == BLUE:
+                decoded_tape.append("^")
+            if token.creature_type not in ["<", ">"]:
+                decoded_tape.append(inverse_token_lookup[token.creature_type])
+
+        self._utm.overwrite_tape_string(decoded_tape)
+        return decoded_tape
 
     def set_up_controllers(self, utm):
         """Set up the controller cards that encode the UTM(2,18) program"""
@@ -510,7 +523,7 @@ class MagicTheGatheringTuringMachine:
             return True
         return False
 
-    def step(self):
+    def step(self, verbose):
         # ------------
         # Alice's turn
         # ------------
@@ -526,7 +539,8 @@ class MagicTheGatheringTuringMachine:
         assert self.alice.hand is not None
 
         if self.alice.hand.name == INFEST:
-            self.print_tape()
+            if verbose:
+                self.print_tape()
             self.step_infest()
         elif self.alice.hand.name == CLEANSING_BEAM:
             self.step_cleansing_beam()
@@ -534,6 +548,7 @@ class MagicTheGatheringTuringMachine:
             self.step_coalition_victory()
         elif self.alice.hand.name == SOUL_SNUFFERS:
             self.step_soul_snuffers()
+            self.cycles += 1
         else:
             assert False
 
@@ -545,6 +560,7 @@ class MagicTheGatheringTuringMachine:
             top_library_card = self.alice.library.get()
             assert top_library_card.name == COALITION_VICTORY
             self.alice.library.put(top_library_card)
+            self.state = (self.state + 1) % 2
 
         if self.alice.win:
             return
@@ -583,9 +599,9 @@ class MagicTheGatheringTuringMachine:
         # == MAIN PHASE 2 == (nothing to do: hand is empty)
         # == ENDING PHASE == (nothing to do)
 
-    def run(self):
+    def run(self, verbose=False):
         while not self.alice.win:
-            self.step()
+            self.step(verbose)
 
     def get_utm(self):
         self.decode_tape()
