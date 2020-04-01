@@ -102,5 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-/mtg_turing_machine/.idea/workspace.xml
-/mtg_turing_machine/.idea/pycode.iml
+/.idea/workspace.xml
+/.idea/pycode.iml
+
