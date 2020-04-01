@@ -31,12 +31,17 @@ In the following you will find a few pointers about how to construct each type o
 
 The non-binary Turing machine is defined as follows:
 
-- a transition function (dictionary) of the form 
-  - `(old_state, read_symbol): new_state, write_symbol, head_direction`
-  - head direction is denoted by a "<" and ">" for left and right, respectively. You can also use "-" for keeping the head in place, but that will not be supported in all conversions.
-- a tape (string) that must only consist of symbols that occur in the transition function. 
+- a transition function (dictionary)
+  - format: `(old_state, read_symbol): new_state, write_symbol, head_direction`
+  - the head direction is denoted by a "<" and ">" for left and right, respectively. 
+  - you can also use "-" for keeping the head in place, but that will not be supported in all conversions.
+- a tape (string) consisting only of symbols that occur in the transition function. 
+  - You can use a list of strings instead if you want your symbols to have more than one character. They will still be treated as single symbols
+- the tape index that marks the starting position of the Turing head.
+- the blank symbol
+- a list of stop states. The machine halts as soon as one of these states is reached
 
-```
+```python
     transitions = {
         ("q0", "1"): ("q0", "1", ">"),
         ("q0", "x"): ("q1", "x", ">"),
