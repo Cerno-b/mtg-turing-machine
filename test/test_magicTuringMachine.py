@@ -26,8 +26,9 @@ class TestMagicTuringMachine(unittest.TestCase):
         utm = examples.load_dummy_utm()
         mtg_tm = MagicTheGatheringTuringMachine(utm)
         mtg_tm.run()
-        tape = mtg_tm.decode_tape
+        tape = mtg_tm.decode_tape()
         self.assertEqual(tape, ["11<", "1<", "c1<", "^" "b", "c2", "11>", "c2"])
+
 
     def test_divide_by_two(self):
         two_tag = examples.load_two_tag_cut_in_half()

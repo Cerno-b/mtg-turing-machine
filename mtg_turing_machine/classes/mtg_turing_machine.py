@@ -252,6 +252,7 @@ class MagicTheGatheringTuringMachine:
         right_tape = utm_tape[index:]
         tape_string = left_tape + ["^"] + right_tape
         self._utm.overwrite_tape_string(tape_string)
+        return self._utm.get_tape()
 
     def set_up_controllers(self, utm):
         """Set up the controller cards that encode the UTM(2,18) program"""
@@ -268,10 +269,11 @@ class MagicTheGatheringTuringMachine:
 
             trigger_type = TOKEN_LOOKUP[read_symbol]
             target_type = TOKEN_LOOKUP[write_symbol]
-            name = ROTLUNG_REANIMATOR if target_state == "q1" else XATHRID_NECROMANCER
+            name = ROTLUNG_REANIMATOR if target_state == source_state else XATHRID_NECROMANCER
             phased_in = True if source_state == "q1" else False
             if target_state == "-":
                 color = BLUE
+                name = ROTLUNG_REANIMATOR
             else:
                 color = WHITE if head_dir == "<" else GREEN
 
@@ -360,7 +362,7 @@ class MagicTheGatheringTuringMachine:
         self.alice.table_rest.add(card)
 
         bob_cards = [
-            ("Wild Evocation", "At the beginning of each player's upkeep, that player reveals a card at random from their hand. "
+            ("Wild Evocation", "At the beginning of each player's upkeep, that player reveals a card at random from their hand."
                                "If it's a land card, the player puts it onto the battlefield. Otherwise, the player casts it without paying its mana cost if able."),
             ("Recycle", "Skip your draw step. Whenever you play a card, draw a card. Your maximum hand size is two."),
             ("Privileged Position", "Other permanents you control have hexproof."),
@@ -400,15 +402,15 @@ class MagicTheGatheringTuringMachine:
                     if head_control_card.phased_in and head_control_card.traits["trigger"] == token.creature_type:
                         new_token = copy.copy(head_control_card.traits["gen_token"])  # new token belongs to Bob
 
+                        # Shared Triumph increases power and toughness for end-of-tape tokens
+                        if new_token.creature_type in ["<", ">"]:
+                            new_token.power_toughness += 1
+
                         # move Illusory Gains to new token
                         alice_head = list(self.alice.table_tape)[0]
                         illusory_gains = alice_head.detach_card()  # this now belongs to Bob
                         new_token.attach_card(illusory_gains)  # this now belongs to Alice
                         assert illusory_gains.name == "Illusory Gains"
-
-                        # Shared Triumph increases power and toughness for end-of-tape tokens
-                        if new_token.creature_type in ["<", ">"]:
-                            new_token.power_toughness += 1
 
                         self.alice.table_tape.remove(alice_head)
                         self.alice.table_tape.add(new_token)
@@ -423,24 +425,27 @@ class MagicTheGatheringTuringMachine:
                         # as a new Lhurgoyf or Rat with 3/3. This step adds the actual 2/2 tape symbol. Remember that
                         # Lhurgoyf and Rat are just end of tape markers for the MTG Turing machine, they do not exist
                         # in the original machine.
-                        if new_token.creature_type in ["<", ">"]:
-                            for edge_control_card in self.bob.table_control:
-                                if edge_control_card.traits["trigger"] == "C":  # C is Cephalid
-                                    new_token = copy.copy(edge_control_card.traits["gen_token"])  # new token belongs to Bob
+                        if new_token.creature_type in ["<", ">"]:  # todo: refactor into separate function
+                            for alice_control_card in self.alice.table_control:
+                                if alice_control_card.traits["trigger"] == new_token.creature_type:
+                                    new_token = copy.copy(alice_control_card.traits["gen_token"])  # Cephalid, will die immediately
+                                    for edge_control_card in self.bob.table_control:
+                                        if edge_control_card.phased_in and edge_control_card.traits["trigger"] == new_token.creature_type:
+                                            new_token2 = copy.copy(edge_control_card.traits["gen_token"])  # new token belongs to Bob
 
-                                    # move Illusory Gains to new token
-                                    alice_head = list(self.alice.table_tape)[0]
-                                    illusory_gains = alice_head.detach()  # this now belongs to Bob
-                                    new_token.attach(illusory_gains)  # this now belongs to Alice
-                                    assert illusory_gains.name == "Illusory Gains"
+                                            # move Illusory Gains to new token
+                                            alice_head = list(self.alice.table_tape)[0]
+                                            illusory_gains = alice_head.detach_card()  # this now belongs to Bob
+                                            new_token2.attach_card(illusory_gains)  # this now belongs to Alice
+                                            assert illusory_gains.name == "Illusory Gains"
 
-                                    # Shared Triumph increases power and toughness for end-of-tape tokens
-                                    if new_token.creature_type in ["<", ">"]:
-                                        new_token.power_toughness += 1
+                                            # Shared Triumph increases power and toughness for end-of-tape tokens
+                                            if new_token2.creature_type in ["<", ">"]:
+                                                new_token2.power_toughness += 1
 
-                                    self.alice.table_tape.remove(alice_head)
-                                    self.alice.table_tape.add(new_token)
-                                    self.bob.table_tape.add(alice_head)
+                                            self.alice.table_tape.remove(alice_head)
+                                            self.alice.table_tape.add(new_token2)
+                                            self.bob.table_tape.add(alice_head)
 
     def step_cleansing_beam(self):
         """Cleansing Beam deals 2 damage to target creature and each other creature of the same color.
@@ -490,24 +495,20 @@ class MagicTheGatheringTuringMachine:
 
         It gets a bit more complicated though. The untap step comes before the upkeep step, which would cause
         Coalition Victory to go to the bottom of the library before Cleansing Beam. This would mess up the order
-        of the library. Due to a detail in the rules, it still works out. Here is how:
+        of the library. But a detailed look at the rules clarifies that the order is actually different:
 
         - During the untap step, Mesmeric Orb triggers. The rules state that any abilities triggered during the
         untap step are delayed until the upkeep step.
         - During the upkeep step, Wild Evocation triggers. It goes to the stack at the same time as Mesmeric Orb.
         - Since Alice has priority, her Mesmeric Orb goes to the stack first, then Wild Evocation.
-        - This causes Wild Evocation to resolve first, which sends Cleansing Beam to the bottom of the library
-        first, followed by Coalition Victory.
-
-        To keep things simple, this function should be called during the upkeep step after Wild Evocation triggered.
-        This simulates the behavior described above.
+        - This causes Wild Evocation to resolve first, which sends Cleansing Beam to the bottom of the library.
+        - Next, Mesmeric Orb resolves and sends Coalition Victory to the bottom of the library.
         """
         head_token = list(self.alice.table_tape)[0]
         if head_token.tapped:
             head_token.tapped = False
-            top_library_card = self.alice.library.get()
-            assert top_library_card.name == COALITION_VICTORY
-            self.alice.library.put(COALITION_VICTORY)
+            return True
+        return False
 
     def step(self):
         # ------------
@@ -517,6 +518,7 @@ class MagicTheGatheringTuringMachine:
         # == BEGINNING PHASE ==
 
         # -- untap step --
+        card_untapped = self.untap_alice()
 
         # -- upkeep step --
         # Wild Evocation forces Alice to play her only card in hand
@@ -538,9 +540,11 @@ class MagicTheGatheringTuringMachine:
         self.alice.library.put(self.alice.hand)
         self.alice.hand = None
 
-        # Here is where it gets a bit complicated: Read the comment in the untap_alice function on why the function
-        # is called here and not during the untap step.
-        self.untap_alice()
+        # Trigger Mesmeric Orb. Read the comments in the untap_alice() function on why this is delayed to here.
+        if card_untapped:
+            top_library_card = self.alice.library.get()
+            assert top_library_card.name == COALITION_VICTORY
+            self.alice.library.put(top_library_card)
 
         if self.alice.win:
             return
