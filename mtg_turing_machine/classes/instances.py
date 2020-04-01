@@ -1,6 +1,7 @@
 from .turing_machine import TuringMachine
 from .turing_machine import TuringDefinition
 from .two_tag_system import TwoTagSystem
+from .universal_turing_machine import UniversalTuringMachine
 
 
 def load_tm_add_unary():
@@ -214,6 +215,15 @@ def load_tm_dec_to_bin():
     stop_states = ["qend"]
     definition = TuringDefinition(transitions, initial_state, stop_states, tape, tape_index, blank=blank)
     return TuringMachine(definition)
+
+
+def load_dummy_utm():
+    """A simple dummy UTM. Does not really encode anything sensible, but is capable to run as a UTM program for
+    a few iteration and then stops."""
+    utm = UniversalTuringMachine()
+    tape = ["1>", "^", "1", "c1>", "b2", "c1>"]
+    utm.set_tape_string(tape)
+    return utm
 
 
 def load_two_tag_cut_in_half():

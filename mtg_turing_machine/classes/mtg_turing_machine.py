@@ -1,5 +1,6 @@
-import queue
 import copy
+
+from collections import deque
 
 from .universal_turing_machine import UniversalTuringMachine
 
@@ -22,7 +23,8 @@ TOKEN_LOOKUP = {
     "c<": "O",
     "c1>": "P",
     "c1<": "R",
-    "c2": "S"
+    "c2": "S",
+    "-": "-"
 }
 
 # Map the single letter representations to the full creature type
@@ -46,7 +48,8 @@ TOKEN_NAME_LOOKUP = {
     "R": "Rhino",
     "S": "Sliver",
     "<": "Lhurgoyf",  # left end of tape marker
-    ">": "Rat"  # right end of tape marker
+    ">": "Rat",  # right end of tape marker
+    "-": "Assassin"  # trigger win condition to stop the UTM
 }
 
 GREEN = "green"
@@ -63,20 +66,29 @@ SOUL_SNUFFERS = "Soul Snuffers"
 CLOAK_OF_INVISIBILITY = "Cloak of Invisibility"
 
 
+class Queue(deque):
+    """Wrapper for the normal deque that allows access like queue, but retains the benefit
+    of having an iterable queue"""
+    def put(self, element):
+        self.appendleft(element)
+
+    def get(self):
+        return self.pop()
+
+
 class Player:
     def __init__(self):
-        self.library = queue.Queue()
-        self.hand = []
+        self.library = Queue()
+        self.hand = None  # Alice can only have one card at a time. Bob can't have any cards
         self.table_tape = set()
-        self.table_control = []
-        self.table_rest = []
+        self.table_control = set()
+        self.table_rest = set()
         self.win = False
 
     def print(self):
         print("Hand:")
         if self.hand:
-            for card in self.hand:
-                print("    " + card.name)
+            print("    " + self.hand.name)
         else:
             print("    empty")
         print()
@@ -97,6 +109,7 @@ class Player:
         print("Remaining cards:")
         for card in self.table_rest:
             print("    " + card.name)
+        print()
 
 
 class Token:
@@ -118,8 +131,9 @@ class Token:
         self.attached_card = None
         return attached_card
 
+
 class Card:
-    def __init__(self, name, *, text, tapped=False, phased_in=False):
+    def __init__(self, name, *, text, tapped=False, phased_in=True):
         assert text
         assert name
         self.name = name
@@ -136,6 +150,7 @@ class Card:
         attached_card = self.attached_card
         self.attached_card = None
         return attached_card
+
 
 class MagicTheGatheringTuringMachine:
     """The Magic: The Gathering Turing Machine. The current version does not run any simulations, so
@@ -157,14 +172,21 @@ class MagicTheGatheringTuringMachine:
         self.set_up_libraries()
 
     def print_tape(self):
-        sorted_tokens = sorted(self.bob.table_tape, key=lambda t: t.power_toughness)
-        for token in sorted_tokens:
-            print(token.creature_type, end="")
-            # slip in Alice's head token
-            if token.power_toughness == 3 and token.color == GREEN:
-                alice_token = list(self.alice.table_tape)[0]
-                print(f"[{alice_token}]", end="")
+        tape = list(self.bob.table_tape)
+        tape.append(list(self.alice.table_tape)[0])
 
+        left_tokens = [t for t in tape if t.color == GREEN]
+        right_tokens = [t for t in tape if t.color == WHITE]
+
+        sorted_left_tokens = sorted(left_tokens, key=lambda t: t.power_toughness, reverse=True)
+        sorted_right_tokens = sorted(right_tokens, key=lambda t: t.power_toughness)
+
+        for token in sorted_left_tokens + sorted_right_tokens:
+            if token.power_toughness == 2:
+                print(f"[{token.creature_type}]", end="")
+            else:
+                print(token.creature_type, end="")
+        print()
 
     def print(self):
         print("Player: Bob")
@@ -198,21 +220,28 @@ class MagicTheGatheringTuringMachine:
             # represent a token by (creature_type, color, power/toughness)
             token = Token(symbol, WHITE, i + 3)  # 2/2 token is under the head, so the right neighbor has 3/3
             token_tape.add(token)
-        assert len(token_tape) + 1 == len(tape)
+        assert len(token_tape) + 1 - 2 == len(tape)  # +1 (head treated separately), -2 (the end of tape markers)
 
-        head_token = Token(head_tape, WHITE, 2)  # 2/2 token is under the head
+        head_token = Token(head_tape, WHITE, 2)  # 2/2 token is under the head, color does not matter at this point
+        token_tape.add(head_token)
 
         # At this point, the order of the tape symbols is represented by the token's power and toughness, so it is not
         # necessary to keep the token tape in order.
 
-        # Todo: make sure to give Alice or Bob the appropriate tokens: Should Alice get the one to the left of the head?
+        # give Alice one of the head neighbors (take it away from Bob)
+        alice_token = None
+        for alice_token in token_tape:
+            if alice_token.power_toughness == 3 and alice_token.creature_type not in ["<", ">"]:
+                token_tape.remove(alice_token)
+                break
+        assert alice_token
 
         name = "Illusory Gains"
         text = "Enchant creature. You control enchanted creature. Whenever a creature enters the battlefield under an opponent's control, attach Illusory Gains to that creature."
         enchantment = Card(name, text=text)
-        head_token.attach_card(enchantment)
+        alice_token.attach_card(enchantment)
 
-        self.alice.table_tape.add(head_token)
+        self.alice.table_tape.add(alice_token)
         self.bob.table_tape = token_tape
 
     def decode_tape(self):
@@ -234,8 +263,8 @@ class MagicTheGatheringTuringMachine:
             target_state, write_symbol, head_dir = value
 
             assert source_state in ["q1", "q2"]
-            assert target_state in ["q1", "q2"]
-            assert head_dir in ["L", "R"]
+            assert target_state in ["q1", "q2", "-"]
+            assert head_dir in ["<", ">", "-"]
 
             trigger_type = TOKEN_LOOKUP[read_symbol]
             target_type = TOKEN_LOOKUP[write_symbol]
@@ -244,19 +273,21 @@ class MagicTheGatheringTuringMachine:
             if target_state == "-":
                 color = BLUE
             else:
-                color = WHITE if head_dir == "L" else GREEN
+                color = WHITE if head_dir == "<" else GREEN
 
+            trigger_type_string = TOKEN_NAME_LOOKUP[trigger_type]
+            target_type_string = TOKEN_NAME_LOOKUP[target_type]
             if name == ROTLUNG_REANIMATOR:
-                text = f"Whenever Rotlung Reanimator or another [{trigger_type}] dies, create a 2/2 [{color}] [{target_type}] creature token"
+                text = f"Whenever Rotlung Reanimator or another [{trigger_type_string}] dies, create a 2/2 [{color}] [{target_type_string}] creature token."
                 gen_token = Token(write_symbol, color, 2, tapped=False)
             elif name == XATHRID_NECROMANCER:
-                text = f"Whenever Xathrid Necromancer or another [{trigger_type}] creature you control dies, create a tapped 2/2 [{color}] [{target_type}] creature token."
+                text = f"Whenever Xathrid Necromancer or another [{trigger_type_string}] creature you control dies, create a tapped 2/2 [{color}] [{target_type_string}] creature token."
                 gen_token = Token(write_symbol, color, 2, tapped=True)
             else:
                 assert False
 
             controller_card = Card(name, text=text, phased_in=phased_in)
-            controller_card.traits["trigger"] = read_symbol
+            controller_card.traits["trigger"] = trigger_type
             controller_card.traits["gen_token"] = gen_token
 
             name = CLOAK_OF_INVISIBILITY
@@ -273,13 +304,13 @@ class MagicTheGatheringTuringMachine:
             (">", ">", WHITE)
             ]
 
-        for read_symbol, write_symbol, color in special_controllers_bob:
-            trigger_type = TOKEN_LOOKUP[read_symbol]
-            target_type = TOKEN_LOOKUP[write_symbol]
-            text = f"Whenever Rotlung Reanimator or another [{trigger_type}] dies, create a 2/2 [{color}] [{target_type}] creature token"
+        for trigger_type, target_type, color in special_controllers_bob:
+            trigger_type_string = TOKEN_NAME_LOOKUP[trigger_type]
+            target_type_string = TOKEN_NAME_LOOKUP[target_type]
+            text = f"Whenever Rotlung Reanimator or another [{trigger_type_string}] dies, create a 2/2 [{color}] [{target_type_string}] creature token"
             controller_card = Card(ROTLUNG_REANIMATOR, text=text)
-            controller_card.traits["trigger"] = read_symbol
-            controller_card.traits["gen_token"] = Token(write_symbol, color, 2, tapped=False)
+            controller_card.traits["trigger"] = trigger_type
+            controller_card.traits["gen_token"] = Token(target_type, color, 2, tapped=False)
             control_cards.append(controller_card)
 
         self.bob.table_control = control_cards
@@ -291,13 +322,13 @@ class MagicTheGatheringTuringMachine:
         ]
 
         control_cards = []
-        for read_symbol, write_symbol, color in special_controllers_alice:
-            trigger_type = TOKEN_LOOKUP[read_symbol]
-            target_type = TOKEN_LOOKUP[write_symbol]
-            text = f"Whenever Rotlung Reanimator or another [{trigger_type}] dies, create a 2/2 [{color}] [{target_type}] creature token"
+        for trigger_type, target_type, color in special_controllers_alice:
+            trigger_type_string = TOKEN_NAME_LOOKUP[trigger_type]
+            target_type_string = TOKEN_NAME_LOOKUP[target_type]
+            text = f"Whenever Rotlung Reanimator or another [{trigger_type_string}] dies, create a 2/2 [{color}] [{target_type_string}] creature token"
             controller_card = Card(ROTLUNG_REANIMATOR, text=text)
-            controller_card.traits["trigger"] = read_symbol
-            controller_card.traits["gen_token"] = Token(write_symbol, color, 2, tapped=False)
+            controller_card.traits["trigger"] = trigger_type
+            controller_card.traits["gen_token"] = Token(target_type, color, 2, tapped=False)
             control_cards.append(controller_card)
 
         self.alice.table_control = control_cards
@@ -323,10 +354,10 @@ class MagicTheGatheringTuringMachine:
 
         for name, text in alice_cards:
             card = Card(name, text=text)
-            self.alice.table_rest.append(card)
+            self.alice.table_rest.add(card)
 
         card = Card("Island", text="Land", tapped=True)
-        self.alice.table_rest.append(card)
+        self.alice.table_rest.add(card)
 
         bob_cards = [
             ("Wild Evocation", "At the beginning of each player's upkeep, that player reveals a card at random from their hand. "
@@ -340,7 +371,7 @@ class MagicTheGatheringTuringMachine:
 
         for name, text in bob_cards:
             card = Card(name, text=text)
-            self.bob.table_rest.append(card)
+            self.bob.table_rest.add(card)
 
         self.alice.hand = Card(INFEST, text="All creatures get -2/-2 until end of turn.")
 
@@ -362,17 +393,17 @@ class MagicTheGatheringTuringMachine:
         a single Rotlung Reanimator or Xathrid Necromancer, which in turn will create a new 2/2 token based on the
         UTM rule set. Illusory gains will give the new token to Alice, while returning the token
         previously held by Alice back to Bob"""
-        for token in self.bob.table_tape:
+        for token in copy.copy(self.bob.table_tape):
             if token.power_toughness == 2:
                 self.bob.table_tape.remove(token)
                 for head_control_card in self.bob.table_control:
-                    if head_control_card.traits["trigger"] == token.creature_type:
+                    if head_control_card.phased_in and head_control_card.traits["trigger"] == token.creature_type:
                         new_token = copy.copy(head_control_card.traits["gen_token"])  # new token belongs to Bob
 
                         # move Illusory Gains to new token
                         alice_head = list(self.alice.table_tape)[0]
-                        illusory_gains = alice_head.detach()  # this now belongs to Bob
-                        new_token.attach(illusory_gains)  # this now belongs to Alice
+                        illusory_gains = alice_head.detach_card()  # this now belongs to Bob
+                        new_token.attach_card(illusory_gains)  # this now belongs to Alice
                         assert illusory_gains.name == "Illusory Gains"
 
                         # Shared Triumph increases power and toughness for end-of-tape tokens
@@ -410,8 +441,6 @@ class MagicTheGatheringTuringMachine:
                                     self.alice.table_tape.remove(alice_head)
                                     self.alice.table_tape.add(new_token)
                                     self.bob.table_tape.add(alice_head)
-
-
 
     def step_cleansing_beam(self):
         """Cleansing Beam deals 2 damage to target creature and each other creature of the same color.
@@ -492,21 +521,22 @@ class MagicTheGatheringTuringMachine:
         # -- upkeep step --
         # Wild Evocation forces Alice to play her only card in hand
         # Wheel of Sun and Moon forces her to put the card at the bottom of her library instead of her graveyard
-        assert(len(self.alice.hand) == 1)
-        hand_card = self.alice.hand[0]
-        self.alice.library.put(hand_card)
-        self.alice.hand = []
+        assert self.alice.hand is not None
 
-        if hand_card.name == INFEST:
+        if self.alice.hand.name == INFEST:
+            self.print_tape()
             self.step_infest()
-        elif hand_card.name == CLEANSING_BEAM:
+        elif self.alice.hand.name == CLEANSING_BEAM:
             self.step_cleansing_beam()
-        elif hand_card.name == COALITION_VICTORY:
+        elif self.alice.hand.name == COALITION_VICTORY:
             self.step_coalition_victory()
-        elif hand_card.name == SOUL_SNUFFERS:
+        elif self.alice.hand.name == SOUL_SNUFFERS:
             self.step_soul_snuffers()
         else:
             assert False
+
+        self.alice.library.put(self.alice.hand)
+        self.alice.hand = None
 
         # Here is where it gets a bit complicated: Read the comment in the untap_alice function on why the function
         # is called here and not during the untap step.
@@ -516,8 +546,8 @@ class MagicTheGatheringTuringMachine:
             return
 
         # -- draw step --
-        assert len(self.alice.hand) == 0
-        self.alice.hand.append(self.alice.library.get())
+        assert self.alice.hand is None
+        self.alice.hand = self.alice.library.get()
 
         # == MAIN_PHASE 1 == (nothing to do: no mana)
         # == COMBAT_PHASE == (nothing to do: Blazing Archon)
@@ -531,6 +561,10 @@ class MagicTheGatheringTuringMachine:
         # == BEGINNING PHASE ==
 
         # -- untap step --
+        # Phase in the other set of cards.
+        # The control cards are used every fourth turn so phasing them out every second turn has no effect.
+        # If a state change occurs, the 4-turn cycle is reduced to 3 turns, which will cause the other set
+        # of control cards to appear in the turn when they are used.
         for card in self.bob.table_control:
             if card.attached_card is not None:
                 assert card.attached_card.name == CLOAK_OF_INVISIBILITY

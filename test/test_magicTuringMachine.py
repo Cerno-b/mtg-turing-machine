@@ -4,7 +4,6 @@ import mtg_turing_machine.classes.instances as examples
 
 from mtg_turing_machine.classes.mtg_turing_machine import MagicTheGatheringTuringMachine
 from mtg_turing_machine.classes.universal_turing_machine import UniversalTuringMachine
-from mtg_turing_machine.classes.two_tag_system import TwoTagSystem
 
 
 _RUN_LONG_TESTS = False
@@ -23,6 +22,13 @@ def run_mtg_utm_from_two_tag(two_tag, string):
 
 
 class TestMagicTuringMachine(unittest.TestCase):
+    def test_basic(self):
+        utm = examples.load_dummy_utm()
+        mtg_tm = MagicTheGatheringTuringMachine(utm)
+        mtg_tm.run()
+        tape = mtg_tm.decode_tape
+        self.assertEqual(tape, ["11<", "1<", "c1<", "^" "b", "c2", "11>", "c2"])
+
     def test_divide_by_two(self):
         two_tag = examples.load_two_tag_cut_in_half()
         tape = run_mtg_utm_from_two_tag(two_tag, "XXXXXXXX#")
