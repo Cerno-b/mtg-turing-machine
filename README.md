@@ -1,16 +1,16 @@
 # Magic: The Gathering Turing Machine
 
-A compiler that converts any [Turing machine](https://en.wikipedia.org/wiki/Turing_machine) into a Magic: The Gathering Turing machine (MTG-TM), which allows to run programs within the game of Magic: The Gathering.
+A compiler that converts any [Turing machine](https://en.wikipedia.org/wiki/Turing_machine) into a Magic: The Gathering Turing machine (*MTG-TM*). This allows to run programs within the game of *Magic: The Gathering*.
 
-Based on the brilliant paper [Magic: The Gathering is Turing Complete](https://arxiv.org/abs/1904.09828) by Alex Churchill, Stella Biderman and Austin Herrick.
+Based on the awesome paper [*Magic: The Gathering is Turing Complete*](https://arxiv.org/abs/1904.09828) by Alex Churchill, Stella Biderman and Austin Herrick.
 
-This video gives an overview about the conversion algorithm: https://www.youtube.com/watch?v=YzXoFldEux. As you will see, the resulting machines are prohibitively slow even for rather simple problems.
+Here is an overview video about the conversion algorithm: https://www.youtube.com/watch?v=YzXoFldEux. As you will see, unfortunately the resulting machines are prohibitively slow even for rather simple problems.
 
-The conversion is done in four steps:
+The conversion from Turing machine to MTG:TM is done in four steps:
 - convert the Turing machine to a binary Turing machine (that only uses the symbols 0 and 1)
 - convert the binary Turing machine to a [2-tag](https://en.wikipedia.org/wiki/Tag_system) system
-- convert the 2-tag system to a string that can be emulated by a [universal Turing machine](https://en.wikipedia.org/wiki/Universal_Turing_machine), specifically a UTM(2,18)
-- recreate the UTM(2,18) and its tape string within a game of Magic: The Gathering
+- convert the 2-tag system to a string that can be emulated by a [universal Turing machine](https://en.wikipedia.org/wiki/Universal_Turing_machine), specifically a *UTM(2,18)*
+- recreate the UTM(2,18) and its tape string within a game of *Magic: The Gathering*
 
 ## Installation
 
@@ -23,9 +23,11 @@ I would recommend running the unit tests first to check that everything works. F
 python -m unittest
 ```
 
-From there, you can explore the different conversion options. Since the simulation of a MTG-TM that has been constructed from an arbitrary Turing machine can run a very long time, it may be advisable to start with a simpler conversion. The code allows to start at any point in the conversion, so you could construct a 2-tag system by hand which should simulate in a few seconds. Since non-binary Turing machines can take months or even years to simulate, you can speed up the process significantly by building a binary Turing machine by hand. It will still be slow, but may just be feasible.
+From there, you can explore the different conversion options. Since the simulation of a MTG-TM constructed from an arbitrary Turing machine can run a very long time, it may be advisable to start with a simpler conversion. The code allows to start at any point in the conversion chain, so you could construct a 2-tag system by hand which should simulate in a few seconds. Unfortunately it is not trivial to build meaningful 2-tag systems manually. 
 
-In the following you will find a few pointers about how to construct each type of program by hand. You can find examples for all these program types in the file [instances.py](mtg_turing_machine/classes/instances.py)
+Another option is to write a binary Turing machines by hand, since auto-converted ones can take months or even years to finish the simulation, so you can speed up the process significantly by building a binary Turing machine on your own. It will still be slow, but may just be feasible. Although easier to write than 2-tag systems, binary Turing machines are still pretty tricky.
+
+In the following you will find a few pointers about how to construct each type of program by hand. You can find examples for all these program types in the file [instances.py](mtg_turing_machine/classes/instances.py). It is generally advisable to check the unit tests on usage details.
 
 ### Turing Machine
 
@@ -36,7 +38,7 @@ The non-binary Turing machine is defined as follows:
   - the head direction is denoted by a "<" and ">" for left and right, respectively. 
   - you can also use "-" for keeping the head in place, but that will not be supported in all conversions.
 - a tape (string) consisting only of symbols that occur in the transition function. 
-  - You can use a list of strings instead if you want your symbols to have more than one character. They will still be treated as single symbols
+  - You can use a list of strings instead if you want your symbols to have more than one character.
 - the tape index that marks the starting position of the Turing head.
 - the blank symbol
 - a list of stop states. The machine halts as soon as one of these states is reached
@@ -60,14 +62,14 @@ definition = TuringDefinition(transitions, initial_state, stop_states, tape, tap
 turing_machine = TuringMachine(definition)
 ```
 
-In order to run the simulation and retrieve the results like this:
+Run the simulation and retrieve the results like this:
 
 ```python
 turing_machine.run()
 tape = turing_machine.get_stripped_tape()
 ```
 
-The tape will be stripped of blank symbols at the beginning and end
+The resulting tape will be stripped of blank symbols at the beginning and end.
 
 ### Binary Turing Machine
 
@@ -79,7 +81,7 @@ You can convert a regular Turing machine to a binary one like this:
 turing_machine.convert_to_two_symbol()
 ```
 
-If the input machine was already binary, the conversion will be skipped. During the conversion, the original machine's symbol set will be converted to a binary representation, so after running, the machine, it needs to be converted back to the original machine's symbol set. This can be achieved like this, but only if the Turing machine has been automatically converted to binary:
+If the input machine was already binary, the conversion will be skipped automatically. During the conversion, the original machine's symbol set is converted to a binary representation, so after stopping, the machine has to convert it back to the original symbol set. This can be achieved like this, but only if the Turing machine has been automatically converted to binary:
 
 ```python
 turing_machine.run()
@@ -110,13 +112,13 @@ tm =  TuringMachine(definition)
 
 ### 2-Tag System
 
-A 2-tag system processes a string by chopping off the first two letters, looking up the first of the two letters in the production rules table and attaches the string it finds to the end of the original string. Surprisingly, 2-tag systems are as powerful as Turing machines, but much harder to write by hand.
+A 2-tag system processes a working string by chopping off the first two letters, looking up the first of the two letters in the production rules table and attaching the string it finds to the end of the working string. Surprisingly, 2-tag systems are as powerful as Turing machines, but much harder to write by hand.
 
 A two tag system is defined like this:
 
-- the production rules (dictionary) in the form `read_symbol: write_symbol`
-- the initial word (string), can also be a list of characters
-- the halt symbol. The 2-tag system stops when it reads this symbol. It also stops when the working string is too short to read two symbols
+- the production rules (dictionary) in the form `read_symbol: list_of_write_symbols`
+- the initial word (string), can also be a list of strings
+- the halt symbol. The 2-tag system stops when it reads this symbol. It also stops when the working string is shorter than 2 symbols
 
 ```python
 production_rules = {
@@ -137,7 +139,7 @@ two_tag.run()
 result = two_tag.current_word
 ```
 
-Instead of passing a dictionary to the TwoTagSystem class, you can alternatively pass a TuringDefinition object that describes a **binary** Turing machine. If you do, the 2-tag system will be constructed based on the TuringDefinition. In that case, you don't neet do set an initial word, as that will be constructed from the Turing machine's tape. In order to use an arbitrary Turing machine, you need to convert it to a binary Turing machine first.
+Instead of passing a dictionary to the TwoTagSystem class, you can alternatively pass a TuringDefinition object that describes a **binary** Turing machine. If you do that, the 2-tag system will be constructed based on the TuringDefinition. In that case, you don't need do set an initial word, as that will be constructed from the Turing machine's tape. If you want to use an arbitrary Turing machine instead of a binary one, you need to convert it to a binary Turing machine first, as described above.
 
 When building a 2-tag system from a Turing machine, the alphabet will get severely modified to fit to the 2-tag system's architecture. Convert the result back to the binary Turing machine representation like this:
 
@@ -163,7 +165,7 @@ if turing_machine.is_binarized_tm:
 
 ### Universal Turing Machine
 
-The universal Turing machine used in this project is the UTM(2,18) defined by [Yurii Rogozhin](mtg-turing-machine\documentation\literature\1-s2.0-S0304397596000771-main.pdf). It is a regular Turing machine with a predefined transition function and alphabet. In order to run any other Turing machine on a UTM, it needs to be encoded to the UTM's tape. Writing a UTM's program by hand is very hard, but you can convert a 2-tag system to a UTM(2,18).
+The universal Turing machine used in this project is the *UTM(2,18)* defined by [Yurii Rogozhin](mtg-turing-machine\documentation\literature\1-s2.0-S0304397596000771-main.pdf). It is a regular Turing machine with a predefined transition function and alphabet. A Turing machine you want to run on the UTM must be encoded to the UTM's tape in a way that the UTM can emulate. Writing a UTM's program by hand is very hard, but you can convert a 2-tag system to a UTM(2,18) like this:
 
 ```python
 utm = UniversalTuringMachine()
@@ -172,7 +174,7 @@ utm.run()
 two_tag_string utm.decode_tape_as_two_tag_word()
 ```
 
-Or, if you want to run the whole conversion chain, start with an arbitrary Turing machine, convert it to binary, then to a 2-tag system and finally to a UTM. After the finished run, the result needs to be converted back to the original symbol set. Beware though, the whole conversion chain lets the complexity grow by orders of magnitude, don't expect the simulation to finish anytime soon.
+Or, if you want to run the whole conversion chain, start with an arbitrary Turing machine, convert it to binary, then to a 2-tag system and finally to a UTM. After the finished run, the result needs to be converted back to the original symbol set. Beware though, the whole conversion chain lets the complexity grow by orders of magnitude, so don't expect the simulation to finish anytime soon.
 
 ```python
 turing_machine.convert_to_two_symbol()
@@ -195,7 +197,7 @@ if turing_machine.is_binarized_tm:
 
 ### Magic: The Gathering Turing Machine
 
-The final step in the conversion is to run the simulation in the realm of Magic: The Gathering. Since re-creating the full rule set of M:TG is no small feat, this project only simulates the parts that are relevant to the Turing machine. Some simplifications have been made. The code is heavily documented to describe the rationale behind the application of the specific M:TG rules. Setting up the game from scratch is not part of the simulation. Please refer to the [paper](mtg-turing-machine\documentation\literature\1904.09828.pdf), or watch Kyle Hill's excellent [video](https://www.youtube.com/watch?v=pdmODVYPDLA) explaining how it's done.
+The final step in the conversion is to run the simulation within the world of Magic: The Gathering. Since re-creating the full rule set of M:TG is no small feat, this project only simulates the parts that are relevant to the Turing machine. Wherever a simplification has been made, the code is heavily documented to describe the rationale behind the application of the corresponding M:TG rules. Setting up the game from scratch is not part of the simulation. Please refer to the [paper](mtg-turing-machine\documentation\literature\1904.09828.pdf), or watch Kyle Hill's excellent [video](https://www.youtube.com/watch?v=pdmODVYPDLA) explaining how it's done.
 
 For our purposes, we need to convert a UTM to a MTG-TM and run it. The whole chain looks like this, but you can jump in at any point if you have constructed a different representation by hand:
 
@@ -221,11 +223,11 @@ if turing_machine.is_binarized_tm:
     tape = turing_machine.get_stripped_tape(decode_binarized=True)
 ```
 
-If you manage to build a tiny representation that you think you can set up with real cards, you can print the MTG-TM like so: `mtg_utm.print()`. The result will show you all the cards both players need (again for forcing this setup check out [Kyle's video](https://www.youtube.com/watch?v=pdmODVYPDLA)). 
+In case you manage to build a tiny program that you think you can set up with real cards, you may want to print the MTG-TM setup by calling  `mtg_utm.print()`. The result will show you all the cards both players have in play (again check out [Kyle's video](https://www.youtube.com/watch?v=pdmODVYPDLA) on forcing the initial setup). 
 
-During the setup, some cards need to be edited by cards like [Glamerdye](https://gatherer.wizards.com/pages/card/details.aspx?multiverseid=153439). The changes are printed in square brackets, so don't be surprised that the cards have a different text than you're used to.
+During the setup phase, some cards were edited by cards like [Glamerdye](https://gatherer.wizards.com/pages/card/details.aspx?multiverseid=153439). The changes are printed in square brackets, so don't be surprised that the cards have a different text than you're used to. Also, the cards' color differ from their official versions because a lot of cards have been given all colors except blue. I generally found that the Churchill et al. really went out of their way to make the machine airtight in terms of M:TG rules, so whenever you see a loophole, it's likely that I omitted some information to conserve space. If you see any rule problems, please open a ticket, we can discuss it there.
 
-The tape is represented by tokens and will be printed using only the first letter of their creature types to conserve space (A = Aetherborn, B = Basilisk, etc). Also, the order of the tape will be defined by the tokens' power and toughness, where the tokens immediately left of the Turing head have 3/3 and increase by 1/1 as we move away from the head in both directions. Again, to conserve space, this information will be omitted, instead the tokens will be printed in their correct order, with the head position marked by square brackets. A possible output looks like this:
+The Turing tape is represented by tokens and will be printed using only the first letter of the corresponding creature type (A = Aetherborn, B = Basilisk, etc) to conserve space. Also, the order of the tape will be defined by the tokens' power and toughness, where the tokens immediately left of the Turing head have 3/3 and increase by 1/1 as we move away from the head to the left and right. Again, to conserve space, this information will be omitted, instead the tokens will be printed in their correct order, with the head position marked by square brackets. A possible starting setup may look like this:
 
 ```
 Player: Bob
