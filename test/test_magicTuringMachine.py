@@ -15,8 +15,7 @@ def run_mtg_utm_from_two_tag(two_tag, string, verbose=True):
     utm.set_tape_string_from_two_tag(two_tag)
 
     mtg_utm = MagicTheGatheringTuringMachine(utm)
-    mtg_utm.print()
-    # mtg_utm.run(verbose)
+    mtg_utm.run(verbose)
     utm = mtg_utm.get_utm()
 
     return utm.decode_tape_as_two_tag_word()
