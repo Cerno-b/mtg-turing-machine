@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1e8bc94f-c7fb-4c8e-ae8e-5ed22cc917e3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py" beforeDir="false" afterPath="$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_magicTuringMachine.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_magicTuringMachine.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,11 +57,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="470">
-              <caret line="542" column="16" selection-start-line="542" selection-start-column="16" selection-end-line="542" selection-end-column="16" />
+            <state relative-caret-position="381">
+              <caret line="195" column="50" lean-forward="true" selection-start-line="195" selection-start-column="50" selection-end-line="195" selection-end-column="50" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -70,7 +69,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test_magicTuringMachine.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
@@ -198,8 +197,8 @@
         <option value="$PROJECT_DIR$/test/test_turingMachine.py" />
         <option value="$PROJECT_DIR$/mtg_turing_machine/classes/universal_turing_machine.py" />
         <option value="$PROJECT_DIR$/mtg_turing_machine/classes/instances.py" />
-        <option value="$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py" />
         <option value="$PROJECT_DIR$/test/test_magicTuringMachine.py" />
+        <option value="$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py" />
       </list>
     </option>
   </component>
@@ -380,15 +379,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_test_magicTuringMachine_py - 2020.04.01 at 13h 06m 15s.xml">
-      <configuration name="Unittests in test_magicTuringMachine.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_magicTuringMachine_py - 2020.04.01 at 13h 09m 04s.xml">
-      <configuration name="Unittests in test_magicTuringMachine.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_magicTuringMachine_py - 2020.04.01 at 13h 09m 30s.xml">
-      <configuration name="Unittests in test_magicTuringMachine.py" configurationId="tests" />
-    </history-entry>
     <history-entry file="Unittests_in_test_magicTuringMachine_py - 2020.04.01 at 13h 12m 29s.xml">
       <configuration name="Unittests in test_magicTuringMachine.py" configurationId="tests" />
     </history-entry>
@@ -410,6 +400,15 @@
     <history-entry file="Unittests_in_test_magicTuringMachine_py - 2020.04.01 at 13h 22m 22s.xml">
       <configuration name="Unittests in test_magicTuringMachine.py" configurationId="tests" />
     </history-entry>
+    <history-entry file="Unittests_in_test_magicTuringMachine_py - 2020.04.01 at 13h 27m 01s.xml">
+      <configuration name="Unittests in test_magicTuringMachine.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_magicTuringMachine_py - 2020.04.01 at 13h 27m 05s.xml">
+      <configuration name="Unittests in test_magicTuringMachine.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_magicTuringMachine_py - 2020.04.01 at 13h 34m 32s.xml">
+      <configuration name="Unittests in test_magicTuringMachine.py" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
@@ -420,8 +419,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.32885906" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32843137" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32843137" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3882353" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32843137" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3882353" />
       <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="5" weight="0.32885906" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -702,22 +701,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="542" column="16" selection-start-line="542" selection-start-column="16" selection-end-line="542" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/test_magicTuringMachine.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mtg_turing_machine/classes/mtg_turing_machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="381">
+          <caret line="195" column="50" lean-forward="true" selection-start-line="195" selection-start-column="50" selection-end-line="195" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>

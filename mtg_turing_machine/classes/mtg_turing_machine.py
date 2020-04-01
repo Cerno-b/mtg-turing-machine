@@ -403,6 +403,40 @@ class MagicTheGatheringTuringMachine:
             card = Card(name, text=text)
             self.alice.library.put(card)
 
+    def trigger_controllers(self, token):
+        """This function triggers a Rotlung Reanimator or Xathrid Necromancer based on the token that just died.
+        When an end-of-tape marker dies, this function has to be called twice (see comments below). This is done
+        via a recursive call. The recursion depth cannot exceed 1 though."""
+        for head_control_card in self.bob.table_control:
+            if head_control_card.phased_in and head_control_card.traits["trigger"] == token.creature_type:
+                new_token = copy.copy(head_control_card.traits["gen_token"])  # new token belongs to Bob
+
+                # Shared Triumph increases power and toughness for end-of-tape tokens.
+                # This has to be done because below, a new 2/2 head token will be generated
+                # for which the end token is the 3/3 neighbor.
+                if new_token.creature_type in ["<", ">"]:
+                    new_token.power_toughness += 1
+
+                # move Illusory Gains to new token
+                alice_head = list(self.alice.table_tape)[0]
+                illusory_gains = alice_head.detach_card()  # this now belongs to Bob
+                new_token.attach_card(illusory_gains)  # this now belongs to Alice
+                assert illusory_gains.name == "Illusory Gains"
+
+                self.alice.table_tape.remove(alice_head)
+                self.alice.table_tape.add(new_token)
+                self.bob.table_tape.add(alice_head)
+
+                # in case an end-of tape token (Lhurgoyf "<" or Rat ">") was created, Alice's Rotlung Reanimator
+                # triggers and creates a 2/2 Cephalid token, which marks the blank symbol, so a new blank tape
+                # field is added here. Due to Dread of Night, the Cephalid immediately dies, which now triggers
+                # the proper control card to do the actual write operation
+                if new_token.creature_type in ["<", ">"]:
+                    for alice_control_card in self.alice.table_control:
+                        if alice_control_card.traits["trigger"] == new_token.creature_type:
+                            new_token = copy.copy(alice_control_card.traits["gen_token"])  # Cephalid, will die immediately
+                            self.trigger_controllers(new_token)
+
     def step_infest(self):
         """Infest will give all creatures -2/-2, destroying Bob's 2/2 token which then triggers
         a single Rotlung Reanimator or Xathrid Necromancer, which in turn will create a new 2/2 token based on the
@@ -411,54 +445,7 @@ class MagicTheGatheringTuringMachine:
         for token in copy.copy(self.bob.table_tape):
             if token.power_toughness == 2:
                 self.bob.table_tape.remove(token)
-                for head_control_card in self.bob.table_control:
-                    if head_control_card.phased_in and head_control_card.traits["trigger"] == token.creature_type:
-                        new_token = copy.copy(head_control_card.traits["gen_token"])  # new token belongs to Bob
-
-                        # Shared Triumph increases power and toughness for end-of-tape tokens
-                        if new_token.creature_type in ["<", ">"]:
-                            new_token.power_toughness += 1
-
-                        # move Illusory Gains to new token
-                        alice_head = list(self.alice.table_tape)[0]
-                        illusory_gains = alice_head.detach_card()  # this now belongs to Bob
-                        new_token.attach_card(illusory_gains)  # this now belongs to Alice
-                        assert illusory_gains.name == "Illusory Gains"
-
-                        self.alice.table_tape.remove(alice_head)
-                        self.alice.table_tape.add(new_token)
-                        self.bob.table_tape.add(alice_head)
-
-                        # in case an end-of tape token (Lhurgoyf "<" or Rat ">") was created, Alice's Rotlung Reanimator
-                        # triggers and creates a 2/2 Cephalid token, which due to Dread of Night, immediately dies.
-                        # This triggers another of Bob's control cards. In the following, we skip the Cephalid
-                        # creation and destruction and immediately trigger the control card that reacts to a dying
-                        # Cephalid.
-                        # When the original Lhurgoyf or Rat triggered Bob's Rotlung Reanimator, it was recreated
-                        # as a new Lhurgoyf or Rat with 3/3. This step adds the actual 2/2 tape symbol. Remember that
-                        # Lhurgoyf and Rat are just end of tape markers for the MTG Turing machine, they do not exist
-                        # in the original machine.
-                        if new_token.creature_type in ["<", ">"]:  # todo: refactor into separate function
-                            for alice_control_card in self.alice.table_control:
-                                if alice_control_card.traits["trigger"] == new_token.creature_type:
-                                    new_token = copy.copy(alice_control_card.traits["gen_token"])  # Cephalid, will die immediately
-                                    for edge_control_card in self.bob.table_control:
-                                        if edge_control_card.phased_in and edge_control_card.traits["trigger"] == new_token.creature_type:
-                                            new_token2 = copy.copy(edge_control_card.traits["gen_token"])  # new token belongs to Bob
-
-                                            # move Illusory Gains to new token
-                                            alice_head = list(self.alice.table_tape)[0]
-                                            illusory_gains = alice_head.detach_card()  # this now belongs to Bob
-                                            new_token2.attach_card(illusory_gains)  # this now belongs to Alice
-                                            assert illusory_gains.name == "Illusory Gains"
-
-                                            # Shared Triumph increases power and toughness for end-of-tape tokens
-                                            if new_token2.creature_type in ["<", ">"]:
-                                                new_token2.power_toughness += 1
-
-                                            self.alice.table_tape.remove(alice_head)
-                                            self.alice.table_tape.add(new_token2)
-                                            self.bob.table_tape.add(alice_head)
+                self.trigger_controllers(token)
 
     def step_cleansing_beam(self):
         """Cleansing Beam deals 2 damage to target creature and each other creature of the same color.
