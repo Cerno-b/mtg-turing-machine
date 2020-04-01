@@ -15,7 +15,8 @@ def run_mtg_utm_from_two_tag(two_tag, string, verbose=True):
     utm.set_tape_string_from_two_tag(two_tag)
 
     mtg_utm = MagicTheGatheringTuringMachine(utm)
-    mtg_utm.run(verbose)
+    mtg_utm.print()
+    # mtg_utm.run(verbose)
     utm = mtg_utm.get_utm()
 
     return utm.decode_tape_as_two_tag_word()
@@ -25,6 +26,7 @@ class TestMagicTuringMachine(unittest.TestCase):
     def test_basic(self):
         utm = examples.load_dummy_utm()
         mtg_tm = MagicTheGatheringTuringMachine(utm)
+
         mtg_tm.run()
         tape = mtg_tm.decode_tape()
         self.assertEqual(tape, ["11<", "1<", "^", "-", "b", "c2", "11>", "c2"])

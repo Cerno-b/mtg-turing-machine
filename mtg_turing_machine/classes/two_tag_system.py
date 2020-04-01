@@ -207,8 +207,10 @@ class TwoTagSystem:
 
     def set_initial_word(self, initial_word, halting_symbol):
         """Set the initial word and halting symbol. This will reset the steps counter."""
+        if isinstance(initial_word, str):
+            initial_word = list(initial_word)
         self.steps = 0
-        self.current_word = list(initial_word)
+        self.current_word = initial_word
         self.halting_symbol = halting_symbol
 
     def step(self):

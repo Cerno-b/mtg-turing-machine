@@ -229,40 +229,38 @@ def load_dummy_utm():
 def load_two_tag_cut_in_half():
     """Two Tag System 'Cut In Half'. 
     Trivial two tag system that takes the input word and removes each second letter."""
-    transitions = {
+    production_rules = {
         "X": ["X"],
         ":": ["i"],
     }
     halt_symbol = "#"
-    string = "XX::XX::XX::#"
-    string_list = list(string)
+    initial_word = "XX::XX::XX::#"
 
-    two_tag = TwoTagSystem(transitions)
-    two_tag.set_initial_word(string_list, halt_symbol)
+    two_tag = TwoTagSystem(production_rules)
+    two_tag.set_initial_word(initial_word, halt_symbol)
     return two_tag
 
 
 def load_two_tag_collatz():
     """Two Tag System 'Compute Collatz Sequence'.
     Computes a Collatz sequence (https://en.wikipedia.org/wiki/Tag_system#Example:_Computation_of_Collatz_sequences)"""
-    transitions = {
+    production_rules = {
         "a": ["b", "c"],
         "b": ["a"],
         "c": ["a", "a", "a"],
     }
     halt_symbol = "#"
-    string = "aaa"
-    string_list = list(string)
+    initial_word = "aaa"
 
-    two_tag = TwoTagSystem(transitions)
-    two_tag.set_initial_word(string_list, halt_symbol)
+    two_tag = TwoTagSystem(production_rules)
+    two_tag.set_initial_word(initial_word, halt_symbol)
     return two_tag
 
 
 def load_two_tag_manually_converted_from_simple_tm():
     """Two Tag System 'Converted From TM'.
     A two tag system manually converted from a simple Turing machine unit testing the conversion process."""
-    transitions = {
+    production_rules = {
         'A_q_init_0': ['C_q_init_0', 'x'],
         'C_q_init_0': ['D_q_init_0_1', 'D_q_init_0_0'],
         'D_q_init_0_0': ['x', 'A_q0_0', 'x'],
@@ -316,6 +314,6 @@ def load_two_tag_manually_converted_from_simple_tm():
     halt_symbol = "#"
     string_list = ["A_q_init_0", "x", 'B_q_init_0', "x"]
 
-    two_tag = TwoTagSystem(transitions)
+    two_tag = TwoTagSystem(production_rules)
     two_tag.set_initial_word(string_list, halt_symbol)
     return two_tag

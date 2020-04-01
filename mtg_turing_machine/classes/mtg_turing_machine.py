@@ -86,29 +86,34 @@ class Player:
         self.win = False
 
     def print(self):
+        ljust_value = 35
         print("Hand:")
         if self.hand:
-            print("    " + self.hand.name)
+            card_string = self.hand.name + ":"
+            print(f'    {card_string.ljust(ljust_value)}     {self.hand.text}')
         else:
             print("    empty")
         print()
         print("Library:")
         if self.library:
             for card in self.library:
-                print("    " + card.name)
+                card_string = card.name + ":"
+                print(f'    {card_string.ljust(ljust_value)}    {card.text}')
         else:
             print("    empty")
         print()
         print("Control cards:")
         for card in self.table_control:
             if card.phased_in:
-                print("    " + card.name)
+                card_name = card.name + ":"
             else:
-                print("    " + card.name + " (phased out)")
+                card_name = card.name + " (phased out):"
+            print(f'    {card_name.ljust(ljust_value)}     {card.text}')
         print()
         print("Remaining cards:")
         for card in self.table_rest:
-            print("    " + card.name)
+            card_name = card.name + ":"
+            print(f'    {card_name.ljust(ljust_value)}    {card.text}')
         print()
 
 
@@ -188,7 +193,7 @@ class MagicTheGatheringTuringMachine:
 
     def print_tape(self):
         sorted_tape = self.get_tape_sorted()
-        print(f"cycle {self.cycles}, q{self.state + 1}: ", end="")
+        print(f"cycle {self.cycles}, state q{self.state + 1}: ", end="")
         for token in sorted_tape:
             if token.power_toughness == 2:
                 print(f"[{token.creature_type}]", end="")
