@@ -4,7 +4,7 @@ A compiler that converts any [Turing machine](https://en.wikipedia.org/wiki/Turi
 
 Based on the awesome paper [*Magic: The Gathering is Turing Complete*](https://arxiv.org/abs/1904.09828) by Alex Churchill, Stella Biderman and Austin Herrick.
 
-Here is an overview video about the conversion algorithm: https://www.youtube.com/watch?v=YzXoFldEux. As you will see, unfortunately the resulting machines are prohibitively slow even for rather simple problems.
+Here is an overview video about the conversion algorithm: https://www.youtube.com/watch?v=YzXoFldEux4. As you will see, unfortunately the resulting machines are prohibitively slow even for rather simple problems.
 
 The conversion from Turing machine to MTG:TM is done in four steps:
 - convert the Turing machine to a binary Turing machine (that only uses the symbols 0 and 1)
