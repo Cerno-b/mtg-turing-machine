@@ -165,7 +165,7 @@ if turing_machine.is_binarized_tm:
 
 ### Universal Turing Machine
 
-The universal Turing machine used in this project is the *UTM(2,18)* defined by [Yurii Rogozhin](mtg-turing-machine\documentation\literature\1-s2.0-S0304397596000771-main.pdf). It is a regular Turing machine with a predefined transition function and alphabet. A Turing machine you want to run on the UTM must be encoded to the UTM's tape in a way that the UTM can emulate. Writing a UTM's program by hand is very hard, but you can convert a 2-tag system to a UTM(2,18) like this:
+The universal Turing machine used in this project is the *UTM(2,18)* defined by [Yurii Rogozhin](documentation/literature/1-s2.0-S0304397596000771-main.pdf). It is a regular Turing machine with a predefined transition function and alphabet. A Turing machine you want to run on the UTM must be encoded to the UTM's tape in a way that the UTM can emulate. Writing a UTM's program by hand is very hard, but you can convert a 2-tag system to a UTM(2,18) like this:
 
 ```python
 utm = UniversalTuringMachine()
@@ -197,7 +197,7 @@ if turing_machine.is_binarized_tm:
 
 ### Magic: The Gathering Turing Machine
 
-The final step in the conversion is to run the simulation within the world of Magic: The Gathering. Since re-creating the full rule set of M:TG is no small feat, this project only simulates the parts that are relevant to the Turing machine. Wherever a simplification has been made, the code is heavily documented to describe the rationale behind the application of the corresponding M:TG rules. Setting up the game from scratch is not part of the simulation. Please refer to the [paper](mtg-turing-machine\documentation\literature\1904.09828.pdf), or watch Kyle Hill's excellent [video](https://www.youtube.com/watch?v=pdmODVYPDLA) explaining how it's done.
+The final step in the conversion is to run the simulation within the world of Magic: The Gathering. Since re-creating the full rule set of M:TG is no small feat, this project only simulates the parts that are relevant to the Turing machine. Wherever a simplification has been made, the code is heavily documented to describe the rationale behind the application of the corresponding M:TG rules. Setting up the game from scratch is not part of the simulation. Please refer to the [paper](documentation/literature/1904.09828.pdf), or watch Kyle Hill's excellent [video](https://www.youtube.com/watch?v=pdmODVYPDLA) explaining how it's done.
 
 For our purposes, we need to convert a UTM to a MTG-TM and run it. The whole chain looks like this, but you can jump in at any point if you have constructed a different representation by hand:
 
@@ -325,6 +325,6 @@ Remaining cards:
 # Sources
 
 This project is based on three papers that you can find in the repository:
-- [Magic: The Gathering is Turing Complete (Alex Churchill, Stella Biderman and Austin Herrick, 2019)](mtg-turing-machine\documentation\literature\1904.09828.pdf)
-- [Small universal Turing machines (Yurii Rogozhin, 1996)](mtg-turing-machine\documentation\literature\1-s2.0-S0304397596000771-main.pdf)
-- [Universality of Tag Systems With P = 2 (John Cocke and Marvin Minsky,1964)](mtg-turing-machine\documentation\literature\1p15-cocke.pdf)
+- [Magic: The Gathering is Turing Complete (Alex Churchill, Stella Biderman and Austin Herrick, 2019)](documentation/literature/1904.09828.pdf)
+- [Small universal Turing machines (Yurii Rogozhin, 1996)](documentation/literature/1-s2.0-S0304397596000771-main.pdf)
+- [Universality of Tag Systems With P = 2 (John Cocke and Marvin Minsky,1964)](documentation/literature/1p15-cocke.pdf)
